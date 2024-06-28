@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nguyen Quy Duc</title>
+
+    <!--
+    - favicon
+    -->
+    <link rel="shortcut icon" href="./assets/logo.ico" type="image/x-icon" />
+
+    <!--
+    - custom css link
+    -->
+    <link rel="stylesheet" href="./style.css" />
+
+    <!--
+    - google font link
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!--
+    - #MAIN
+    -->
+
+    <main>
+      <!--
+      - #SIDEBAR
+      -->
+
+      <aside class="sidebar" data-sidebar>
+        <div class="sidebar-info">
+          <figure class="avatar-box">
+            <img src="./assets/my-avatar.png" alt="Nguyen Quy Duc" width="80" />
+          </figure>
+
+          <div class="info-content">
+            <h1 class="name" title="Nguyen Quy Duc">Nguyen Quy Duc</h1>
+
+            <p class="title">Software Developer</p>
+          </div>
+
+          <button class="info_more-btn" data-sidebar-btn>
+            <span>Show Contacts</span>
+
+            <ion-icon name="chevron-down"></ion-icon>
+          </button>
+        </div>
+
+        <div class="sidebar-info_more">
+          <div class="separator"></div>
+
+          <ul class="contacts-list">
+            <li class="contact-item">
+              <div class="icon-box">
+                <ion-icon name="mail-outline"></ion-icon>
+              </div>
+
+              <div class="contact-info">
+                <p class="contact-title">Email</p>
+
+                <a href="mailto:quyduc711@gmail.com" class="contact-link"
+                  >quyduc711@gmail.com</a
+                >
+              </div>
+            </li>
+
+            <li class="contact-item">
+              <div class="icon-box">
+                <ion-icon name="phone-portrait-outline"></ion-icon>
+              </div>
+
+              <div class="contact-info">
+                <p class="contact-title">Phone</p>
+
+                <a href="tel:+6597747903" class="contact-link"
+                  >(+65) 9774 7903</a
+                >
+              </div>
+            </li>
+
+            <li class="contact-item">
+              <div class="icon-box">
+                <ion-icon name="location-outline"></ion-icon>
+              </div>
+
+              <div class="contact-info">
+                <p class="contact-title">Location</p>
+
+                <address>Singapore</address>
+              </div>
+            </li>
+          </ul>
+
+          <div class="separator"></div>
+
+          <ul class="social-list">
+            <li class="social-item">
+              <a
+                href="https://www.linkedin.com/in/quyduc/"
+                class="social-link"
+                target="_blank"
+              >
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+            <li class="social-item">
+              <a
+                href="https://github.com/ngquyduc"
+                class="social-link"
+                target="_blank"
+              >
+                <ion-icon name="logo-github"></ion-icon>
+              </a>
+            </li>
+
+            <li class="social-item">
+              <a
+                href="https://www.instagram.com/quyduc711/"
+                class="social-link"
+                target="_blank"
+              >
+                <ion-icon name="logo-instagram"></ion-icon>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!--
+      - #main-content
+      -->
+
+      <div class="main-content">
+        <!--
+        - #NAVBAR
+        -->
+
+        <nav class="navbar">
+          <ul class="navbar-list">
+            <li class="navbar-item">
+              <button class="navbar-link active" data-nav-link>About</button>
+            </li>
+
+            <li class="navbar-item">
+              <button class="navbar-link" data-nav-link>Resume</button>
+            </li>
+
+            <li class="navbar-item">
+              <button class="navbar-link" data-nav-link>Projects</button>
+            </li>
+
+            <li class="navbar-item">
+              <button class="navbar-link" data-nav-link>Contact</button>
+            </li>
+          </ul>
+        </nav>
+
+        <!--
+        - #ABOUT
+        -->
+
+        <article class="about active" data-page="about">
+          <header>
+            <h2 class="h2 article-title">About me</h2>
+          </header>
+
+          <section class="about-text">
+            <p>
+              Xin chào, my name is Duc. I am a final year student at National
+              University of Singapore, eager to begin my career as a Software
+              Developer
+            </p>
+
+            <p>
+              I'm passionate about web development, mobile applications, and
+              generative AI. I just finished my 6 month Software Engineer
+              internship at dConstruct Robotics, where I contributed to the
+              development of a point cloud surveillance system. Before that, I
+              maintained and enhanced a road inspection dashboard and built a
+              360 camera remote control app at Vebits.
+            </p>
+
+            <p>
+              I am actively seeking a full-time position as a Software Developer
+              to apply my skills and contribute effectively to a dynamic team. I
+              am eager to embark on a rewarding career path that aligns with my
+              passion.
+            </p>
+          </section>
+
+          <!--
+          - service
+          -->
+
+          <section class="service">
+            <h3 class="h3 service-title">What i'm doing</h3>
+
+            <ul class="service-list">
+              <li class="service-item">
+                <div class="service-icon-box">
+                  <img
+                    src="./assets/icon-dev.svg"
+                    alt="Web development icon"
+                    width="40"
+                  />
+                </div>
+
+                <div class="service-content-box">
+                  <h4 class="h4 service-item-title">Web development</h4>
+
+                  <p class="service-item-text">
+                    I'm building a website called Caroubuy that helps people
+                    track their Carousell favorite items.
+                  </p>
+                </div>
+              </li>
+
+              <li class="service-item">
+                <div class="service-icon-box">
+                  <img
+                    src="./assets/icon-app.svg"
+                    alt="mobile app icon"
+                    width="40"
+                  />
+                </div>
+
+                <div class="service-content-box">
+                  <h4 class="h4 service-item-title">Mobile apps</h4>
+
+                  <p class="service-item-text">
+                    At the same time, I'm working on a mobile app called Gym
+                    Friend acting as a personal trainer for gym newbies.
+                  </p>
+                </div>
+              </li>
+
+              <li class="service-item">
+                <div class="service-icon-box">
+                  <img src="./assets/icon-cs.svg" alt="cs icon" width="40" />
+                </div>
+
+                <div class="service-content-box">
+                  <h4 class="h4 service-item-title">Computer Science</h4>
+
+                  <p class="service-item-text">
+                    Besides, I'm also finishing my final year study as a
+                    undergraduate at NUS.
+                  </p>
+                </div>
+              </li>
+              <li class="service-item">
+                <div class="service-icon-box">
+                  <img
+                    src="./assets/icon-swift.svg
+                "
+                    alt="swift icon"
+                    width="40"
+                  />
+                </div>
+
+                <div class="service-content-box">
+                  <h4 class="h4 service-item-title">Learning Swift UI</h4>
+
+                  <p class="service-item-text">
+                    Recently, I pick up SwiftUI for my next internship and find
+                    it really interesting.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </article>
+
+        <!--
+        - #RESUME
+        -->
+
+        <article class="resume" data-page="resume">
+          <header>
+            <h2 class="h2 article-title">Resume</h2>
+          </header>
+
+          <section class="timeline">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="book-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Experience</h3>
+            </div>
+
+            <ol class="timeline-list">
+              <li class="timeline-item">
+                <h4 class="h4 timeline-item-title">
+                  Software Engineer Intern @ dConstruct Robotics
+                </h4>
+
+                <span>Jan 2024 - Present</span>
+
+                <p class="timeline-text">
+                  • Designed and built the user interface for a point cloud
+                  surveillance system using SolidJS and TailwindCSS
+                </p>
+                <p class="timeline-text">
+                  • Implemented the playback feature with caching mechanism in
+                  C++17 and used Emscripten for binding
+                </p>
+              </li>
+
+              <li class="timeline-item">
+                <h4 class="h4 timeline-item-title">
+                  Software Engineer Intern @ Vebits
+                </h4>
+
+                <span>May 2023 - Aug 2023</span>
+
+                <p class="timeline-text">
+                  <u>Full Stack Web Development</u>
+                  <i> (AngularJS, Bootstrap, Django, and MongoDB) </i>
+                </p>
+                <p class="timeline-text">
+                  • Optimized runtime performance by 50% through intricate query
+                  function enhancements and distributed database implementation
+                  for MongoDB on backend side, further refining web app’s
+                  scalability
+                </p>
+                <p class="timeline-text">
+                  • Elevated user engagement and experience by leading a
+                  redesign of web app’s frontend using Angular 13 and Bootstrap
+                  5, incorporating modern design principles for an intuitive and
+                  visually appealing interface
+                </p>
+
+                <div class="timeline-text-spacer"></div>
+
+                <p class="timeline-text">
+                  <u>Mobile Development</u>
+                  <i>
+                    (React Native, NodeJS, and Google Open Spherical Camera API)
+                  </i>
+                </p>
+                <p class="timeline-text">
+                  • Conceptualized and engineered a comprehensive mobile
+                  application from scratch, enabling remote control of Insta360
+                  and Theta X cameras with delay of less than 100 ms via
+                  integration with Google OSC API
+                </p>
+                <p class="timeline-text">
+                  • Empowered users with seamless content management by allowing
+                  capture, recording, and subsequent server-based AI processing
+                  of footages, showcasing ability for end-to-end solutions for
+                  industrial automation
+                </p>
+              </li>
+
+              <li class="timeline-item">
+                <h4 class="h4 timeline-item-title">
+                  Teaching Assistant @ NUS School of Computing
+                </h4>
+
+                <span>Aug 2022 - Dec 2023</span>
+
+                <p class="timeline-text">
+                  • Led a group of 6 Junior Teaching Assistants and provided
+                  tutorial discussions for over 100 students
+                </p>
+                <p class="timeline-text">
+                  • Delivered instruction spanning computational thinking and
+                  problem solving skills, covering topics involving algorithm
+                  design, fundamental programming constructs, basic data
+                  structures, and recursion
+                </p>
+              </li>
+            </ol>
+          </section>
+
+          <section class="timeline">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="book-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Education</h3>
+            </div>
+
+            <ol class="timeline-list">
+              <li class="timeline-item">
+                <h4 class="h4 timeline-item-title">
+                  National University of Singapore
+                </h4>
+
+                <span>2021 - Present</span>
+
+                <p class="timeline-text">
+                  • Bachelor of Computing (Hons) in Computer Science
+                </p>
+                <p class="timeline-text">
+                  • Focus area: Software Engineering and Database Systems
+                </p>
+              </li>
+
+              <li class="timeline-item">
+                <h4 class="h4 timeline-item-title">
+                  Hanoi - Amsterdam High School
+                </h4>
+
+                <span>2018 — 2021</span>
+
+                <p class="timeline-text">• Specialized in Physics</p>
+              </li>
+            </ol>
+          </section>
+        </article>
+
+        <!--
+        - #PROJECTS
+        -->
+
+        <article class="projects" data-page="projects">
+          <header>
+            <h2 class="h2 article-title">Projects</h2>
+          </header>
+
+          <section class="projects">
+            <ul class="filter-list">
+              <li class="filter-item">
+                <button class="active" data-filter-btn>All</button>
+              </li>
+
+              <li class="filter-item">
+                <button data-filter-btn>Web development</button>
+              </li>
+
+              <li class="filter-item">
+                <button data-filter-btn>Mobile applications</button>
+              </li>
+
+              <li class="filter-item">
+                <button data-filter-btn>Other</button>
+              </li>
+            </ul>
+
+            <div class="filter-select-box">
+              <button class="filter-select" data-select>
+                <div class="select-value" data-selecct-value>
+                  Select category
+                </div>
+
+                <div class="select-icon">
+                  <ion-icon name="chevron-down"></ion-icon>
+                </div>
+              </button>
+
+              <ul class="select-list">
+                <li class="select-item">
+                  <button data-select-item>All</button>
+                </li>
+
+                <li class="select-item">
+                  <button data-select-item>Web development</button>
+                </li>
+
+                <li class="select-item">
+                  <button data-select-item>Mobile applications</button>
+                </li>
+
+                <li class="select-item">
+                  <button data-select-item>Other</button>
+                </li>
+              </ul>
+            </div>
+
+            <ul class="project-list"></ul>
+          </section>
+        </article>
+
+        <!--
+        - #CONTACT
+        -->
+
+        <article class="contact" data-page="contact">
+          <header>
+            <h2 class="h2 article-title">Contact</h2>
+          </header>
+
+          <section class="mapbox" data-mapbox>
+            <figure>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63820.9915469189!2d103.74257807273398!3d1.2868989174047087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da1a5234b05815%3A0x500f7acaedaa4b0!2sQueenstown!5e0!3m2!1sen!2ssg!4v1719475772542!5m2!1sen!2ssg"
+                width="400"
+                height="300"
+                loading="lazy"
+              ></iframe>
+            </figure>
+          </section>
+
+          <section class="contact-form">
+            <h3 class="h3 form-title">Contact Form</h3>
+
+            <form
+              action="https://getform.io/f/916fd15b-fba3-4be6-9a52-b85507d3685c"
+              method="POST"
+              enctype="multipart/form-data"
+              class="form"
+              data-form
+            >
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  name="fullname"
+                  class="form-input"
+                  placeholder="Full name"
+                  required
+                  data-form-input
+                />
+
+                <input
+                  type="email"
+                  name="email"
+                  class="form-input"
+                  placeholder="Email address"
+                  required
+                  data-form-input
+                />
+              </div>
+
+              <textarea
+                name="message"
+                class="form-input"
+                placeholder="Your Message"
+                required
+                data-form-input
+              ></textarea>
+
+              <button class="form-btn" type="submit" disabled data-form-btn>
+                <ion-icon name="paper-plane"></ion-icon>
+                <span>Send Message</span>
+              </button>
+            </form>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <!--
+    - custom js link
+    -->
+    <script src="./script.js"></script>
+
+    <!--
+    - ionicon link
+    -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>
