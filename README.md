@@ -1,4 +1,4 @@
-# ngquyduc.vercel.app
+# quyduc.vercel.app
 
 👋 Welcome to the source code of my personal site.
 
