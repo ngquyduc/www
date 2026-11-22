@@ -1,0 +1,15 @@
+---
+// "↳ Try it" section on the matching-engine depth page (§7, §9).
+import LiveLabel from "../LiveLabel.astro";
+import OrderBook from "./OrderBook.astro";
+---
+
+<h2 id="try" class="unnumbered">Try it</h2>
+<p class="!-mt-1 !mb-3"><LiveLabel /></p>
+<p class="max-w-prose text-muted">
+  A small simulated book running in your browser, with the same price-time rules as the engine. Press Buy 10 or Sell 10
+  to see a market order walk the book. It is a toy for intuition, not the engine and not market data.
+</p>
+<div class="mb-4 max-w-[720px]">
+  <OrderBook />
+</div>
