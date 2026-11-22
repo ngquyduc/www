@@ -1,0 +1,126 @@
+---
+// dConstruct request flow for the case study (Fig. 1). Deliberately generic: no client site,
+// ports, limits, file formats or table names from the former employer's systems.
+// Filled boxes are Duc's parts (fill + outline, not colour alone).
+---
+
+<figure class="my-8">
+  <svg viewBox="0 0 340 462" class="dflow mx-auto block h-auto w-full max-w-[440px]" role="img" aria-labelledby="dflow-t dflow-d">
+    <title id="dflow-t">How a LiDAR frame gets from the sensor to the operator's screen</title>
+    <desc id="dflow-d">LiDAR sensors stream point clouds at 10 frames a second to a server. The server assembles each frame, calibrates it onto the site map using values from an index database, detects and tracks people and counts them in zones, and writes recordings. Endpoints serve live and recorded frames over Wi-Fi to the web app, about 2 seconds behind the sensor, and the web app loads a static site map. Calibration, the endpoints and the web app are the parts Duc worked on.</desc>
+    <defs>
+      <marker id="dflow-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      </marker>
+    </defs>
+
+    <!-- Sensor -->
+    <rect class="box" x="20" y="2" width="180" height="46" rx="6"></rect>
+    <text class="t" x="110" y="21" text-anchor="middle">LiDAR sensors</text>
+    <text class="s" x="110" y="38" text-anchor="middle">point clouds, 10 Hz</text>
+    <line class="ln" x1="110" y1="48" x2="110" y2="92" marker-end="url(#dflow-arr)"></line>
+
+    <!-- Server -->
+    <rect class="frame" x="8" y="66" width="324" height="280" rx="10"></rect>
+    <text class="k" x="216" y="84">Server</text>
+
+    <rect class="box" x="20" y="94" width="180" height="46" rx="6"></rect>
+    <text class="t" x="110" y="113" text-anchor="middle">Assemble frames</text>
+    <text class="s" x="110" y="130" text-anchor="middle">packets → points</text>
+    <line class="ln" x1="110" y1="140" x2="110" y2="156" marker-end="url(#dflow-arr)"></line>
+
+    <rect class="box mine" x="20" y="158" width="180" height="46" rx="6"></rect>
+    <text class="t" x="110" y="177" text-anchor="middle">Calibrate</text>
+    <text class="s" x="110" y="194" text-anchor="middle">sensor → site map</text>
+    <line class="ln" x1="110" y1="204" x2="110" y2="220" marker-end="url(#dflow-arr)"></line>
+
+    <rect class="box" x="20" y="222" width="180" height="46" rx="6"></rect>
+    <text class="t" x="110" y="241" text-anchor="middle">Detect and track</text>
+    <text class="s" x="110" y="258" text-anchor="middle">count people in zones</text>
+    <line class="ln" x1="110" y1="268" x2="110" y2="284" marker-end="url(#dflow-arr)"></line>
+
+    <rect class="box mine" x="20" y="286" width="180" height="46" rx="6"></rect>
+    <text class="t" x="110" y="305" text-anchor="middle">Endpoints</text>
+    <text class="s" x="110" y="322" text-anchor="middle">live and playback</text>
+
+    <!-- Storage -->
+    <rect class="store" x="220" y="164" width="100" height="34" rx="6"></rect>
+    <text class="t" x="270" y="186" text-anchor="middle">Index DB</text>
+    <line class="dash" x1="200" y1="181" x2="220" y2="181"></line>
+
+    <rect class="store" x="220" y="260" width="100" height="34" rx="6"></rect>
+    <text class="t" x="270" y="282" text-anchor="middle">Recordings</text>
+    <path class="dash" d="M200 245 H210 V268 H220" fill="none"></path>
+    <path class="dash" d="M200 309 H210 V286 H220" fill="none"></path>
+
+    <!-- To the browser -->
+    <line class="ln" x1="110" y1="332" x2="110" y2="378" marker-end="url(#dflow-arr)"></line>
+    <text class="s" x="120" y="366">Wi-Fi, about 2 s</text>
+
+    <rect class="box mine" x="20" y="380" width="180" height="46" rx="6"></rect>
+    <text class="t" x="110" y="399" text-anchor="middle">Web app</text>
+    <text class="s" x="110" y="416" text-anchor="middle">SolidJS, 3D view</text>
+
+    <rect class="store" x="220" y="386" width="100" height="34" rx="6"></rect>
+    <text class="t" x="270" y="408" text-anchor="middle">Site map</text>
+    <line class="dash" x1="220" y1="403" x2="203" y2="403" marker-end="url(#dflow-arr)"></line>
+
+    <!-- Legend -->
+    <rect class="box mine" x="20" y="444" width="14" height="14" rx="3"></rect>
+    <text class="s" x="42" y="455">My part</text>
+    <line class="dash" x1="110" y1="451" x2="136" y2="451"></line>
+    <text class="s" x="142" y="455">Stored data</text>
+  </svg>
+  <figcaption class="mt-3 text-sm text-muted">
+    Fig. 1 · How a frame gets from the sensor to the operator's screen, simplified. Filled boxes are the parts I worked on.
+  </figcaption>
+</figure>
+
+<style>
+  .dflow {
+    color: var(--color-ink);
+    overflow: visible;
+  }
+  .dflow .box,
+  .dflow .store,
+  .dflow .frame {
+    fill: none;
+    stroke: var(--color-line-strong);
+    stroke-width: 1;
+  }
+  .dflow .store {
+    stroke-dasharray: 3 3;
+  }
+  .dflow .frame {
+    stroke: var(--color-line);
+    stroke-dasharray: 5 4;
+  }
+  .dflow .mine {
+    fill: var(--color-accent-soft);
+    stroke: var(--color-accent);
+    stroke-width: 1.5;
+  }
+  .dflow .t {
+    fill: var(--color-ink);
+    font: 500 13px var(--font-sans);
+  }
+  .dflow .s {
+    fill: var(--color-muted);
+    font: 400 11px var(--font-mono);
+  }
+  .dflow .k {
+    fill: var(--color-subtle);
+    font: 500 11px var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .dflow .ln {
+    stroke: var(--color-ink);
+    stroke-width: 1;
+  }
+  .dflow .dash {
+    stroke: var(--color-muted);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+</style>
