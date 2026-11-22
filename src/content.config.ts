@@ -1,0 +1,80 @@
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+
+// §11. Strings wrapped in [brackets] are placeholders for facts Duc still owes (§12);
+// they render striped and fail a PUBLIC_STRICT=1 build.
+
+const metric = z.object({
+  value: z.string(),
+  label: z.string(),
+  // Only résumé numbers are real today (§2.4). "benchmark" needs a reproducible run.
+  source: z.enum(["resume", "benchmark", "public"]),
+});
+
+const link = z.object({ label: z.string(), href: z.url().optional() });
+
+const work = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/work" }),
+  schema: ({ image }) =>
+    z
+      .object({
+        title: z.string(),
+        tier: z.enum(["experience", "depth", "coursework", "fun"]),
+        order: z.number().int(),
+        org: z.string().optional(),
+        role: z.string().optional(),
+        start: z.string(),
+        end: z.string().optional(), // undefined = present
+        summary: z.string(),
+        stack: z.array(z.string()),
+        metrics: z.array(metric).optional(),
+        links: z.array(link).optional(),
+        context: z.enum(["employment", "internship", "personal", "coursework"]).optional(),
+        coursework: z.object({ module: z.string(), coAuthors: z.array(z.string()).min(1) }).optional(),
+        demo: z.literal("orderbook").optional(),
+        featured: z.number().int().optional(),
+        featuredMeta: z.string().optional(),
+        featuredSummary: z.string().optional(),
+        featuredMetric: z.string().optional(),
+        status: z.enum(["published", "in-progress", "upcoming"]),
+        hasPage: z.boolean(),
+        // Case-study and depth-page header.
+        headline: z.string().optional(),
+        lede: z.string().optional(),
+        location: z.string().optional(),
+        team: z.string().optional(),
+        cover: image().optional(),
+        coverAlt: z.string().optional(),
+      })
+      .superRefine((d, ctx) => {
+        if (d.tier === "coursework" && !d.coursework)
+          ctx.addIssue({
+            code: "custom",
+            path: ["coursework"],
+            message: "Coursework must credit its module and co-authors (§2.3).",
+          });
+        if (d.cover && !d.coverAlt)
+          ctx.addIssue({ code: "custom", path: ["coverAlt"], message: "A cover image needs alt text." });
+        if (d.links?.some((l) => /matching-engine-go/.test(l.href ?? "")))
+          ctx.addIssue({
+            code: "custom",
+            path: ["links"],
+            message: "The Go matching engine is private: no link (§2.8).",
+          });
+      }),
+});
+
+const writing = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.mdx", base: "./src/content/writing" }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    summary: z.string(),
+    tags: z.array(z.string()),
+    draft: z.boolean(),
+    updated: z.coerce.date().optional(),
+  }),
+});
+
+export const collections = { work, writing };
