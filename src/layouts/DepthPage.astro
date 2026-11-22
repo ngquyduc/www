@@ -1,0 +1,73 @@
+---
+// Project depth page (§9): header links, facts, then 01 Problem · 02 Architecture → ↳ Try it ·
+// 03 Benchmarks · 04 Findings · 05 Next.
+import PhText from "../components/PhText.astro";
+import Tag from "../components/Tag.astro";
+import type { Work } from "../lib/content";
+import Base from "./Base.astro";
+
+interface Props {
+  entry: Work;
+}
+const d = Astro.props.entry.data;
+const code = d.links?.filter((l) => l.href) ?? [];
+const priv = d.links?.filter((l) => !l.href) ?? [];
+const contextLabel = { personal: "Side project", coursework: "Coursework", employment: "Work", internship: "Internship" };
+const status = { published: "Published", "in-progress": "Benchmarks pending", upcoming: "Upcoming" }[d.status];
+---
+
+<Base title={d.title} description={d.lede ?? d.summary} ogType="article">
+  <section class="wrap pt-10 md:pt-14">
+    <a href="/work#depth" class="mono text-[13px] text-muted no-underline">← Work · Depth projects</a>
+    <div class="mt-7 flex items-end gap-12 max-md:flex-col max-md:items-stretch">
+      <div class="flex min-w-0 flex-[1_1_560px] flex-col gap-4">
+        <div class="flex flex-wrap gap-2">
+          <Tag variant="filled">Depth project</Tag>
+          {d.context ? <Tag>{contextLabel[d.context]}</Tag> : <Tag variant="placeholder">Personal or coursework?</Tag>}
+          {d.status !== "published" && <Tag>Write-up in progress</Tag>}
+        </div>
+        <h1 class="text-3xl font-bold tracking-[-0.025em]">{d.headline ?? d.title}</h1>
+        {d.lede && <p class="text-lg text-muted">{d.lede}</p>}
+      </div>
+      <div class="flex shrink-0 flex-col gap-2.5 text-[15px] md:w-[280px]">
+        {
+          code.map((l) => (
+            <a href={l.href} class="btn btn-primary !justify-between !px-4">
+              {l.label} on GitHub <span aria-hidden="true">↗</span>
+            </a>
+          ))
+        }
+        {
+          priv.map((l) => (
+            <span class="flex min-h-11 items-center justify-between rounded-md border border-dashed border-line-strong px-4 text-muted">
+              {l.label.split(":")[0]} <span class="mono text-xs">{l.label.split(":")[1]?.trim() ?? "private"}</span>
+            </span>
+          ))
+        }
+        {d.demo === "orderbook" && <a href="#try" class="mono text-xs text-muted">Try a simulated book below ↓</a>}
+      </div>
+    </div>
+    <dl class="mt-9 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-x-8 gap-y-4 border-t border-b border-t-ink border-b-line py-5">
+      <div><dt class="kicker !text-[11px] text-subtle">Languages</dt><dd class="mono mt-1 text-[13px]">{d.stack.join(" · ")}</dd></div>
+      <div><dt class="kicker !text-[11px] text-subtle">When</dt><dd class="mt-1 text-[15px]"><PhText text={d.start} /></dd></div>
+      <div><dt class="kicker !text-[11px] text-subtle">With</dt><dd class="mt-1 text-[15px]"><PhText text={d.team ?? "[solo, or co-authors]"} /></dd></div>
+      <div><dt class="kicker !text-[11px] text-subtle">Status</dt><dd class="mt-1 text-[15px]">{status}</dd></div>
+    </dl>
+  </section>
+
+  <section class="wrap pt-6">
+    <article class="prose numbered depth max-w-[56rem]">
+      <slot />
+    </article>
+  </section>
+</Base>
+
+<style is:global>
+  .prose.depth h2 {
+    margin-top: 64px;
+  }
+  .prose.depth > p,
+  .prose.depth > ol {
+    max-width: 40rem;
+  }
+</style>
