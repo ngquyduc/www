@@ -1,0 +1,392 @@
+---
+// Simulated order book for the matching-engine depth page (DESIGN.md §7).
+import { Book } from "./engine";
+import { rollHtml } from "./roll";
+
+const book = new Book(7);
+const v = book.view(8);
+const dirColor = v.dir > 0 ? "ob-up" : v.dir < 0 ? "ob-down" : "";
+const arrow = v.dir > 0 ? "▲" : v.dir < 0 ? "▼" : "";
+---
+
+<div class="ob" role="region" aria-label="Simulated order book" data-ob>
+  <div class="ob-bar">
+    <span class="ob-title">SIM/USD</span>
+    <span class="ob-m">order book</span>
+    <span class="ob-sim">SIMULATED</span>
+    <span class="flex-1"></span>
+    <span class="ob-state"><span class="ob-dot" data-live="true"></span><span data-o="state">LIVE</span></span>
+    <button type="button" class="ob-btn" data-o="step" hidden>Step</button>
+    <button type="button" class="ob-btn" data-o="pause">Pause</button>
+  </div>
+
+  <div class="ob-stats">
+    <span>LAST <b class:list={["ob-last", dirColor]} data-o="last" set:html={rollHtml(v.last)} /> <span class:list={[dirColor]} aria-hidden="true" data-o="arrow">{arrow}</span></span>
+    <span>MID <b data-o="mid" set:html={rollHtml(v.mid)} /></span>
+    <span>SPREAD <b data-o="spread" set:html={rollHtml(v.spread)} /></span>
+  </div>
+
+  <div class="ob-body">
+    <div role="table" aria-label="Order book, top five price levels each side" class="ob-book">
+      <div role="row" class="ob-row ob-head">
+        <span role="columnheader">PRICE</span><span role="columnheader" class="r">SIZE</span><span role="columnheader" class="r">TOTAL</span>
+      </div>
+      <div role="rowgroup" aria-label="Asks, lowest at the bottom" data-o="asks">
+        {
+          v.asks.map((r) => (
+            <div role="row" class:list={["ob-row ob-ask", r.flash && "ob-flash"]}>
+              <span class="ob-depth" aria-hidden="true" style={`width:${r.w}%`} />
+              <span role="cell" class="ob-p">{r.price}</span>
+              <span role="cell" class="r" set:html={rollHtml(r.size, 2)} />
+              <span role="cell" class="r ob-tot">{r.total}</span>
+            </div>
+          ))
+        }
+      </div>
+      <div role="row" class="ob-mid">
+        <span role="cell">SPREAD <span data-o="spread2">{v.spread}</span></span><span role="cell">MID <span class="ob-ink" data-o="mid2">{v.mid}</span></span>
+      </div>
+      <div role="rowgroup" aria-label="Bids, highest at the top" data-o="bids">
+        {
+          v.bids.map((r) => (
+            <div role="row" class:list={["ob-row ob-bid", r.flash && "ob-flash"]}>
+              <span class="ob-depth" aria-hidden="true" style={`width:${r.w}%`} />
+              <span role="cell" class="ob-p">{r.price}</span>
+              <span role="cell" class="r" set:html={rollHtml(r.size, 2)} />
+              <span role="cell" class="r ob-tot">{r.total}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div role="table" aria-label="Trade tape, newest first" class="ob-tape">
+      <div role="row" class="ob-trow ob-head">
+        <span role="columnheader">TIME</span><span role="columnheader">SIDE</span><span role="columnheader" class="r">QTY</span><span role="columnheader" class="r">PRICE</span>
+      </div>
+      <div role="rowgroup" data-o="tape">
+        {
+          v.tape.map((t) => (
+            <div role="row" class:list={["ob-trow", t.you && "ob-you"]}>
+              <span role="cell" class="ob-m">{t.t}</span>
+              <span role="cell" class={t.side === "buy" ? "ob-buyc" : "ob-sellc"}>{t.side === "buy" ? "BUY" : "SELL"}{t.you && <span class="ob-youtag">YOU</span>}</span>
+              <span role="cell" class="r">{t.q}</span>
+              <span role="cell" class="r">{t.price}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="ob-actions">
+    <button type="button" class="ob-buy" data-o="buy">Buy 10 <span class="ob-at">@ <span data-o="ask" set:html={rollHtml(v.bestAsk)} /></span></button>
+    <button type="button" class="ob-sell" data-o="sell">Sell 10 <span class="ob-at">@ <span data-o="bid" set:html={rollHtml(v.bestBid)} /></span></button>
+    <p role="status" aria-live="polite" class="ob-msg" data-o="msg" data-idle>Place a market order. It fills against the best price on the other side.</p>
+  </div>
+
+  <p class="ob-honest">Simulated: random order flow generated in your browser. Not market data, and not a benchmark of the engine.</p>
+</div>
+
+<script>
+  const el = document.querySelector<HTMLElement>("[data-ob]");
+  if (el) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        import("./orderbook.client").then((m) => m.mount(el));
+      }
+    });
+    io.observe(el);
+  }
+</script>
+
+<style is:global>
+  .ob {
+    container: ob / inline-size;
+    width: 100%;
+    background: var(--color-term-bg);
+    color: var(--color-term-ink);
+    border: 1px solid var(--color-term-line);
+    border-radius: var(--radius-lg);
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum" 1, "zero" 1;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow: hidden;
+  }
+  .ob :focus-visible {
+    outline: 2px solid var(--color-term-amber);
+    outline-offset: 2px;
+  }
+  .ob .r {
+    text-align: right;
+  }
+  .ob-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 10px 12px 10px 16px;
+    background: var(--color-term-raised);
+    border-bottom: 1px solid var(--color-term-line);
+  }
+  .ob-title {
+    font-weight: 600;
+  }
+  .ob-m,
+  .ob-state,
+  .ob-stats,
+  .ob-head,
+  .ob-mid,
+  .ob-tot,
+  .ob-honest {
+    color: var(--color-term-muted);
+  }
+  .ob-bar .ob-m {
+    font-size: 12px;
+  }
+  .ob-sim {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--color-term-amber);
+    border: 1px solid var(--color-term-amber);
+    border-radius: 4px;
+    padding: 1px 6px;
+  }
+  .ob-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .ob-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-term-muted);
+  }
+  .ob-dot[data-live="true"] {
+    background: var(--color-term-ok);
+  }
+  .ob-btn {
+    min-height: 32px;
+    padding: 0 10px;
+    background: transparent;
+    color: var(--color-term-ink);
+    border: 1px solid var(--color-term-ctl);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 12px;
+  }
+  .ob-btn[hidden] {
+    display: none;
+  }
+  .ob-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--color-term-line);
+    font-size: 12px;
+    align-items: baseline;
+  }
+  .ob-stats b {
+    font-weight: 500;
+    color: var(--color-term-ink);
+  }
+  .ob-stats .ob-last {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .ob-up,
+  .ob-stats .ob-up {
+    color: var(--color-term-ok);
+  }
+  .ob-down,
+  .ob-stats .ob-down {
+    color: var(--color-term-err);
+  }
+  .ob-body {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .ob-book {
+    flex: 1 1 290px;
+    min-width: 0;
+    padding: 6px 0 8px;
+  }
+  .ob-tape {
+    flex: 1 1 210px;
+    min-width: 0;
+    padding: 6px 0 8px;
+    border-left: 1px solid var(--color-term-line);
+    border-top: 1px solid var(--color-term-line);
+    margin: -1px 0 0 -1px;
+  }
+  .ob-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 3px 16px;
+  }
+  .ob-row > span:not(.ob-depth) {
+    position: relative;
+  }
+  .ob-head {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .ob-depth {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    right: 0;
+  }
+  .ob-ask .ob-depth {
+    background: rgb(255 122 122 / 0.13);
+  }
+  .ob-bid .ob-depth {
+    background: rgb(61 220 132 / 0.13);
+  }
+  .ob-ask .ob-p {
+    color: var(--color-term-err);
+  }
+  .ob-bid .ob-p {
+    color: var(--color-term-ok);
+  }
+  .ob-flash {
+    background: rgb(245 176 65 / 0.22);
+  }
+  .ob-mid {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 4px 0;
+    padding: 5px 16px;
+    border-top: 1px dashed #2e3440;
+    border-bottom: 1px dashed #2e3440;
+    font-size: 12px;
+  }
+  .ob-ink {
+    color: var(--color-term-ink);
+  }
+  .ob-trow {
+    display: grid;
+    grid-template-columns: 62px 1fr 34px 64px;
+    gap: 6px;
+    padding: 3px 16px;
+  }
+  .ob-you {
+    background: rgb(245 176 65 / 0.14);
+  }
+  .ob-buyc {
+    color: var(--color-term-ok);
+  }
+  .ob-sellc {
+    color: var(--color-term-err);
+  }
+  .ob-youtag {
+    margin-left: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-term-bg);
+    background: var(--color-term-amber);
+    border-radius: 3px;
+    padding: 0 4px;
+  }
+  @container ob (max-width: 520px) {
+    [data-o="tape"] > :nth-child(n + 5) {
+      display: none;
+    }
+    .ob-tape {
+      border-left: 0;
+    }
+  }
+  .ob-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--color-term-line);
+    align-items: center;
+  }
+  .ob-buy,
+  .ob-sell {
+    flex: 1 1 140px;
+    min-height: 44px;
+    border: 0;
+    border-radius: var(--radius-md);
+    font: inherit;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .ob-buy:active,
+  .ob-sell:active {
+    transform: translateY(1px);
+  }
+  .ob-buy {
+    background: #3ddc84;
+    color: #04210f;
+  }
+  .ob-sell {
+    background: #ff6b6b;
+    color: #2b0606;
+  }
+  .ob-at {
+    font-weight: 400;
+  }
+  .ob-msg {
+    flex: 1 1 100%;
+    margin-top: 2px;
+    font-size: 12px;
+    min-height: 34px;
+  }
+  .ob-msg[data-idle] {
+    color: var(--color-term-muted);
+  }
+  .ob-honest {
+    padding: 10px 16px;
+    border-top: 1px solid var(--color-term-line);
+    font-family: var(--font-sans);
+    font-size: 12px;
+  }
+  .ob-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .ob-roll {
+    display: inline-flex;
+    vertical-align: bottom;
+  }
+  .ob-col {
+    display: inline-block;
+    height: 1.4em;
+    line-height: 1.4em;
+    overflow: hidden;
+  }
+  .ob-strip {
+    display: flex;
+    flex-direction: column;
+    transition: transform 320ms var(--ease-out);
+  }
+  .ob-strip > span {
+    height: 1.4em;
+    line-height: 1.4em;
+    text-align: center;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ob-strip {
+      transition: none;
+    }
+  }
+</style>
