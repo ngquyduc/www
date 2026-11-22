@@ -55,7 +55,7 @@ const tiers = [
       <div class="flex flex-col gap-1.5 md:w-[220px] md:shrink-0">
         <span class="mono text-[13px] text-accent">B</span>
         <h2 id="h-depth" class="t2 text-[28px] leading-[1.2] font-semibold tracking-[-0.02em]">Depth projects</h2>
-        <p class="text-sm text-muted">Systems work I chose to go deep on. Each gets a depth page: architecture, benchmarks with method, findings.</p>
+        <p class="text-sm text-muted">Systems work I went deep on, most of it for NUS parallel and concurrent programming. Each gets a depth page: architecture, benchmarks with method, findings.</p>
       </div>
       <div class="grid min-w-0 flex-[1_1_600px] grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
         {depth.map((d) => <DepthCard item={d} />)}
@@ -81,7 +81,7 @@ const tiers = [
             {fun.map((f) => <FunItem item={f} />)}
           </div>
           <p class="mt-4 text-sm text-muted">
-            Older experiments (Messenger clone, Music Hub, Modifiles and others) stay on <a href={site.socials.github.href}>GitHub</a>.
+            Older experiments (Music Hub, Modifiles and others) stay on <a href={site.socials.github.href}>GitHub</a>.
           </p>
         </div>
       </div>

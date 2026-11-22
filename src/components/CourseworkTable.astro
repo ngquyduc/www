@@ -27,8 +27,8 @@ interface Props {
             <br />
             <span class="text-sm text-muted">{d.summary}</span>
           </span>
-          <span role="cell" class="mono shrink-0 text-xs text-muted md:w-[150px]">{d.stack.join(" · ")}</span>
-          <span role="cell" class="shrink-0 text-[13px] md:w-[200px]">
+          <span role="cell" class="mono min-w-0 text-xs text-muted max-md:basis-full md:w-[150px] md:shrink-0">{d.stack.join(" · ")}</span>
+          <span role="cell" class="min-w-0 text-[13px] max-md:basis-full md:w-[200px] md:shrink-0">
             <Tag>Coursework</Tag>{" "}
             {d.coursework && <PhText text={`${d.coursework.module} · ${d.coursework.coAuthors.join(", ")}`} />}
           </span>

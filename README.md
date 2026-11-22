@@ -29,6 +29,7 @@ pnpm lhci         # Lighthouse CI, 95+ in every category
 - `src/site.ts`: name, role, **the only copy of the email**, socials, nav. Never add a phone number.
 - `src/content/work/*.mdx`: every work item; frontmatter schema in `src/content.config.ts`. Strings in `[brackets]` render as placeholders.
 - `src/content/work/matching-engine/bench.json`: benchmark numbers. `null` renders "Run benchmarks, then fill in"; fill only from reproducible runs.
+- `public/resume.pdf`: the résumé, with the phone line removed by `scripts/redact-resume-phone.py` (never publish the phone number).
 - `src/content/writing/*.mdx`: posts. `draft: true` shows in `pnpm dev` only (`post-template.mdx` is a draft that shows every post component).
 - `src/components/hero/`: the "What users see vs what I see" demo. `sim.ts` (pure simulator), `view.ts` (HTML used by both SSR and client), `art.ts` (invented illustrations, server-only), `hero.client.ts`.
 - `src/components/orderbook/`: the simulated order book for the matching-engine page.

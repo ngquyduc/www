@@ -4,12 +4,12 @@
 export const site = {
   name: "Duc Nguyen",
   fullName: "Nguyen Quy Duc",
-  role: "Mobile Software Engineer, TikTok",
+  role: "iOS Software Engineer, TikTok",
   location: "Singapore",
   url: "https://quyduc.vercel.app",
   email: "quyduc711@gmail.com",
   description:
-    "Duc Nguyen is a systems-minded mobile software engineer in Singapore, working on the instant-messaging SDK at TikTok.",
+    "Duc Nguyen is a systems-minded iOS software engineer in Singapore, working on the instant-messaging SDK at TikTok.",
   resumePath: "/resume.pdf",
   resumeUpdated: "2026-09",
   socials: {
