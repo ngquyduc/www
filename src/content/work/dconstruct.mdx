@@ -8,39 +8,40 @@ start: Jan 2024
 end: Jun 2024
 location: Singapore
 team: Small startup, no separate teams
-summary: Built the SolidJS UI and the C++17 and SQLite endpoints (sensor connections, live view, video playback) for a point-cloud surveillance system, and a C++ PDF report library.
+summary: Built the C++17 and SQLite endpoints that carry LiDAR point clouds from the sensor to a web app for live view and playback, the SolidJS UI on top, and a C++ PDF report library.
 stack: [C++17, SQLite 3, Emscripten, SolidJS, TailwindCSS]
 metrics:
   - { value: "−50%", label: "training time", source: resume }
 context: internship
 featured: 2
 featuredMeta: Software Engineer Intern · Jan–Jun 2024
-featuredSummary: C++17 and SQLite endpoints for sensor connections, live view and playback in a point-cloud surveillance system, plus the SolidJS UI on top.
+featuredSummary: C++17 and SQLite endpoints that bring LiDAR point clouds from the sensor to a web app for live view and playback, plus the SolidJS UI on top.
 featuredMetric: "−50% training time"
 status: published
 hasPage: true
 headline: "dConstruct Robotics: making a point-cloud surveillance system easier to learn"
-lede: "Six months as a software engineer intern, working on both ends of the system: the operator UI, and the C++ services that stream sensor data into it."
+lede: "Six months as a software engineer intern on a LiDAR surveillance system, working on both ends: the C++ services that carry point clouds from the sensor, and the web app operators watch them in."
 ---
 
 ## Outcome
 
 <Outcomes>
   <Outcome value="−50%" label="training time for a new operator: 2 days down to 1" />
+  <Outcome value="~2 s" label="from LiDAR sensor to the operator's screen, over Wi-Fi" />
   <Outcome value="1" label="project using the PDF report library so far" />
 </Outcomes>
 
-<p class="mono text-xs text-subtle">Training time is how long it took to train a new operator, before and after the UI rebuild.</p>
+<p class="mono text-xs text-subtle">Training time is how long it took to train a new operator, before and after the UI rebuild. The 2 seconds is the delay we observed end to end in normal use over Wi-Fi, not a benchmark.</p>
 
 ## Context
 
-dConstruct builds a surveillance system that works on point clouds. Operators connect sensors, watch a live 3D view and play back recorded footage. It is a small startup, so I worked across the whole stack rather than inside one team.
+dConstruct builds a surveillance system on LiDAR. Each sensor streams a point cloud to a server, and operators watch it as a live 3D view in a web app, or play back what was recorded. It is a small startup, so I worked across the whole stack rather than inside one team.
 
 Before the rebuild, training a new operator on the system took two days.
 
 ## What I built
 
-**Endpoints in C++17 and SQLite 3, compiled with Emscripten,** for sensor connections, live view and video playback in real time.
+**Endpoints in C++17 and SQLite 3, compiled with Emscripten,** that take the point cloud each sensor streams to the server and get it onto the operator's screen: connecting sensors, the live view, and playback. End to end, from sensor to screen over Wi-Fi, the delay was about 2 seconds.
 
 **The operator UI in SolidJS and TailwindCSS**, responsive across the screens operators actually use. Training a new operator now takes one day instead of two.
 
@@ -60,4 +61,4 @@ Before the rebuild, training a new operator on the system took two days.
 
 ## In hindsight
 
-I never measured the endpoints' latency before and after my changes, so I can't say how much faster they got. Next time I'd record a baseline for every endpoint first, with a script anyone can rerun, so each change comes with its own before and after.
+I know the end-to-end delay only roughly, about 2 seconds over Wi-Fi, and never measured it before and after my changes, so I can't say how much they helped or where those 2 seconds went. Next time I'd time each hop first (sensor to server, server to browser, rendering), with a script anyone can rerun, so each change comes with its own before and after.
