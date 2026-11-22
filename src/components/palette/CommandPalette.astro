@@ -1,0 +1,121 @@
+---
+// Native <dialog> + showModal() (§8). The list is filled by palette.client.ts,
+// which loads on first ⌘K / Ctrl+K, on intent, or when the page is idle.
+---
+
+<dialog id="cmdk" class="cmdk" aria-label="Command palette">
+  <div class="flex h-14 items-center gap-3 border-b border-line px-4">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" class="shrink-0 text-muted"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+    <label for="cmdk-q" class="sr-only">Search commands</label>
+    <input
+      id="cmdk-q"
+      type="text"
+      role="combobox"
+      aria-expanded="true"
+      aria-controls="cmdk-list"
+      aria-autocomplete="list"
+      autocomplete="off"
+      spellcheck="false"
+      placeholder="Type a command or page…"
+      class="h-[54px] min-w-0 flex-1 border-0 bg-transparent text-[17px] text-ink outline-none placeholder:text-subtle"
+    />
+    <kbd class="mono rounded-sm border border-line-strong px-1.5 text-[11px] text-muted">esc</kbd>
+  </div>
+  <ul id="cmdk-list" role="listbox" aria-label="Commands" class="m-0 max-h-[360px] list-none overflow-auto p-2"></ul>
+  <div class="mono flex justify-between gap-3 border-t border-line px-4 py-2.5 text-xs text-subtle">
+    <span>↑ ↓ move · ↵ run · esc close</span>
+    <span id="cmdk-count" role="status" aria-live="polite"></span>
+  </div>
+</dialog>
+
+<style is:global>
+  .cmdk {
+    position: fixed;
+    inset: 14vh auto auto;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: min(600px, calc(100vw - 32px));
+    max-height: none;
+    padding: 0;
+    color: var(--color-ink);
+    background: var(--color-raised);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 64px rgb(0 0 0 / 0.28);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out),
+      overlay 180ms allow-discrete,
+      display 180ms allow-discrete;
+  }
+  .cmdk[open] {
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    .cmdk[open] {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+  .cmdk::backdrop {
+    background: rgb(18 20 23 / 0.42);
+  }
+  [data-theme="dark"] .cmdk::backdrop {
+    background: rgb(0 0 0 / 0.62);
+  }
+  .cmdk-group {
+    padding: 10px 10px 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-subtle);
+  }
+  .cmdk-opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 10px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+  .cmdk-opt[aria-selected="true"] {
+    background: var(--color-accent-soft);
+  }
+  .cmdk-glyph {
+    flex: 0 0 28px;
+    height: 28px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 6px;
+    border: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-muted);
+  }
+  .cmdk-hint {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-subtle);
+  }
+  .cmdk-enter {
+    width: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-accent);
+  }
+  .cmdk-opt[aria-selected="true"] .cmdk-enter::before {
+    content: "↵";
+  }
+  .cmdk-empty {
+    padding: 28px 10px;
+    text-align: center;
+    color: var(--color-muted);
+  }
+</style>
