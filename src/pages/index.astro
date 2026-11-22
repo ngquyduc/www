@@ -1,0 +1,83 @@
+---
+import FeaturedRow from "../components/FeaturedRow.astro";
+import HeroDemo from "../components/hero/HeroDemo.astro";
+import LiveLabel from "../components/LiveLabel.astro";
+import SectionHead from "../components/SectionHead.astro";
+import Base from "../layouts/Base.astro";
+import { getFeatured, getPosts, isoDate, readingMinutes } from "../lib/content";
+import { site } from "../site";
+
+const featured = await getFeatured();
+const posts = (await getPosts()).slice(0, 3);
+---
+
+<Base>
+  <section class="wrap pt-12 md:pt-[72px]" aria-labelledby="pitch">
+    <div class="flex flex-col gap-12">
+      <div class="flex max-w-[46rem] flex-col gap-6 pt-3">
+        <p class="kicker flex items-center gap-2 text-muted">
+          <span class="size-2 rounded-full bg-[#2F9E5B]" aria-hidden="true"></span>Singapore · Software engineer
+        </p>
+        <h1 id="pitch" class="text-display font-bold tracking-[-0.03em]">
+          Systems-minded engineer who <span class="text-accent">ships</span>.
+        </h1>
+        <p class="max-w-[34rem] text-lg text-muted">
+          I'm Duc, a mobile software engineer at TikTok, working on the instant-messaging SDK: on iOS, and more and more
+          cross-platform. Before that I shipped at Kovalee, dConstruct Robotics and Vebits.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a class="btn btn-primary" href="/work">See my work <span aria-hidden="true">→</span></a>
+          <a class="btn btn-secondary" href={site.resumePath} download>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>Résumé (PDF)
+          </a>
+        </div>
+      </div>
+
+      <section class="flex flex-col gap-4" aria-labelledby="demo-h">
+        <div class="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-ink pt-3.5">
+          <LiveLabel />
+          <h2 id="demo-h" class="kicker text-accent">What users see vs what I see</h2>
+          <p class="mono text-xs text-subtle">
+            Send a text, photo, voice note or video, or press and hold any message to pin it. The right side shows what
+            the client does underneath. Simulated, with an invented conversation; not production code.
+          </p>
+        </div>
+        <HeroDemo />
+      </section>
+    </div>
+  </section>
+
+  <section class="wrap pt-16 md:pt-24" aria-labelledby="sel">
+    <SectionHead n="01" id="sel" title="Selected work" more={{ href: "/work", label: "All work" }} />
+    {featured.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
+  </section>
+
+  {
+    posts.length > 0 && (
+      <section class="wrap pt-16 md:pt-24" aria-labelledby="wr">
+        <SectionHead n="02" id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
+        {posts.map((p) => (
+          <a class="row-link flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-line py-[18px]" href={`/writing/${p.id}`}>
+            <time class="w-[110px] shrink-0 text-[13px] text-muted" datetime={isoDate(p.data.date)}>{isoDate(p.data.date)}</time>
+            <span class="min-w-0 flex-[1_1_360px] text-[19px] font-medium">{p.data.title}</span>
+            <span class="mono shrink-0 text-[13px] text-muted">{readingMinutes(p.body)} min</span>
+          </a>
+        ))}
+      </section>
+    )
+  }
+
+  <section class="wrap pt-16 md:pt-24" aria-label="Contact">
+    <div class="flex flex-wrap items-baseline gap-x-10 gap-y-4 border-t border-ink pt-7">
+      <p class="t2 flex-[1_1_420px] text-2xl font-semibold tracking-[-0.02em]">
+        Want to talk mobile, SDKs or systems? <span class="text-muted">Email me.</span>
+      </p>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2.5 text-base">
+        <a class="mono break-all" href={`mailto:${site.email}`}>{site.email}</a>
+        <button type="button" class="mono min-h-11 rounded-[6px] border border-line-strong px-2.5 text-xs text-ink hover:border-ink" data-copy={site.email} data-copy-done="Email address copied" data-copy-fallback={`mailto:${site.email}`} aria-label="Copy email address">Copy</button>
+        <a href={site.socials.github.href} rel="me">GitHub</a>
+        <a href={site.socials.linkedin.href} rel="me">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</Base>

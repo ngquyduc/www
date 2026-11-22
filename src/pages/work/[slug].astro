@@ -1,0 +1,45 @@
+---
+import { render } from "astro:content";
+import BenchChart from "../../components/BenchChart.astro";
+import Callout from "../../components/Callout.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+import Figure from "../../components/Figure.astro";
+import Outcome from "../../components/Outcome.astro";
+import Outcomes from "../../components/Outcomes.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import TryIt from "../../components/orderbook/TryIt.astro";
+import CaseStudy from "../../layouts/CaseStudy.astro";
+import DepthPage from "../../layouts/DepthPage.astro";
+import { getWork, type Work } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const all = await getWork();
+  const pages = all.filter((e) => e.data.hasPage);
+  const studies = pages.filter((e) => e.data.tier === "experience");
+  return pages.map((entry) => {
+    const i = studies.indexOf(entry);
+    const next = i >= 0 && studies.length > 1 ? studies[(i + 1) % studies.length] : undefined;
+    return { params: { slug: entry.id }, props: { entry, next } };
+  });
+}
+
+interface Props {
+  entry: Work;
+  next?: Work;
+}
+const { entry, next } = Astro.props;
+const { Content, headings } = await render(entry);
+const components = { Placeholder, Outcome, Outcomes, Figure, Callout, pre: CodeBlock, TryIt, Bench: BenchChart };
+---
+
+{
+  entry.data.tier === "experience" ? (
+    <CaseStudy entry={entry} headings={headings} next={next}>
+      <Content components={components} />
+    </CaseStudy>
+  ) : (
+    <DepthPage entry={entry}>
+      <Content components={components} />
+    </DepthPage>
+  )
+}

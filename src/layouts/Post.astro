@@ -1,0 +1,49 @@
+---
+import { site } from "../site";
+import { isoDate, type Post } from "../lib/content";
+import Base from "./Base.astro";
+
+interface Props {
+  entry: Post;
+  minutes: number;
+  older?: Post;
+  newer?: Post;
+}
+const { entry, minutes, older, newer } = Astro.props;
+const d = entry.data;
+---
+
+<Base title={d.title} description={d.summary} ogType="article" noindex={d.draft}>
+  <article class="wrap pt-12 md:pt-16">
+    <div class="mx-auto max-w-prose">
+      <a href="/writing" class="mono text-[13px] text-muted no-underline">← Writing</a>
+      <h1 class="mt-6 mb-4 text-3xl font-bold tracking-[-0.025em]">{d.title}</h1>
+      <p class="mono mb-7 flex flex-wrap gap-x-3.5 gap-y-1 text-[13px] text-muted">
+        <time datetime={isoDate(d.date)}>{isoDate(d.date)}</time>
+        <span aria-hidden="true">·</span><span>{minutes} min read</span>
+        {d.updated && (<><span aria-hidden="true">·</span><span>updated <time datetime={isoDate(d.updated)}>{isoDate(d.updated)}</time></span></>)}
+        {d.tags.length > 0 && <span aria-hidden="true">·</span>}
+        {d.tags.map((t) => <a href={`/writing?tag=${encodeURIComponent(t)}`}>#{t}</a>)}
+        {d.draft && <span class="text-accent">DRAFT · not built in production</span>}
+      </p>
+    </div>
+    <div class="prose prose-post post-body mx-auto max-w-prose">
+      <slot />
+      <nav aria-label="More posts" class="mt-12 flex flex-wrap justify-between gap-3 border-t border-ink pt-5">
+        {older ? (<a href={`/writing/${older.id}`} class="no-underline"><span class="kicker block !text-[11px] text-subtle">← Older</span>{older.data.title}</a>) : <span />}
+        {newer ? (<a href={`/writing/${newer.id}`} class="text-right no-underline"><span class="kicker block !text-[11px] text-subtle">Newer →</span>{newer.data.title}</a>) : <a href={`mailto:${site.email}`} class="text-right no-underline"><span class="kicker block !text-[11px] text-subtle">Reply</span>Email me</a>}
+      </nav>
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+  /* Code and figures are 48 rem in a 40 rem post column (§9); they bleed on mobile. */
+  @media (width >= 54rem) {
+    .post-body > figure.code,
+    .post-body > figure.bleed {
+      margin-inline: -4rem;
+      max-width: none;
+    }
+  }
+</style>
