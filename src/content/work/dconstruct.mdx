@@ -8,57 +8,53 @@ start: Jan 2024
 end: Jun 2024
 location: Singapore
 team: Small startup, no separate teams
-summary: Built the C++17 and SQLite endpoints that carry LiDAR point clouds from the sensor to a web app for live view and playback, the SolidJS UI on top, and a C++ PDF report library.
-stack: [C++17, SQLite 3, Emscripten, SolidJS, TailwindCSS]
+summary: Built the operator web app for a LiDAR surveillance system in SolidJS and TailwindCSS. New operators now learn it in one day instead of two.
+stack: [SolidJS, TailwindCSS]
 metrics:
   - { value: "−50%", label: "training time", source: resume }
 context: internship
 featured: 2
 featuredMeta: Software Engineer Intern · Jan–Jun 2024
-featuredSummary: C++17 and SQLite endpoints that bring LiDAR point clouds from the sensor to a web app for live view and playback, plus the SolidJS UI on top.
+featuredSummary: Built the operator web app for a LiDAR surveillance system in SolidJS. New operators now learn it in one day instead of two.
 featuredMetric: "−50% training time"
 status: published
 hasPage: true
 headline: "dConstruct Robotics: making a point-cloud surveillance system easier to learn"
-lede: "Six months as a software engineer intern on a LiDAR surveillance system, working on both ends: the C++ services that carry point clouds from the sensor, and the web app operators watch them in."
+lede: "Six months as a software engineer intern on a LiDAR surveillance system, building the web app operators use to watch and review what the sensors see."
 ---
+
+{/* Duc worked on the SolidJS frontend. The C++ services behind it were not his work:
+    do not describe them as his (DESIGN.md §2, evidence before adjectives). */}
 
 ## Outcome
 
 <Outcomes>
   <Outcome value="−50%" label="training time for a new operator: 2 days down to 1" />
-  <Outcome value="~2 s" label="from LiDAR sensor to the operator's screen, over Wi-Fi" />
   <Outcome value="1" label="project using the PDF report library so far" />
 </Outcomes>
 
-<p class="mono text-xs text-subtle">Training time is how long it took to train a new operator, before and after the UI rebuild. The 2 seconds is the delay we observed end to end in normal use over Wi-Fi, not a benchmark.</p>
+<p class="mono text-xs text-subtle">Training time is how long it took to train a new operator, before and after the UI rebuild.</p>
 
 ## Context
 
-dConstruct builds a surveillance system on LiDAR. Each sensor streams a point cloud to a server, and operators watch it as a live 3D view in a web app, or play back what was recorded. It is a small startup, so I worked across the whole stack rather than inside one team.
+dConstruct builds a surveillance system on LiDAR. Each sensor streams a point cloud to a server, and operators watch it as a live 3D view in a web app, or play back what was recorded. Over Wi-Fi the live view ran about 2 seconds behind the sensor.
 
-Before the rebuild, training a new operator on the system took two days.
+It is a small startup, so there were no separate teams. I worked on the web app: the part operators actually touch. Before the rebuild, training a new operator took two days.
 
 ## What I built
 
-**Endpoints in C++17 and SQLite 3, compiled with Emscripten,** that take the point cloud each sensor streams to the server and get it onto the operator's screen: connecting sensors, the live view, and playback. End to end, from sensor to screen over Wi-Fi, the delay was about 2 seconds.
-
-**The operator UI in SolidJS and TailwindCSS**, responsive across the screens operators actually use. Training a new operator now takes one day instead of two.
+**The operator web app in SolidJS and TailwindCSS**, responsive across the screens operators actually use, on top of the backend's endpoints for connecting sensors, the live view and playback. After the rebuild, training a new operator takes one day instead of two.
 
 **A C++ PDF report generator** packaged as a library, so reports come out the same way every time. One project uses it so far.
 
-{/* Decisions and In hindsight are drafts written from the résumé; Duc to review before launch. */}
+{/* Decisions is a draft written from the résumé; Duc to review before launch. */}
 
 ## Decisions
 
-<Callout kind="Decision" title="Compile the C++ for the browser instead of rewriting it">
-  Some of the logic the UI needed already existed in C++. Rather than port it to JavaScript, I compiled it to WebAssembly with Emscripten, so the browser and the services run the same code. The trade-off is a bigger download and harder debugging in the browser, in exchange for one implementation to test and keep correct.
-</Callout>
-
-<Callout kind="Decision" title="SQLite for the system's own data">
-  The system ships as a self-contained installation, so an embedded database made sense: no database server to install or run, and one file to back up. SQLite allows one writer at a time, which was fine for the system's records but is the first thing to revisit if writes grow.
+<Callout kind="Decision" title="Organise the app around what operators do, not how the system is built">
+  The fastest way to cut training time was to stop making operators learn the system's structure. The app is laid out around their jobs: connect a sensor, watch live, review a recording. The trade-off is that the screens no longer mirror the backend one to one, so the frontend does more of the work of joining things up.
 </Callout>
 
 ## In hindsight
 
-I know the end-to-end delay only roughly, about 2 seconds over Wi-Fi, and never measured it before and after my changes, so I can't say how much they helped or where those 2 seconds went. Next time I'd time each hop first (sensor to server, server to browser, rendering), with a script anyone can rerun, so each change comes with its own before and after.
+I treated the streaming pipeline behind the app as a black box. It worked, so I didn't need to open it, but the 2-second delay operators lived with was decided there, and the UI could only work around it. Next time I'd learn how the data gets from sensor to screen early on, even if I never change that code myself.
