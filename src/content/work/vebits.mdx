@@ -13,7 +13,7 @@ metrics:
   - { value: "−33%", label: "processing time", source: resume }
   - { value: "500k", label: "reports / day", source: resume }
 context: internship
-status: in-progress
+status: published
 hasPage: true
 headline: "Vebits AI: faster queries for a road-inspection web app"
 lede: "A summer internship on the backend of a high-traffic road-inspection app used for urban infrastructure management."
@@ -39,12 +39,14 @@ Vebits AI runs a road-inspection web app that city infrastructure teams rely on.
 
 **Replication and sharding in MongoDB**, so the system handles 500,000 inspection reports a day while average query response stays under 200 ms.
 
+{/* Decisions and In hindsight are drafts written from the résumé; Duc to review before launch. */}
+
 ## Decisions
 
-<Callout kind="Decision" title="[e.g. how you chose the shard key]">
-  <Placeholder>[Options considered, what you chose, the trade-off you accepted.]</Placeholder>
+<Callout kind="Decision" title="Fix the queries before adding machines">
+  The app was slow on geospatial queries, so I started there: better geospatial queries cut processing from 300 ms to 200 ms on the same hardware. Replication and sharding came next, for the growth that query tuning alone could not absorb. Doing it in that order meant the cluster was scaling queries that were already efficient.
 </Callout>
 
 ## In hindsight
 
-<Placeholder>[One thing you would do differently and why. Honest, short.]</Placeholder>
+I'd set up slow-query monitoring before optimizing anything. I found the slow geospatial queries by profiling by hand, and a dashboard would have shown them sooner and kept watching once I'd left.
