@@ -1,0 +1,42 @@
+---
+// Coursework ledger, Work tier C (§5.8): table semantics; rows stack under 760 px.
+import type { Work } from "../lib/content";
+import PhText from "./PhText.astro";
+import Tag from "./Tag.astro";
+
+interface Props {
+  items: Work[];
+}
+---
+
+<div role="table" aria-label="Coursework" class="border-t border-ink">
+  <div role="row" class="mono flex gap-6 border-b border-line py-2.5 text-[11px] tracking-[.06em] text-subtle uppercase max-md:hidden">
+    <span role="columnheader" class="flex-[1_1_260px]">Project</span>
+    <span role="columnheader" class="w-[150px] shrink-0">Stack</span>
+    <span role="columnheader" class="w-[200px] shrink-0">Module · with</span>
+    <span role="columnheader" class="w-[70px] shrink-0 text-right">Code</span>
+  </div>
+  {
+    Astro.props.items.map((c) => {
+      const d = c.data;
+      const code = d.links?.find((l) => l.href);
+      return (
+        <div role="row" class="flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-line py-3.5">
+          <span role="cell" class="min-w-0 flex-[1_1_260px]">
+            <b class="font-semibold">{d.title}</b>
+            <br />
+            <span class="text-sm text-muted">{d.summary}</span>
+          </span>
+          <span role="cell" class="mono shrink-0 text-xs text-muted md:w-[150px]">{d.stack.join(" · ")}</span>
+          <span role="cell" class="shrink-0 text-[13px] md:w-[200px]">
+            <Tag>Coursework</Tag>{" "}
+            {d.coursework && <PhText text={`${d.coursework.module} · ${d.coursework.coAuthors.join(", ")}`} />}
+          </span>
+          <span role="cell" class="shrink-0 text-sm md:w-[70px] md:text-right">
+            {code ? <a href={code.href}>GitHub<span class="sr-only">: {d.title}</span></a> : <span class="text-subtle">Private</span>}
+          </span>
+        </div>
+      );
+    })
+  }
+</div>

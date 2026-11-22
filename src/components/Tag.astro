@@ -1,0 +1,19 @@
+---
+// §5.4: mono 11 px uppercase.
+interface Props {
+  variant?: "filled" | "outlined" | "dashed" | "simulated" | "placeholder";
+}
+const { variant = "outlined" } = Astro.props;
+const cls = {
+  filled: "bg-accent-soft text-ink",
+  outlined: "border border-line-strong",
+  dashed: "border border-dashed border-line-strong text-muted",
+  simulated: "border border-term-amber bg-term-bg text-term-amber",
+  placeholder: "ph",
+}[variant];
+if (variant === "placeholder" && import.meta.env.PUBLIC_STRICT === "1") {
+  throw new Error(`Placeholder tag still on ${Astro.url.pathname}.`);
+}
+---
+
+<span class:list={["mono inline-block rounded-sm px-2 py-0.5 text-[11px] leading-[1.5] font-medium tracking-[.06em] uppercase", cls]}><slot /></span>

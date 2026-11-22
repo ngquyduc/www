@@ -1,0 +1,112 @@
+---
+// Benchmarks for the matching-engine depth page (§9): 4 metric slots, a p50–p99.9 chart
+// (C++ solid vs Go hatched, not colour alone) with a table of the same numbers, and Method.
+// Data: src/content/work/matching-engine/bench.json. Empty values stay placeholders (§2.4).
+import bench from "../content/work/matching-engine/bench.json";
+import PhText from "./PhText.astro";
+import Placeholder from "./Placeholder.astro";
+
+type Pct = "p50" | "p90" | "p99" | "p99.9";
+const pcts: Pct[] = ["p50", "p90", "p99", "p99.9"];
+const L = bench.latency as Record<"cpp" | "go", Record<Pct, number | null>>;
+const T = bench.throughput as Record<"cpp" | "go", number | null>;
+const ready = pcts.every((p) => L.cpp[p] != null && L.go[p] != null);
+const fmt = (n: number | null | undefined, unit = "") => (n == null ? null : `${n.toLocaleString("en-US")}${unit}`);
+const ratio = L.cpp.p99 && L.go.p99 ? `${(L.go.p99 / L.cpp.p99).toFixed(2)}×` : null;
+const metrics: [string, string | null][] = [
+  ["Throughput (orders/s)", fmt(T.cpp)],
+  ["p50 latency", fmt(L.cpp.p50, ` ${bench.unit}`)],
+  ["p99 latency", fmt(L.cpp.p99, ` ${bench.unit}`)],
+  ["C++ vs Go, p99", ratio],
+];
+const max = ready ? Math.max(...pcts.flatMap((p) => [L.cpp[p] as number, L.go[p] as number])) : 1;
+const W = 640;
+const H = 300;
+const groupW = W / pcts.length;
+const m = bench.method;
+---
+
+<div class="mb-5 grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3">
+  {
+    metrics.map(([k, v]) =>
+      v ? (
+        <div class="rounded-md border border-line-strong bg-raised p-4">
+          <p class="kicker !text-[11px] text-subtle">{k}</p>
+          <p class="mono mt-1.5 text-[28px] font-semibold">{v}</p>
+        </div>
+      ) : (
+        <Placeholder block class="!p-4">
+          <p class="kicker !text-[11px]">{k}</p>
+          <p class="mono mt-1.5 text-[28px] font-semibold">—</p>
+          <p class="mt-0.5 text-[13px]">Run benchmarks, then fill in</p>
+        </Placeholder>
+      ),
+    )
+  }
+</div>
+
+<figure class="mb-4 rounded-md border border-line-strong bg-raised p-5">
+  <div class="mb-3 flex flex-wrap justify-between gap-2">
+    <span class="font-semibold">Latency by percentile, C++ vs Go</span>
+    <span class="mono text-xs text-muted">C++ <span aria-hidden="true">■</span> solid · Go <span aria-hidden="true">▨</span> hatched</span>
+  </div>
+  {
+    ready ? (
+      <>
+        <svg viewBox={`0 0 ${W} ${H + 24}`} class="h-auto w-full" role="img" aria-label="Bar chart of latency by percentile; the same numbers are in the table below.">
+          <defs>
+            <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="6" height="6" fill="none" />
+              <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="2.5" />
+            </pattern>
+          </defs>
+          <line x1="0" y1={H} x2={W} y2={H} stroke="var(--color-line-strong)" />
+          {pcts.map((p, i) => {
+            const x = i * groupW + groupW / 2;
+            const hc = ((L.cpp[p] as number) / max) * (H - 20);
+            const hg = ((L.go[p] as number) / max) * (H - 20);
+            return (
+              <g class="text-ink">
+                <rect x={x - 34} y={H - hc} width="30" height={hc} fill="currentColor" />
+                <rect x={x + 4} y={H - hg} width="30" height={hg} fill="url(#hatch)" stroke="currentColor" />
+                <text x={x} y={H + 18} text-anchor="middle" class="mono" font-size="11" fill="var(--color-subtle)">{p}</text>
+              </g>
+            );
+          })}
+        </svg>
+        <table class="mono mt-4 w-full text-[13px]">
+          <caption class="sr-only">Latency in {bench.unit} by percentile</caption>
+          <thead><tr class="text-left text-subtle"><th scope="col">Percentile</th><th scope="col">C++ ({bench.unit})</th><th scope="col">Go ({bench.unit})</th></tr></thead>
+          <tbody>{pcts.map((p) => <tr><th scope="row" class="text-left font-normal">{p}</th><td>{L.cpp[p]}</td><td>{L.go[p]}</td></tr>)}</tbody>
+        </table>
+      </>
+    ) : (
+      <div class="relative ml-10 h-[300px] border-b border-l border-line-strong">
+        <div class="absolute inset-x-0 top-1/4 border-t border-dashed border-line" />
+        <div class="absolute inset-x-0 top-1/2 border-t border-dashed border-line" />
+        <div class="absolute inset-x-0 top-3/4 border-t border-dashed border-line" />
+        <span class="mono absolute -top-2 -left-10 text-[11px] text-subtle">{bench.unit}</span>
+        <div class="absolute inset-x-[15%] inset-y-10">
+          <Placeholder block class="grid h-full place-items-center text-center">
+            <span class="kicker">Benchmark chart slot · run benchmarks, then fill in</span>
+          </Placeholder>
+        </div>
+        <div class="mono absolute inset-x-0 -bottom-6 flex justify-around text-[11px] text-subtle"><span>p50</span><span>p90</span><span>p99</span><span>p99.9</span></div>
+      </div>
+    )
+  }
+  <figcaption class:list={["text-sm text-muted", ready ? "mt-3" : "mt-9"]}>
+    Fig. 2 · Chart is static SVG generated at build time from <code class="mono text-[13px]">src/content/work/matching-engine/bench.json</code>. A table of the same numbers sits beneath it for screen readers and copy-paste.
+  </figcaption>
+</figure>
+
+<details class="mb-4 rounded-md border border-line-strong px-4 py-3.5" open>
+  <summary class="cursor-pointer font-semibold">Method</summary>
+  <dl class="mt-3 grid grid-cols-[minmax(0,160px)_1fr] gap-x-4 gap-y-1.5 text-[15px] max-sm:grid-cols-1">
+    <dt class="mono text-xs text-subtle">MACHINE</dt><dd><PhText text={m.machine} /></dd>
+    <dt class="mono text-xs text-subtle">BUILD</dt><dd><PhText text={m.build} /></dd>
+    <dt class="mono text-xs text-subtle">WORKLOAD</dt><dd><PhText text={m.workload} /></dd>
+    <dt class="mono text-xs text-subtle">MEASURED</dt><dd><PhText text={m.measured} /></dd>
+    <dt class="mono text-xs text-subtle">REPRODUCE</dt><dd><code class="mono text-[13px]"><PhText text={m.reproduce} /></code></dd>
+  </dl>
+</details>

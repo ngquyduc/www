@@ -1,0 +1,15 @@
+---
+// Note / Decision / Caveat (§5.11). Caveat is required next to any benchmark.
+import PhText from "./PhText.astro";
+interface Props {
+  kind?: "Note" | "Decision" | "Caveat";
+  title?: string;
+}
+const { kind = "Note", title } = Astro.props;
+---
+
+<aside class="callout mb-4 rounded-md border border-line-strong bg-raised px-[18px] py-4" aria-label={kind}>
+  <p class="kicker mb-1.5 !text-[11px] text-accent">{kind}</p>
+  {title && <p class="mb-1.5 font-semibold"><PhText text={title} /></p>}
+  <div class="callout-body text-[16px] [&>p:last-child]:mb-0 [&>p]:mb-2"><slot /></div>
+</aside>

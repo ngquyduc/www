@@ -1,0 +1,30 @@
+---
+// Featured row (§5.5): the whole row is one link; arrow nudges on hover.
+import type { Work } from "../lib/content";
+import { workHref } from "../lib/content";
+import PhText from "./PhText.astro";
+import Tag from "./Tag.astro";
+
+interface Props {
+  item: Work;
+  n: number;
+}
+const { item, n } = Astro.props;
+const d = item.data;
+const href = d.hasPage ? workHref(item) : (d.links?.find((l) => l.href)?.href ?? "/work");
+const metric = d.featuredMetric ?? d.metrics?.[0]?.value ?? "";
+---
+
+<a class="row-link flex flex-wrap items-baseline gap-x-6 gap-y-2 border-b border-line py-6" href={href}>
+  <span class="mono w-8 shrink-0 text-[13px] text-subtle max-md:hidden">{String(n).padStart(2, "0")}</span>
+  <span class="flex min-w-0 flex-[1_1_380px] flex-col gap-1">
+    <span class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+      <span class="text-xl font-semibold tracking-[-0.01em]">{d.title}</span>
+      <span class="mono text-xs text-muted"><PhText text={d.featuredMeta ?? ""} /></span>
+    </span>
+    <span class="max-w-prose text-base text-muted">{d.featuredSummary ?? d.summary}</span>
+  </span>
+  <span class="flex shrink-0 items-center gap-2"><Tag variant="filled">{d.tier === "depth" ? "Depth" : "Experience"}</Tag></span>
+  <span class="mono shrink-0 text-[15px] font-medium md:w-[150px] md:text-right"><PhText text={metric} /></span>
+  <span class="arrow w-5 shrink-0 max-md:hidden" aria-hidden="true">→</span>
+</a>

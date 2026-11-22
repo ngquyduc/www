@@ -1,0 +1,26 @@
+---
+// Outcome tile: a number, what it measures, and a method footnote (§5.10).
+import Placeholder from "./Placeholder.astro";
+interface Props {
+  value: string;
+  label: string;
+  method?: string;
+}
+const { value, label, method } = Astro.props;
+const ph = /^\[.*\]$/.test(value);
+---
+
+{
+  ph ? (
+    <Placeholder block class="!p-4">
+      <p class="mono text-[30px] leading-[1.2] font-semibold tracking-[-0.02em]">{value}</p>
+      <p class="mt-1 text-sm">{label}</p>
+    </Placeholder>
+  ) : (
+    <div class="rounded-md border border-line-strong bg-raised p-4">
+      <p class="mono text-[30px] leading-[1.2] font-semibold tracking-[-0.02em]">{value}</p>
+      <p class="mt-1 text-sm text-muted">{label}</p>
+      {method && <p class="mono mt-2 text-xs text-subtle">{method}</p>}
+    </div>
+  )
+}
