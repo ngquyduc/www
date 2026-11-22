@@ -2,33 +2,37 @@
 title: Exchange matching engine
 tier: depth
 order: 1
-start: "[dates]"
-summary: Limit order book with price-time priority, written in C++ and ported to Go to compare the two. The flagship depth page.
+start: "2024"
+summary: A limit order book with price-time priority that serves many concurrent clients, written in C++ with per-instrument locking. Coursework; a Go version is in a private repo.
 stack: [C++, Go]
 links:
   - { label: "Code (C++)", href: "https://github.com/ngquyduc/matching-engine-cpp" }
   - { label: "Go port: private repo" }
+context: coursework
+coursework: { module: "NUS Parallel and Concurrent Programming", coAuthors: ["Nguyen Van Binh"] }
 demo: orderbook
 featured: 3
-featuredMeta: C++ · Go port (private) · side project
-featuredSummary: A limit order book with price-time priority, written twice to compare the languages. Write-up and benchmarks in progress.
+featuredMeta: C++ · coursework with Nguyen Van Binh · Go port (private)
+featuredSummary: A limit order book with price-time priority, serving many clients at once with per-instrument locking. Benchmarks in progress.
 featuredMetric: "[Benchmarks: TBD]"
 status: in-progress
 hasPage: true
-team: "[solo, or co-authors]"
+team: Nguyen Van Binh (co-author)
 headline: Exchange matching engine, in C++ and Go
-lede: A limit order book that matches orders by price, then time. I wrote it in C++ and ported it to Go to see what each language costs and buys.
+lede: "A limit order book that matches buy and sell orders by price, then time, for many clients at once. Built in C++ with Nguyen Van Binh for NUS Parallel and Concurrent Programming; a Go version is in a private repo."
 ---
 
 ## Problem
 
-<Placeholder>[Two or three sentences: what a matching engine must guarantee (price-time priority, no crossed book, every fill accounted for) and what you set out to learn.]</Placeholder>
+Many clients send buy, sell and cancel orders at the same time, for many instruments. The engine has to match each order against the best opposite price first, and the earliest order at that price, without a crossed book, a lost fill, or a data race. The assignment was to do that concurrently, so orders for different instruments never wait on each other.
 
 ## Architecture
 
-<Figure n={1} ratio="16/7" label="Architecture diagram slot · inline SVG drawn from the real code: order intake → book (bid and ask price levels, FIFO queue per level) → trade output · currentColor, 16:7"><Placeholder>[caption]</Placeholder></Figure>
+<Arch />
 
-<Placeholder>[Data structures and why: e.g. how a price level is stored, how cancels find an order, what the hot path allocates.]</Placeholder>
+Each client connection gets its own thread. An order first looks up its instrument's book in a shared map, takes that book's lock, and only then releases the map's lock, so two threads working on different instruments run in parallel. Each book keeps its buy and sell orders in two priority queues ordered by price, then timestamp. A second map, from order id to instrument and side, lets a cancel find the right book.
+
+We checked the locking with ThreadSanitizer and the memory handling with AddressSanitizer, and generated test cases with a Python script, from one client up to 40 clients across 10 instruments and 100,000 transactions.
 
 <TryIt />
 
@@ -45,11 +49,11 @@ lede: A limit order book that matches orders by price, then time. I wrote it in 
 ## Findings
 
 <ol>
-  <li><Placeholder>[Finding, backed by a number from the table above.]</Placeholder></li>
-  <li><Placeholder>[Finding.]</Placeholder></li>
-  <li><Placeholder>[A surprise, or something that did not work.]</Placeholder></li>
+  <li>Per-instrument locks let different instruments proceed in parallel, but every thread still passes through the two shared map locks. <Placeholder>[How much that costs, from the benchmark table above.]</Placeholder></li>
+  <li>A cancel rebuilds one whole side of the book, because a priority queue cannot remove an order from the middle. That makes each cancel linear in the size of that side. <Placeholder>[Measured cost of a cancel on a deep book.]</Placeholder></li>
+  <li><Placeholder>[C++ vs Go: what the benchmarks showed.]</Placeholder></li>
 </ol>
 
 ## Next
 
-<Placeholder>[What you would build next, e.g. replaying a recorded order trace through the demo book above.]</Placeholder>
+I am hardening the C++ version now: sanitizer runs in CI, then benchmarks of orders per second and p50 and p99 latency, before and after, with a write-up of what changed.

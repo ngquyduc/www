@@ -17,7 +17,7 @@ const d = entry.data;
 const facts: [string, string, boolean?][] = [
   ["Role", d.role ?? ""],
   ["When", [when(d.start, d.end), d.location].filter(Boolean).join(" · ")],
-  ["Team", d.team ?? ""],
+  ...(d.team ? ([["Team", d.team]] as [string, string][]) : []),
   ["Stack", d.stack.join(" · "), true],
 ];
 const toc = headings.filter((h) => h.depth === 2);
