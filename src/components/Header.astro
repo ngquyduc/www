@@ -1,0 +1,71 @@
+---
+import { site } from "../site";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const path = Astro.url.pathname.replace(/\.html$/, "");
+const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="border-b border-line">
+  <div class="wrap flex min-h-16 flex-wrap items-center gap-x-7 gap-y-2 py-2.5">
+    <a href="/" class="flex items-center gap-2.5 text-ink no-underline hover:text-ink">
+      <span class="mono inline-grid size-[30px] place-items-center rounded-[6px] bg-ink text-[13px] font-semibold text-bg" aria-hidden="true">QD</span>
+      <span class="text-[15px] font-semibold">{site.name}</span>
+    </a>
+    <nav aria-label="Primary" class="order-3 flex basis-full gap-6 text-[15px] md:order-none md:flex-1 md:basis-auto md:justify-center">
+      {
+        site.nav.map((item) => (
+          <a
+            class="navl"
+            href={item.href}
+            aria-current={isCurrent(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <button
+        type="button"
+        class="mono inline-flex min-h-10 items-center gap-2 rounded-md border border-line-strong px-3 text-xs text-ink transition-colors hover:border-ink active:translate-y-px"
+        data-palette-open
+        aria-haspopup="dialog"
+        aria-keyshortcuts="Meta+K Control+K"
+      >
+        <span class="jump-label max-md:hidden">Jump to</span><span class="search-label hidden">Search</span>
+        <kbd class="font-[inherit] text-muted" data-kbd>⌘K</kbd>
+      </button>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
+
+<style>
+  .navl {
+    padding: 6px 2px;
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+  .navl:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+  .navl[aria-current="page"] {
+    color: var(--color-ink);
+    box-shadow: inset 0 -2px 0 var(--color-accent);
+  }
+  .navl[aria-current="page"]:hover {
+    text-decoration: none;
+  }
+  @media (hover: none) {
+    .jump-label,
+    [data-kbd] {
+      display: none;
+    }
+    .search-label {
+      display: inline;
+    }
+  }
+</style>
