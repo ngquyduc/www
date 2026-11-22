@@ -1,0 +1,16 @@
+---
+import { site } from "../site";
+---
+
+<footer class="mt-16 border-t border-line md:mt-24">
+  <div class="wrap flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4 pt-7 pb-10 text-sm text-muted">
+    <span>© 2026 {site.fullName} · Built with Astro</span>
+    <nav aria-label="Elsewhere" class="flex flex-wrap gap-x-5 gap-y-2">
+      <a href={site.socials.github.href} rel="me">GitHub</a>
+      <a href={site.socials.linkedin.href} rel="me">LinkedIn</a>
+      <a href={site.socials.instagram.href} rel="me">Instagram</a>
+      <a href={site.resumePath} download>Résumé (PDF)</a>
+    </nav>
+    <span class="mono text-xs max-md:hidden">Press <kbd data-kbd>⌘K</kbd> to jump anywhere</span>
+  </div>
+</footer>

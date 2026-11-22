@@ -1,0 +1,89 @@
+---
+import { Font } from "astro:assets";
+import CommandPalette from "../components/palette/CommandPalette.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { site } from "../site";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path under /public of a 1200×630 PNG. */
+  ogImage?: string;
+  ogType?: "website" | "article";
+  noindex?: boolean;
+}
+
+const { title, description = site.description, ogImage = "/og/default.png", ogType = "website", noindex = false } =
+  Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Systems-minded engineer who ships`;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, "").replace(/\/index$/, "/"), site.url);
+const ogUrl = new URL(ogImage, site.url);
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}
+    </script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="data:," />
+    <meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0E1013" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name}: writing`} href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title ?? fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <Font cssVariable="--font-plex-sans" preload={[{ weight: 400 }]} />
+    <Font cssVariable="--font-plex-mono" preload={[{ weight: 500 }]} />
+    <slot name="head" />
+  </head>
+  <body class="bg-bg text-ink">
+    <a href="#main" class="sr-only-focusable">Skip to content</a>
+    <Header />
+    <main id="main" tabindex="-1" class="outline-none">
+      <slot />
+    </main>
+    <Footer />
+    <CommandPalette />
+    <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
+    <script>
+      import "../lib/site.client";
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    z-index: 60;
+    transform: translateX(-50%);
+    max-width: calc(100vw - 32px);
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    background: var(--color-ink);
+    color: var(--color-bg);
+    font-size: 14px;
+    transition: opacity 180ms var(--ease-out);
+  }
+  .toast[data-fade] {
+    opacity: 0;
+  }
+</style>
