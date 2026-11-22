@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [master, redesign]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Lint (Biome)
+        run: pnpm lint
+      - name: Typecheck (astro check)
+        run: pnpm typecheck
+      - name: Unit tests (Vitest)
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+      - name: JS budgets and privacy checks
+        run: pnpm budget
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: End-to-end and accessibility tests (Playwright + axe)
+        run: pnpm test:e2e
+      - name: Lighthouse CI
+        run: pnpm lhci
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: reports
+          path: |
+            test-results/
+            .lighthouseci/
+          retention-days: 7
