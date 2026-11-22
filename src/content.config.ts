@@ -30,7 +30,9 @@ const work = defineCollection({
         stack: z.array(z.string()),
         metrics: z.array(metric).optional(),
         links: z.array(link).optional(),
-        context: z.enum(["employment", "internship", "personal", "coursework"]).optional(),
+        context: z.enum(["employment", "internship", "personal", "coursework", "programme"]).optional(),
+        // For context "programme": the training programme the project was built in, and how.
+        programme: z.object({ name: z.string(), note: z.string() }).optional(),
         coursework: z.object({ module: z.string(), coAuthors: z.array(z.string()).min(1) }).optional(),
         demo: z.literal("orderbook").optional(),
         featured: z.number().int().optional(),
@@ -53,6 +55,12 @@ const work = defineCollection({
             code: "custom",
             path: ["coursework"],
             message: "Coursework must credit its module and co-authors (§2.3).",
+          });
+        if (d.context === "programme" && !d.programme)
+          ctx.addIssue({
+            code: "custom",
+            path: ["programme"],
+            message: "Name the programme the project was built in.",
           });
         if (d.cover && !d.coverAlt)
           ctx.addIssue({ code: "custom", path: ["coverAlt"], message: "A cover image needs alt text." });

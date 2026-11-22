@@ -12,7 +12,7 @@ interface Props {
 const d = Astro.props.entry.data;
 const code = d.links?.filter((l) => l.href) ?? [];
 const priv = d.links?.filter((l) => !l.href) ?? [];
-const contextLabel = { personal: "Side project", coursework: "Coursework", employment: "Work", internship: "Internship" };
+const contextLabel = { personal: "Side project", coursework: "Coursework", employment: "Work", internship: "Internship", programme: "Programme" };
 const status = { published: "Published", "in-progress": "Benchmarks pending", upcoming: "Upcoming" }[d.status];
 ---
 
