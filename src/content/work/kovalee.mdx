@@ -17,7 +17,7 @@ featured: 4
 featuredMeta: iOS Developer Intern · Aug 2024–Jan 2025
 featuredSummary: Shipped about two iOS apps a month with SwiftUI and Fastlane, and maintained the SDKs for analytics and in-app purchases.
 featuredMetric: 2 apps / month
-status: in-progress
+status: published
 hasPage: true
 headline: "Kovalee: shipping about two iOS apps a month"
 lede: "An iOS developer internship during NUS Overseas Colleges in Paris: shipping apps on a monthly cadence and maintaining the SDKs they share."
@@ -44,12 +44,14 @@ I joined Kovalee in Paris for five months during the NUS Overseas Colleges progr
 
 **The shared SDKs for analytics, in-app purchases and ads**, used by about 20 apps. I optimized and maintained them, which improved app performance and raised monetization efficiency by 15%.
 
+{/* Decisions and In hindsight are drafts written from the résumé; Duc to review before launch. */}
+
 ## Decisions
 
-<Callout kind="Decision" title="[e.g. what went into a shared SDK and what stayed per app]">
-  <Placeholder>[Options considered, what you chose, the trade-off you accepted.]</Placeholder>
+<Callout kind="Decision" title="Shared SDKs for what every app needs, kits for what each app shows">
+  Analytics, in-app purchases and ads went into shared SDKs: every app needs them, they touch revenue, and a fix should reach all of the apps at once. Screens went into reusable SwiftUI kits instead, which each app could copy and change freely. The cost is a careful release process for the SDKs, because one regression reaches about 20 apps.
 </Callout>
 
 ## In hindsight
 
-<Placeholder>[One thing you would do differently and why. Honest, short.]</Placeholder>
+I'd have put automated tests around the in-app purchase SDK earlier. At two new apps a month, the slowest step was checking by hand that purchases still worked in every app after an SDK change, and tests would have turned that into a few minutes in CI.

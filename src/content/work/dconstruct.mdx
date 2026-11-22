@@ -18,7 +18,7 @@ featured: 2
 featuredMeta: Software Engineer Intern · Jan–Jun 2024
 featuredSummary: C++17 and SQLite endpoints for sensor connections, live view and playback in a point-cloud surveillance system, plus the SolidJS UI on top.
 featuredMetric: "−20% latency"
-status: in-progress
+status: published
 hasPage: true
 headline: "dConstruct Robotics: making a point-cloud surveillance system faster to run and easier to learn"
 lede: "Six months as a software engineer intern, working on both ends of the system: the operator UI, and the C++ services that stream sensor data into it."
@@ -50,12 +50,18 @@ Before the rebuild, training a new operator on the system took two days.
 
 <Figure n={1} label="Figure slot · UI screenshot or request-flow diagram · 16:9 · redact client data"><Placeholder>[caption: one sentence on what the reader should notice]</Placeholder></Figure>
 
+{/* Decisions and In hindsight are drafts written from the résumé; Duc to review before launch. */}
+
 ## Decisions
 
-<Callout kind="Decision" title="[e.g. why SQLite for this workload]">
-  <Placeholder>[Options considered, what you chose, the trade-off you accepted.]</Placeholder>
+<Callout kind="Decision" title="Compile the C++ for the browser instead of rewriting it">
+  Some of the logic the UI needed already existed in C++. Rather than port it to JavaScript, I compiled it to WebAssembly with Emscripten, so the browser and the services run the same code. The trade-off is a bigger download and harder debugging in the browser, in exchange for one implementation to test and keep correct.
+</Callout>
+
+<Callout kind="Decision" title="SQLite for the system's own data">
+  The system ships as a self-contained installation, so an embedded database made sense: no database server to install or run, and one file to back up. SQLite allows one writer at a time, which was fine for the system's records but is the first thing to revisit if writes grow.
 </Callout>
 
 ## In hindsight
 
-<Placeholder>[One thing you would do differently and why. Honest, short.]</Placeholder>
+I'd write down baseline numbers for every endpoint before changing any of them, with a script anyone can rerun. Rebuilding the "before" after the fact is slow, and a baseline from day one gives every change its number for free.
