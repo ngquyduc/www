@@ -2,6 +2,7 @@
 import { render } from "astro:content";
 import BenchChart from "../../components/BenchChart.astro";
 import Callout from "../../components/Callout.astro";
+import DconstructFlow from "../../components/DconstructFlow.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import Figure from "../../components/Figure.astro";
 import Outcome from "../../components/Outcome.astro";
@@ -30,7 +31,7 @@ interface Props {
 }
 const { entry, next } = Astro.props;
 const { Content, headings } = await render(entry);
-const components = { Placeholder, Outcome, Outcomes, Figure, Callout, pre: CodeBlock, TryIt, Arch, Bench: BenchChart };
+const components = { Placeholder, Outcome, Outcomes, Figure, Callout, pre: CodeBlock, TryIt, Arch, Bench: BenchChart, DconstructFlow };
 ---
 
 {
