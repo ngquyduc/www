@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DM demo states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width:2200px;box-sizing:border-box;padding:56px 40px 64px;background:#E4E4DF;color:#121417;font-family:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;font-size:15px;line-height:1.55;display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:1500px">
+    <h1 style="margin:0;font-size:32px;letter-spacing:-0.02em">Home hero: “What users see” vs “What I see”, message types and states</h1>
+    <p style="margin:0;color:#50555E">Every panel runs the real component: type, send, use + for photos, voice, video and links, press and hold any message to pin, reply or react, and toggle Flaky network or Offline. The conversation is invented (Remy and a cat called Biscuit). The phone skin follows the site theme; the engineer pane is the dark instrument in both. No brand assets, no real messages, nothing from any employer.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2, 1040px);gap:40px">
+    <sc-for list="{{panels}}" as="p" hint-placeholder-count="12">
+      <section style="display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:14px;background:{{p.bg}};color:{{p.ink}};--muted:{{p.muted}};--ink:{{p.ink}};--bg:{{p.bg}};--line-strong:{{p.line}}">
+        <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:{{p.accent}}">{{p.label}}</p>
+        <dc-import name="DmDemo" theme="{{p.theme}}" mode="{{p.mode}}" seed="{{p.seed}}" hint-size="1000px,840px"></dc-import>
+        <p style="margin:0;color:{{p.muted}}">{{p.note}}</p>
+      </section>
+    </sc-for>
+  </div>
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <section style="flex:0 0 390px;display:flex;flex-direction:column;gap:12px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#A04A00">N · MOBILE · “WHAT USERS SEE” TAB · LIGHT</p>
+      <div style="width:390px;box-sizing:border-box;padding:16px;background:#F6F6F3;border:1px solid #8A8D93;border-radius:28px;--muted:#50555E;--ink:#121417;--bg:#F6F6F3;--line-strong:#8A8D93">
+        <dc-import name="DmDemo" theme="light" mode="live" tab="user" seed="34" hint-size="356px,820px"></dc-import>
+      </div>
+    </section>
+    <section style="flex:0 0 390px;display:flex;flex-direction:column;gap:12px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#A04A00">O · MOBILE · “WHAT I SEE” TAB · DARK</p>
+      <div style="width:390px;box-sizing:border-box;padding:16px;background:#0E1013;border:1px solid #646A74;border-radius:28px;--muted:#A3A8B1;--ink:#E8E8E3;--bg:#0E1013;--line-strong:#646A74">
+        <dc-import name="DmDemo" theme="dark" mode="voice" tab="engineer" seed="12" hint-size="356px,900px"></dc-import>
+      </div>
+    </section>
+    <section style="flex:1 1 auto;display:flex;flex-direction:column;gap:10px;max-width:760px;color:#50555E">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#A04A00">MOBILE RULES</p>
+      <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px">
+        <li>Under 720 px of container width the panes become two tabs (<code>role="tablist"</code>): <b>What users see</b> (default) and <b>What I see</b>. State is shared: send a photo on one tab and watch its upload on the other.</li>
+        <li>The phone fills the width (max 420 px). The thread scrolls (newest at the bottom); the + tray wraps.</li>
+        <li>Long press works with touch (450 ms, native callout suppressed). A short tap shows a hint pill instead.</li>
+      </ul>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2200,"height":7400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const L = { theme: 'light', bg: '#F6F6F3', ink: '#121417', muted: '#50555E', line: '#8A8D93', accent: '#A04A00' };
+    const D = { theme: 'dark', bg: '#0E1013', ink: '#E8E8E3', muted: '#A3A8B1', line: '#646A74', accent: '#F0A848' };
+    const P = (t, o) => Object.assign({}, t, o);
+    const panels = [
+      P(L, { label: 'A · IDLE → AUTOPLAY ONCE · TEXT, REPLY QUOTE, REACTIONS', mode: 'live', seed: 9, note: 'First paint is the whole invented thread: date divider, texts, a reply-quote, a reaction row, a system line, photo, voice, sticker, link card, shared video. 1.5 s after it is in view, one text sends itself and both panes run to Seen in under 5 s.' }),
+      P(D, { label: 'B · PHOTO SENT · DARK', mode: 'photo', seed: 12, note: 'Engineer pane: LOCAL PREVIEW → COMPRESS → UPLOAD → SEND MEDIA REF → ACK → DELIVERED → SEEN. The photo is drawn from disk at once; only a media reference travels in the message itself.' }),
+      P(L, { label: 'C · 3-PHOTO ALBUM, UPLOADING 60%', mode: 'album', seed: 4, note: 'The grid shows a dimmed overlay with the percentage; the bubble status reads “Uploading 60%”. Engineer: UPLOAD ×3 active, UPLOADING 60% (simulated) exception chip.' }),
+      P(D, { label: 'D · VOICE MESSAGE SENT · DARK', mode: 'voice', seed: 7, note: 'Play / pause button, 20-bar waveform that fills with playback, duration and elapsed time. Engineer: RECORD → ENCODE → UPLOAD → SEND MEDIA REF → …' }),
+      P(L, { label: 'E · SHARED VIDEO (REFERENCE ONLY)', mode: 'video', seed: 5, note: 'Card with thumbnail illustration, play icon, duration and caption. Engineer log: “resolved the video to a reference”, “no video bytes leave the device”.' }),
+      P(D, { label: 'F · LINK PREVIEW · DARK', mode: 'link', seed: 6, note: 'Card with illustration, title, description and domain (example domains only). Engineer: DETECT URL → UNFURL PREVIEW → SEND URL + CARD → … ; waiting for Seen.' }),
+      P(L, { label: 'G · STICKER', mode: 'sticker', seed: 8, note: 'Invented stickers drawn in SVG (a paw stamp that says LGTM, a rubber duck in a hard hat). Engineer: no upload, only a sticker id from the local pack.' }),
+      P(D, { label: 'H · LONG PRESS: ACTIONS MENU + TRAY · DARK', mode: 'menu', seed: 9, note: 'Press and hold 450 ms (or Enter) on any message type: Pin / Unpin, Reply, 😂, Cancel. The pressed bubble gets a link-colour ring. The + tray is open: Sticker, Photo, 3 photos, Voice, Video, Link.' }),
+      P(L, { label: 'I · REPLYING (COMPOSING)', mode: 'reply', seed: 9, note: 'The reply bar above the composer quotes the pinned message, with a cancel button. Engineer: COMPOSING active; draft is memory-only; REPLY TO #seq.' }),
+      P(D, { label: 'J · PINNED + SYSTEM LINE · DARK', mode: 'pinned', seed: 4, note: 'Pinning updates the banner and the “Pinned” tag immediately and adds “You pinned a message”. Engineer: optimistic upsert, outbox, ack with pin version, fan-out.' }),
+      P(L, { label: 'K · FLAKY NETWORK: RETRY + DEDUPE', mode: 'retry', seed: 3, note: 'The user only sees “Sending…” for longer. Engineer: server applied attempt 1 but the ack was lost, 800 ms ack timeout, backoff with jitter, attempt 2 acked as a duplicate thanks to the client id.' }),
+      P(D, { label: 'L · OFFLINE: UPLOAD PAUSED + TEXT QUEUED · DARK', mode: 'offline', seed: 13, note: 'The photo shows “Waiting for network” over the preview; the text is queued in the outbox. Toggle Offline off: uploads resume and the outbox flushes in order.' }),
+      P(L, { label: 'M · REDUCED MOTION', mode: 'reduced', seed: 21, note: 'No autoplay; the badge reads INSTANT. Every action runs its whole pipeline at once and shows the final state with the same simulated timings in the log. Voice playback only runs when the visitor presses play.' })
+    ];
+    return { panels };
+  }
+}
+</script>
+</body>
+</html>

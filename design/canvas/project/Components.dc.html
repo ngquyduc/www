@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Components and states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.th-light{--bg:#F6F6F3;--raised:#FFFFFF;--sunken:#ECECE7;--ink:#121417;--muted:#50555E;--subtle:#63686F;--line:#DCDCD5;--line-strong:#8A8D93;--accent:#A04A00;--accent-soft:#F5E6D3;--on-accent:#FFFFFF;--focus:#1D5BD6;color-scheme:light}
+.th-dark{--bg:#0E1013;--raised:#15181D;--sunken:#0A0B0D;--ink:#E8E8E3;--muted:#A3A8B1;--subtle:#8A9099;--line:#262A31;--line-strong:#646A74;--accent:#F0A848;--accent-soft:#2B2114;--on-accent:#1A1203;--focus:#8AB4FF;color-scheme:dark}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-feature-settings:'tnum' 1,'zero' 1}
+.ph{background:repeating-linear-gradient(135deg,var(--accent-soft) 0 6px,transparent 6px 12px);outline:1px dashed var(--accent);outline-offset:-1px}
+a{color:var(--ink)}a:hover{color:var(--accent)}
+</style>
+</helmet>
+<div class="{{th}}" style="width:1440px;box-sizing:border-box;padding:56px 80px 80px;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;font-size:15px;line-height:1.55;display:flex;flex-direction:column;gap:56px">
+  <div style="display:flex;align-items:baseline;gap:24px">
+    <h1 style="margin:0;font-size:44px;letter-spacing:-0.025em">Components and states</h1>
+    <span style="color:var(--muted)">Every state an implementer needs. Flip the theme to check dark.</span>
+    <button type="button" onClick="{{toggle}}" style="margin-left:auto;min-height:40px;padding:0 14px;border:1px solid var(--line-strong);border-radius:8px;background:transparent;color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer">Theme: {{themeName}} · switch</button>
+  </div>
+
+  <section style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:40px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Buttons · 44 px min height · md radius</h2>
+      <div style="display:grid;grid-template-columns:90px repeat(4, minmax(0, 1fr));gap:12px;align-items:center">
+        <span></span><span class="mono" style="font-size:11px;color:var(--subtle)">DEFAULT</span><span class="mono" style="font-size:11px;color:var(--subtle)">HOVER</span><span class="mono" style="font-size:11px;color:var(--subtle)">FOCUS</span><span class="mono" style="font-size:11px;color:var(--subtle)">DISABLED</span>
+        <span class="mono" style="font-size:12px;color:var(--muted)">Primary</span>
+        <button type="button" style="min-height:44px;border-radius:8px;border:0;background:var(--ink);color:var(--bg);font:inherit;font-weight:600">See my work</button>
+        <button type="button" style="min-height:44px;border-radius:8px;border:0;background:var(--accent);color:var(--on-accent);font:inherit;font-weight:600">See my work</button>
+        <button type="button" style="min-height:44px;border-radius:8px;border:0;background:var(--ink);color:var(--bg);font:inherit;font-weight:600;outline:2px solid var(--focus);outline-offset:2px">See my work</button>
+        <button type="button" disabled="disabled" style="min-height:44px;border-radius:8px;border:0;background:var(--line);color:var(--muted);font:inherit;font-weight:600">See my work</button>
+        <span class="mono" style="font-size:12px;color:var(--muted)">Secondary</span>
+        <button type="button" style="min-height:44px;border-radius:8px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);font:inherit;font-weight:500">Résumé (PDF)</button>
+        <button type="button" style="min-height:44px;border-radius:8px;border:1px solid var(--ink);background:var(--raised);color:var(--ink);font:inherit;font-weight:500">Résumé (PDF)</button>
+        <button type="button" style="min-height:44px;border-radius:8px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);font:inherit;font-weight:500;outline:2px solid var(--focus);outline-offset:2px">Résumé (PDF)</button>
+        <button type="button" disabled="disabled" style="min-height:44px;border-radius:8px;border:1px dashed var(--line-strong);background:transparent;color:var(--muted);font:inherit;font-weight:500">Résumé (PDF)</button>
+        <span class="mono" style="font-size:12px;color:var(--muted)">Text link</span>
+        <a href="#" style="text-decoration-color:var(--line-strong);text-underline-offset:3px">All work →</a>
+        <a href="#" style="color:var(--accent);text-underline-offset:3px">All work →</a>
+        <a href="#" style="outline:2px solid var(--focus);outline-offset:2px;border-radius:4px;text-underline-offset:3px">All work →</a>
+        <span style="color:var(--muted)">n/a</span>
+      </div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">Active (pressed): translateY(1px), 120 ms. Disabled buttons are rare; prefer hiding the action. Icon-only buttons (theme toggle) are 40×40 in the header with an <code class="mono">aria-label</code>.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Tags · mono 11 caps · sm radius</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--accent-soft)">Experience</span>
+        <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--accent-soft)">Depth</span>
+        <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;border:1px solid var(--line-strong)">Coursework</span>
+        <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;border:1px solid var(--line-strong)">Built for fun</span>
+        <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;border:1px solid var(--line-strong)">Write-up in progress</span>
+        <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;border:1px dashed var(--line-strong);color:var(--muted)">Private repo</span>
+        <span class="mono" style="font-size:11px;font-weight:600;letter-spacing:.08em;padding:1px 6px;border-radius:4px;color:#F5B041;border:1px solid #F5B041;background:#0B0D10">SIMULATED</span>
+        <span class="mono ph" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px">Placeholder</span>
+      </div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">Filled tags (accent-soft) mark the strong tiers. Outlined tags mark weaker or qualifying labels. Coursework is never filled. Tag filter chips on Writing are pill buttons with <code class="mono">aria-pressed</code>; the pressed one is ink-filled.</p>
+      <h2 class="mono" style="margin:16px 0 0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Placeholder slot</h2>
+      <div class="ph" style="padding:16px;border-radius:8px;display:flex;flex-direction:column;gap:4px"><span class="mono" style="font-size:11px;letter-spacing:.08em;text-transform:uppercase">p99 latency</span><span class="mono" style="font-size:24px;font-weight:600">—</span><span style="font-size:13px">Run benchmarks, then fill in</span></div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">Stripes + dashed accent outline mean “not real yet”. Built as a <code class="mono">&lt;Placeholder&gt;</code> component that fails the production build when <code class="mono">PUBLIC_STRICT=1</code>, so a placeholder can't ship by accident.</p>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:40px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Header and nav</h2>
+      <div style="border:1px solid var(--line);border-radius:8px;padding:0 16px;display:flex;align-items:center;gap:24px;min-height:64px;background:var(--bg)">
+        <span class="mono" style="display:inline-grid;place-items:center;width:30px;height:30px;border-radius:6px;background:var(--ink);color:var(--bg);font-size:13px;font-weight:600">QD</span>
+        <span style="font-weight:600">Duc Nguyen</span>
+        <span style="flex:1 1 auto"></span>
+        <span style="color:var(--muted)">Default</span>
+        <span style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">Hover</span>
+        <span style="color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent);padding:4px 0">Current</span>
+        <span style="outline:2px solid var(--focus);outline-offset:2px;border-radius:4px;color:var(--muted)">Focus</span>
+        <span style="flex:1 1 auto"></span>
+        <span class="mono" style="font-size:12px;border:1px solid var(--line-strong);border-radius:8px;padding:8px 10px">Jump to ⌘K</span>
+      </div>
+      <div style="display:flex;gap:24px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><span style="display:inline-grid;place-items:center;width:40px;height:40px;border:1px solid var(--line-strong);border-radius:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></span><span class="mono" style="font-size:11px;color:var(--subtle)">in light</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><span style="display:inline-grid;place-items:center;width:40px;height:40px;border:1px solid var(--line-strong);border-radius:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></span><span class="mono" style="font-size:11px;color:var(--subtle)">in dark</span></div>
+        <p style="margin:0;font-size:14px;color:var(--muted);flex:1 1 auto">Theme toggle shows the theme you will switch <i>to</i>. <code class="mono">aria-label</code> “Switch to dark theme” / “Switch to light theme”. Choice saved to <code class="mono">localStorage.theme</code>; with no saved choice, <code class="mono">prefers-color-scheme</code> decides and changes live.</p>
+      </div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">Mobile: the nav wraps to a second row under the wordmark (four links fit at 360 px), no hamburger and no JS. The “Jump to” label hides and only ⌘K shows. On touch devices without a keyboard the button label reads “Search”.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Project row (Home, Writing) · default and hover</h2>
+      <div style="display:flex;gap:20px;align-items:baseline;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+        <span class="mono" style="font-size:13px;color:var(--subtle)">02</span>
+        <span style="flex:1 1 auto"><b style="font-size:20px;font-weight:600">dConstruct Robotics</b><br><span style="color:var(--muted)">C++17 and SQLite endpoints for a point-cloud surveillance system.</span></span>
+        <span class="mono" style="font-size:14px">−20% latency</span><span style="color:var(--muted)">→</span>
+      </div>
+      <div style="display:flex;gap:20px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line)">
+        <span class="mono" style="font-size:13px;color:var(--subtle)">02</span>
+        <span style="flex:1 1 auto"><b style="font-size:20px;font-weight:600;color:var(--accent)">dConstruct Robotics</b><br><span style="color:var(--muted)">C++17 and SQLite endpoints for a point-cloud surveillance system.</span></span>
+        <span class="mono" style="font-size:14px">−20% latency</span><span style="color:var(--accent);transform:translateX(3px)">→</span>
+      </div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">The whole row is one <code class="mono">&lt;a&gt;</code>. Hover: title turns accent, arrow slides 3 px (180 ms). Focus: ring around the whole row. Rows are separated by hairlines, not boxed as cards.</p>
+      <h2 class="mono" style="margin:12px 0 0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Depth card (Work tier B)</h2>
+      <div style="width:320px;display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid var(--line-strong);border-radius:8px;background:var(--raised)">
+        <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--accent-soft);align-self:flex-start">Depth</span>
+        <b style="font-size:20px">Async TCP server</b>
+        <span class="mono" style="font-size:12px;color:var(--subtle)">Rust · Tokio</span>
+        <span style="padding-top:10px;border-top:1px solid var(--line);font-weight:500">Code</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:32px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Case study: facts and outcome</h2>
+      <dl style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:12px;margin:0;padding:14px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)">
+        <div><dt class="mono" style="font-size:11px;letter-spacing:.08em;color:var(--subtle)">ROLE</dt><dd style="margin:2px 0 0">Intern</dd></div>
+        <div><dt class="mono" style="font-size:11px;letter-spacing:.08em;color:var(--subtle)">WHEN</dt><dd style="margin:2px 0 0">Jan – Jun 2024</dd></div>
+      </dl>
+      <div style="padding:16px;border:1px solid var(--line-strong);border-radius:8px;background:var(--raised)"><p class="mono" style="margin:0;font-size:30px;font-weight:600">−20%</p><p style="margin:2px 0 0;font-size:14px;color:var(--muted)">latency, live view</p></div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">Outcome tiles only hold résumé-backed numbers. Each needs a method footnote.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Callouts</h2>
+      <sc-for list="{{callouts}}" as="c" hint-placeholder-count="3">
+        <aside style="padding:12px 14px;border:1px solid var(--line-strong);border-radius:8px;background:var(--raised)">
+          <p class="mono" style="margin:0 0 2px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">{{c.k}}</p>
+          <p style="margin:0;font-size:14px">{{c.t}}</p>
+        </aside>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Code block (instrument colours)</h2>
+      <div style="background:#0B0D10;border:1px solid #242932;border-radius:14px;overflow:hidden;color:#E6E8EB">
+        <div class="mono" style="display:flex;gap:8px;align-items:center;padding:6px 6px 6px 14px;background:#12151A;border-bottom:1px solid #242932;font-size:12px;color:#98A1AE">main.go<span style="margin-left:auto">GO</span><span style="border:1px solid #3A414D;border-radius:6px;padding:4px 8px;color:#E6E8EB">Copy</span></div>
+        <pre class="mono" style="margin:0;padding:12px 14px;font-size:13px;line-height:1.6;white-space:pre"><span style="color:#98A1AE">// sample</span>
+<span style="color:#F5B041">func</span> main() {
+  fmt.Println(<span style="color:#3DDC84">"ok"</span>)
+}</pre>
+      </div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">Shiki at build time with a custom theme using term tokens: keyword amber, string green, comment muted. Copy button turns to “Copied” for 1.6 s and announces via <code class="mono">role=status</code>. Inline code: sunken background, 0.88em.</p>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:32px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Palette item states</h2>
+      <div style="border:1px solid var(--line-strong);border-radius:14px;padding:8px;background:var(--raised)">
+        <div style="display:flex;gap:12px;align-items:center;min-height:44px;padding:0 10px;border-radius:8px"><span class="mono" style="width:28px;height:28px;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:6px;color:var(--muted)">→</span>Go to work<span class="mono" style="margin-left:auto;font-size:12px;color:var(--subtle)">/work</span></div>
+        <div style="display:flex;gap:12px;align-items:center;min-height:44px;padding:0 10px;border-radius:8px;background:var(--accent-soft)"><span class="mono" style="width:28px;height:28px;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:6px;color:var(--muted)">@</span>Copy email address<span class="mono" style="margin-left:auto;font-size:12px;color:var(--accent)">↵</span></div>
+        <div style="padding:16px 10px;text-align:center;color:var(--muted);font-size:14px">No command matches “xyz”.</div>
+      </div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">Default · active (keyboard or mouse) · no results. See the interactive palette board.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Toast and empty state</h2>
+      <div style="align-self:flex-start;background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 16px;font-size:14px">Email address copied</div>
+      <div style="padding:24px;border:1px dashed var(--line-strong);border-radius:8px;text-align:center;color:var(--muted)">Nothing published yet.</div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">Toast: bottom centre, <code class="mono">role="status"</code>, 2.6 s, no motion beyond a 180 ms fade.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Footer</h2>
+      <div style="border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--muted)">
+        <span>© 2026 Nguyen Quy Duc · Built with Astro</span>
+        <span style="display:flex;gap:16px"><a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">Instagram</a><a href="#">Résumé (PDF)</a></span>
+        <span class="mono" style="font-size:12px">Press ⌘K to jump anywhere</span>
+      </div>
+      <p style="margin:0;font-size:14px;color:var(--muted)">One line on desktop, stacked on mobile. Social links carry <code class="mono">rel="me"</code>. No phone number anywhere.</p>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2 class="mono" style="margin:0;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">Hero demo anatomy: what users see vs what I see</h2>
+    <ol style="margin:0;padding-left:20px;display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:8px 32px;font-size:14px;color:var(--muted)">
+      <li><b style="color:var(--ink)">Phone (left)</b>: 360×720, 32 px radius, skin follows the site theme. Header (back, avatar, invented contact “Remy”, presence, call, more), pinned banner, scrollable thread, composer (camera, input, mic, sticker, +, send).</li>
+      <li><b style="color:var(--ink)">Message types</b>: text (with reply-quote and reaction row), sticker (invented SVG art), photo, 3-photo album, voice (play, waveform, time), shared video card (reference only), link preview card, system line, date divider.</li>
+      <li><b style="color:var(--ink)">Long press</b>: 450 ms on any type opens Pin/Unpin · Reply · 😂 · Cancel; Enter does the same from the keyboard; a short tap shows a hint pill. The + tray sends each type.</li>
+      <li><b style="color:var(--ink)">Engineer panel (right)</b>: dark instrument; SIMULATED badge; PLAYBACK ×3 or INSTANT; connection dot; Flaky network and Offline toggles.</li>
+      <li><b style="color:var(--ink)">Per-type pipeline</b>: e.g. photo LOCAL PREVIEW → COMPRESS → UPLOAD → SEND MEDIA REF → ACK → DELIVERED → SEEN; video PICK → RESOLVE REFERENCE → SEND REF ONLY → …; exception chip for upload %, queued, retry, failed.</li>
+      <li><b style="color:var(--ink)">Event log</b>: last 10 events, “+N ms” since the action, lanes UI · DB · NET · SYNC in their own colours. Record grid: type, client id, server seq, status, payload, attempts, outbox, pins.</li>
+      <li><b style="color:var(--ink)">Mobile</b>: under 720 px the panes become two tabs with shared state.</li>
+      <li><b style="color:var(--ink)">Honesty</b>: SIMULATED, simulated ms and sizes, invented conversation and art, example domains, no brand assets, “not any company's implementation”.</li>
+      <li><b style="color:var(--ink)">States</b>: see the states board (13 panels + 2 mobile tabs).</li>
+    </ol>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const t = s.t || this.props.theme || 'light';
+    return {
+      th: t === 'dark' ? 'th-dark' : 'th-light', themeName: t,
+      toggle: () => this.setState({ t: t === 'dark' ? 'light' : 'dark' }),
+      callouts: [
+        { k: 'Note', t: 'An aside the reader can skip.' },
+        { k: 'Decision', t: 'The option chosen, the ones rejected, the trade-off.' },
+        { k: 'Caveat', t: 'Limits of a number or a method. Required next to any benchmark.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

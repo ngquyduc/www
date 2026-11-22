@@ -1,0 +1,526 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>DmDemo local preview</title>
+<style>body{margin:0;font-family:system-ui;background:#E4E4DF} .wrap{padding:24px;display:flex;flex-direction:column;gap:24px} .panel{padding:20px;border-radius:14px}</style></head><body>
+<div class="wrap" id="root"></div>
+<script>
+const TPL = "\n<helmet>\n<link href=\"https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap\" rel=\"stylesheet\">\n<style>\nbody{margin:0}\n.dm{container-type:inline-size;container-name:dm}\n.dm-light{--p-bg:#FFFFFF;--p-ink:#161823;--p-sub:#6E6F76;--p-recv:#F1F1F2;--p-banner:#F4F4F5;--p-line:#E6E6E8;--p-sent:#3A55F5;--p-link:#2F4BE0;--p-err:#D92D20;--p-input:#F1F1F2;--p-photo:#D9DCE3;--p-menu:#FFFFFF;--p-frame:#C9C9CE;--p-focus:#1D5BD6;--p-chip:#FFFFFF}\n.dm-dark{--p-bg:#000000;--p-ink:#FFFFFF;--p-sub:#9A9BA1;--p-recv:#262628;--p-banner:#161618;--p-line:#2A2A2D;--p-sent:#3A55F5;--p-link:#7C93FF;--p-err:#FF6B6B;--p-input:#1C1C1E;--p-photo:#2F3136;--p-menu:#2A2A2D;--p-frame:#3A3A3F;--p-focus:#8AB4FF;--p-chip:#1C1C1E}\n.dm-tabs{display:none}\n.dm-bubble{transition:transform .18s cubic-bezier(.2,.7,.2,1)}\n.dm-hold{animation:dm-hold var(--hold,450ms) linear forwards}\n@keyframes dm-hold{from{transform:scale(1);box-shadow:0 0 0 0 transparent}to{transform:scale(.96);box-shadow:0 0 0 3px var(--p-link)}}\n.dm-chip{transition:background .15s,transform .15s}\n.dm-chip:hover{transform:translateY(-1px);background:var(--p-banner)}\n.dm-chip:active{transform:scale(.97)}\n@media (prefers-reduced-motion: reduce){.dm-hold{animation:none}.dm-bubble,.dm-chip{transition:none}.dm-hold{box-shadow:0 0 0 3px var(--p-link)}}\n.dm-bubble{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}\n.dm-bubble:focus-visible,.dm-pbtn:focus-visible{outline:2px solid var(--p-focus);outline-offset:2px}\n.dm-ebtn:focus-visible{outline:2px solid #F5B041;outline-offset:2px}\n@container dm (max-width:720px){.dm-tabs{display:flex}.dm-pane[data-hidden=\"true\"]{display:none!important}.dm-kicker{display:none!important}.dm-phone{flex:1 1 100%!important;max-width:420px!important;margin:0 auto}}\n</style>\n</helmet>\n<div class=\"dm\" style=\"width:100%;font-family:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif\">\n  <div class=\"dm-tabs\" role=\"tablist\" aria-label=\"Demo view\" style=\"gap:4px;padding:4px;margin:0 0 12px;border:1px solid var(--line-strong,#8A8D93);border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:13px\">\n    <button type=\"button\" role=\"tab\" aria-selected=\"{{tabUserSel}}\" onClick=\"{{tabUser}}\" style=\"flex:1 1 50%;min-height:40px;border:0;border-radius:999px;background:{{tabUserBg}};color:{{tabUserFg}};font:inherit;cursor:pointer\">What users see</button>\n    <button type=\"button\" role=\"tab\" aria-selected=\"{{tabEngSel}}\" onClick=\"{{tabEng}}\" style=\"flex:1 1 50%;min-height:40px;border:0;border-radius:999px;background:{{tabEngBg}};color:{{tabEngFg}};font:inherit;cursor:pointer\">What I see</button>\n  </div>\n\n  <div style=\"display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start\">\n    <section class=\"dm-pane dm-phone\" data-hidden=\"{{userHidden}}\" aria-label=\"What users see: simulated direct-message screen\" style=\"flex:0 0 360px;max-width:360px;min-width:0;display:flex;flex-direction:column;gap:10px\">\n      <p class=\"dm-kicker\" style=\"margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted,#50555E)\">WHAT USERS SEE</p>\n      <div class=\"{{skin}}\" style=\"position:relative;height:720px;box-sizing:border-box;border:1px solid var(--p-frame);border-radius:32px;overflow:hidden;background:var(--p-bg);color:var(--p-ink);display:flex;flex-direction:column;font-size:15px;line-height:1.35\">\n\n        <div style=\"flex:0 0 56px;display:flex;align-items:center;gap:10px;padding:8px 14px 0 10px\">\n          <svg aria-hidden=\"true\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          <span aria-hidden=\"true\" style=\"width:32px;height:32px;border-radius:50%;background:#BFD9C9;color:#1F3A2B;display:inline-grid;place-items:center;font-size:13px;font-weight:600\">R</span>\n          <span style=\"display:flex;flex-direction:column;line-height:1.2\"><span style=\"font-weight:600;font-size:16px\">Remy</span><span style=\"font-size:11px;color:var(--p-sub)\">{{presence}}</span></span>\n          <span style=\"flex:1 1 auto\"></span>\n          <svg aria-hidden=\"true\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2\"></path></svg>\n          <svg aria-hidden=\"true\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><circle cx=\"5\" cy=\"12\" r=\"1.8\"></circle><circle cx=\"12\" cy=\"12\" r=\"1.8\"></circle><circle cx=\"19\" cy=\"12\" r=\"1.8\"></circle></svg>\n        </div>\n\n        <sc-if value=\"{{hasBanner}}\" hint-placeholder-val=\"{{ true }}\">\n          <div role=\"group\" aria-label=\"{{bannerLabel}}\" style=\"flex:0 0 44px;display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--p-banner);font-size:13px;color:var(--p-sub)\">\n            <svg aria-hidden=\"true\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M15 3l6 6-3 1-4 4 1 5-2 1-4-4-5 5-1-1 5-5-4-4 1-2 5 1 4-4z\"></path></svg>\n            <span style=\"flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--p-ink)\">{{bannerText}}</span>\n            <span style=\"flex:0 0 auto;font-size:12px;color:var(--p-sub)\">{{bannerNote}}</span>\n            <span style=\"flex:1 1 auto\"></span>\n            <svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M6 9l6 6 6-6\"></path></svg>\n          </div>\n        </sc-if>\n\n        <div role=\"group\" aria-label=\"Messages with Remy\" style=\"flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column-reverse;gap:4px;padding:8px 12px\">\n          <sc-if value=\"{{peerTyping}}\" hint-placeholder-val=\"{{ false }}\">\n            <div style=\"display:flex;align-items:flex-end;gap:6px\"><span aria-hidden=\"true\" style=\"flex:0 0 26px;height:26px;border-radius:50%;background:#BFD9C9;color:#1F3A2B;display:inline-grid;place-items:center;font-size:11px;font-weight:600\">R</span><span aria-label=\"Remy is typing\" style=\"padding:8px 14px;border-radius:18px;background:var(--p-recv);letter-spacing:3px;color:var(--p-sub)\">\u2022\u2022\u2022</span></div>\n          </sc-if>\n          <sc-for list=\"{{items}}\" as=\"m\" hint-placeholder-count=\"8\">\n            <div style=\"display:flex;flex-direction:column;align-items:{{m.align}};gap:3px;margin-top:{{m.gapTop}}\">\n              <sc-if value=\"{{m.isDate}}\" hint-placeholder-val=\"{{ false }}\">\n                <span style=\"margin:8px 0 4px;font-size:12px;color:var(--p-sub)\">{{m.text}}</span>\n              </sc-if>\n              <sc-if value=\"{{m.isSystem}}\" hint-placeholder-val=\"{{ false }}\">\n                <span style=\"display:flex;align-items:center;gap:5px;margin:6px 0;font-size:12px;color:var(--p-sub)\"><svg aria-hidden=\"true\" width=\"11\" height=\"11\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M15 3l6 6-3 1-4 4 1 5-2 1-4-4-5 5-1-1 5-5-4-4 1-2 5 1 4-4z\"></path></svg>{{m.text}}</span>\n              </sc-if>\n              <sc-if value=\"{{m.isMsg}}\" hint-placeholder-val=\"{{ true }}\">\n                <sc-if value=\"{{m.pinnedLabel}}\" hint-placeholder-val=\"{{ false }}\">\n                  <span style=\"display:flex;align-items:center;gap:4px;font-size:11px;color:var(--p-sub);padding:0 {{m.labelPad}}\"><svg aria-hidden=\"true\" width=\"10\" height=\"10\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M15 3l6 6-3 1-4 4 1 5-2 1-4-4-5 5-1-1 5-5-4-4 1-2 5 1 4-4z\"></path></svg>Pinned</span>\n                </sc-if>\n                <div style=\"display:flex;align-items:flex-end;gap:6px;max-width:100%\">\n                  <sc-if value=\"{{m.avatarSlot}}\" hint-placeholder-val=\"{{ false }}\">\n                    <span aria-hidden=\"true\" style=\"flex:0 0 26px;height:26px;border-radius:50%;background:{{m.avatarBg}};color:#1F3A2B;display:inline-grid;place-items:center;font-size:11px;font-weight:600\">{{m.avatarText}}</span>\n                  </sc-if>\n                  <sc-if value=\"{{m.isVoice}}\" hint-placeholder-val=\"{{ false }}\">\n                    <div style=\"display:flex;align-items:center;gap:8px;padding:8px 12px 8px 8px;border-radius:18px;background:{{m.bg}};color:{{m.fg}};box-shadow:{{m.ring}}\">\n                      <button type=\"button\" class=\"dm-pbtn\" onClick=\"{{m.play}}\" aria-label=\"{{m.playLabel}}\" style=\"flex:0 0 32px;height:32px;border:0;border-radius:50%;background:{{m.playBg}};color:{{m.playFg}};display:inline-grid;place-items:center;cursor:pointer\">\n                        <sc-if value=\"{{m.paused}}\" hint-placeholder-val=\"{{ true }}\"><svg aria-hidden=\"true\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M7 4l13 8-13 8z\"></path></svg></sc-if>\n                        <sc-if value=\"{{m.playing}}\" hint-placeholder-val=\"{{ false }}\"><svg aria-hidden=\"true\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><rect x=\"6\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"></rect><rect x=\"14\" y=\"4\" width=\"4\" height=\"16\" rx=\"1\"></rect></svg></sc-if>\n                      </button>\n                      <button type=\"button\" class=\"dm-bubble {{m.holdCls}}\" aria-label=\"{{m.aria}}\" aria-haspopup=\"menu\" aria-expanded=\"{{m.menuOpen}}\" onPointerDown=\"{{m.down}}\" onPointerUp=\"{{m.up}}\" onPointerLeave=\"{{m.leave}}\" onContextMenu=\"{{m.ctx}}\" onClick=\"{{m.click}}\" style=\"display:flex;align-items:center;gap:8px;border:0;padding:0;background:transparent;color:inherit;font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer\">\n                        <span aria-hidden=\"true\" style=\"display:flex;align-items:center;gap:2px;height:24px\">\n                          <sc-for list=\"{{m.bars}}\" as=\"b\" hint-placeholder-count=\"20\"><span style=\"width:3px;border-radius:2px;height:{{b.h}};background:{{b.c}}\"></span></sc-for>\n                        </span>\n                        <span role=\"timer\" aria-label=\"{{m.timeLabel}}\">{{m.time}}</span>\n                      </button>\n                    </div>\n                  </sc-if>\n                  <sc-if value=\"{{m.notVoice}}\" hint-placeholder-val=\"{{ true }}\">\n                    <button type=\"button\" class=\"dm-bubble {{m.holdCls}}\" aria-label=\"{{m.aria}}\" aria-haspopup=\"menu\" aria-expanded=\"{{m.menuOpen}}\" onPointerDown=\"{{m.down}}\" onPointerUp=\"{{m.up}}\" onPointerLeave=\"{{m.leave}}\" onContextMenu=\"{{m.ctx}}\" onClick=\"{{m.click}}\" style=\"max-width:250px;text-align:left;border:0;padding:{{m.pad}};border-radius:{{m.radius}};background:{{m.bg}};color:{{m.fg}};font-family:inherit;font-size:15px;line-height:1.35;cursor:pointer;box-shadow:{{m.ring}};overflow:hidden\">\n                      <sc-if value=\"{{m.hasReply}}\" hint-placeholder-val=\"{{ false }}\">\n                        <span style=\"display:block;margin:0 0 6px;padding:2px 0 2px 8px;box-shadow:inset 2px 0 0 {{m.quoteBar}};font-size:13px;line-height:1.3;opacity:.92\"><b style=\"display:block;font-size:12px\">{{m.replyName}}</b>{{m.replySnippet}}</span>\n                      </sc-if>\n                      <sc-if value=\"{{m.isText}}\" hint-placeholder-val=\"{{ true }}\">{{m.text}}</sc-if>\n                      <sc-if value=\"{{m.isDuck}}\" hint-placeholder-val=\"{{ false }}\">\n                        <svg role=\"img\" aria-label=\"Sticker: a rubber duck in a hard hat holding a SHIP IT sign\" width=\"104\" height=\"96\" viewBox=\"0 0 104 96\"><ellipse cx=\"50\" cy=\"68\" rx=\"36\" ry=\"22\" fill=\"#FFD43B\" stroke=\"#C99700\" stroke-width=\"2\"></ellipse><circle cx=\"66\" cy=\"42\" r=\"18\" fill=\"#FFD43B\" stroke=\"#C99700\" stroke-width=\"2\"></circle><path d=\"M82 44l14 4-14 4z\" fill=\"#FF8A3D\"></path><circle cx=\"70\" cy=\"38\" r=\"2.6\" fill=\"#161823\"></circle><path d=\"M46 32a20 15 0 0 1 40 0z\" fill=\"#FF8A3D\" stroke=\"#C2410C\" stroke-width=\"1.5\"></path><rect x=\"44\" y=\"30\" width=\"44\" height=\"4\" rx=\"2\" fill=\"#C2410C\"></rect><rect x=\"4\" y=\"6\" width=\"46\" height=\"18\" rx=\"4\" fill=\"#161823\"></rect><text x=\"27\" y=\"19\" text-anchor=\"middle\" font-family=\"IBM Plex Mono, monospace\" font-size=\"10\" font-weight=\"700\" fill=\"#FFFFFF\">SHIP IT</text></svg>\n                      </sc-if>\n                      <sc-if value=\"{{m.isPaw}}\" hint-placeholder-val=\"{{ false }}\">\n                        <svg role=\"img\" aria-label=\"Sticker: a cat paw stamp that says LGTM\" width=\"96\" height=\"96\" viewBox=\"0 0 96 96\"><circle cx=\"48\" cy=\"48\" r=\"40\" fill=\"#FFFFFF\" stroke=\"#E5484D\" stroke-width=\"3\" stroke-dasharray=\"6 4\"></circle><ellipse cx=\"48\" cy=\"54\" rx=\"14\" ry=\"11\" fill=\"#F7B6C2\"></ellipse><circle cx=\"34\" cy=\"36\" r=\"6\" fill=\"#F7B6C2\"></circle><circle cx=\"48\" cy=\"30\" r=\"6\" fill=\"#F7B6C2\"></circle><circle cx=\"62\" cy=\"36\" r=\"6\" fill=\"#F7B6C2\"></circle><text x=\"48\" y=\"82\" text-anchor=\"middle\" font-family=\"IBM Plex Mono, monospace\" font-size=\"12\" font-weight=\"700\" fill=\"#C81E1E\">LGTM</text></svg>\n                      </sc-if>\n                      <sc-if value=\"{{m.isImage}}\" hint-placeholder-val=\"{{ false }}\">\n                        <span style=\"position:relative;display:block;width:210px;height:148px\">\n                          <svg role=\"img\" aria-label=\"{{m.alt}}\" width=\"210\" height=\"148\" viewBox=\"0 0 200 140\" preserveAspectRatio=\"xMidYMid slice\"><rect width=\"200\" height=\"140\" fill=\"#CFD6E4\"></rect><rect x=\"40\" y=\"72\" width=\"120\" height=\"44\" rx=\"4\" fill=\"#2B2F36\"></rect><rect x=\"48\" y=\"80\" width=\"104\" height=\"26\" rx=\"2\" fill=\"#3A404A\"></rect><ellipse cx=\"98\" cy=\"76\" rx=\"44\" ry=\"15\" fill=\"#F2A65A\"></ellipse><circle cx=\"140\" cy=\"66\" r=\"13\" fill=\"#F2A65A\"></circle><path d=\"M131 56l3-10 6 8zM143 54l6-8 2 10z\" fill=\"#F2A65A\"></path><path d=\"M134 68q3 2 6 0M142 68q3 2 6 0\" stroke=\"#161823\" stroke-width=\"1.6\" fill=\"none\" stroke-linecap=\"round\"></path><text x=\"150\" y=\"36\" font-family=\"IBM Plex Mono, monospace\" font-size=\"11\" fill=\"#4B5563\">z z z</text></svg>\n                          <sc-if value=\"{{m.uploading}}\" hint-placeholder-val=\"{{ false }}\"><span style=\"position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#FFFFFF;font-family:'IBM Plex Mono',monospace;font-size:13px\">{{m.uploadText}}</span></sc-if>\n                        </span>\n                      </sc-if>\n                      <sc-if value=\"{{m.isAlbum}}\" hint-placeholder-val=\"{{ false }}\">\n                        <span role=\"img\" aria-label=\"{{m.alt}}\" style=\"position:relative;display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));grid-template-rows:72px 72px;gap:2px;width:210px\">\n                          <svg aria-hidden=\"true\" style=\"grid-row:span 2;width:100%;height:146px\" viewBox=\"0 0 100 146\" preserveAspectRatio=\"xMidYMid slice\"><rect width=\"100\" height=\"146\" fill=\"#E9D8C4\"></rect><rect x=\"28\" y=\"62\" width=\"40\" height=\"46\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#8B5E34\" stroke-width=\"2\"></rect><path d=\"M68 72q14 0 14 12t-14 12\" fill=\"none\" stroke=\"#8B5E34\" stroke-width=\"3\"></path><path d=\"M38 52q4-8 0-14M50 52q4-8 0-14\" stroke=\"#8B5E34\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"></path></svg>\n                          <svg aria-hidden=\"true\" style=\"width:100%;height:72px\" viewBox=\"0 0 100 72\" preserveAspectRatio=\"xMidYMid slice\"><rect width=\"100\" height=\"72\" fill=\"#D3E5D0\"></rect><rect x=\"40\" y=\"44\" width=\"20\" height=\"20\" rx=\"3\" fill=\"#B45309\"></rect><path d=\"M50 44q-16-10-10-26q10 8 10 26q0-18 12-24q4 16-12 24\" fill=\"#2F7D4F\"></path></svg>\n                          <svg aria-hidden=\"true\" style=\"width:100%;height:72px\" viewBox=\"0 0 100 72\" preserveAspectRatio=\"xMidYMid slice\"><rect width=\"100\" height=\"72\" fill=\"#DCD6EE\"></rect><ellipse cx=\"50\" cy=\"46\" rx=\"34\" ry=\"14\" fill=\"#9C8FC9\"></ellipse><ellipse cx=\"50\" cy=\"44\" rx=\"18\" ry=\"6\" fill=\"#7E70B5\"></ellipse><path d=\"M38 40l4-7 4 6M54 39l4-6 4 7\" fill=\"#7E70B5\"></path></svg>\n                          <sc-if value=\"{{m.uploading}}\" hint-placeholder-val=\"{{ false }}\"><span style=\"position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#FFFFFF;font-family:'IBM Plex Mono',monospace;font-size:13px\">{{m.uploadText}}</span></sc-if>\n                        </span>\n                      </sc-if>\n                      <sc-if value=\"{{m.isVideo}}\" hint-placeholder-val=\"{{ false }}\">\n                        <span style=\"display:block;width:220px\">\n                          <span style=\"position:relative;display:grid;place-items:center;height:128px;background:#23272F\">\n                            <svg aria-hidden=\"true\" width=\"220\" height=\"128\" viewBox=\"0 0 220 128\" style=\"position:absolute;inset:0\"><rect x=\"40\" y=\"70\" width=\"140\" height=\"34\" rx=\"4\" fill=\"#3A404A\"></rect><path d=\"M52 80h12M70 80h12M88 80h12M106 80h12M124 80h12M142 80h12M60 92h80\" stroke=\"#5B6270\" stroke-width=\"5\" stroke-linecap=\"round\"></path><circle cx=\"170\" cy=\"46\" r=\"12\" fill=\"#F2A65A\"></circle><path d=\"M162 38l2-9 6 6zM172 35l6-6 1 9z\" fill=\"#F2A65A\"></path></svg>\n                            <span aria-hidden=\"true\" style=\"position:relative;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"#161823\"><path d=\"M8 5l12 7-12 7z\"></path></svg></span>\n                            <span style=\"position:absolute;right:8px;bottom:8px;padding:1px 6px;border-radius:4px;background:rgba(0,0,0,.6);color:#FFFFFF;font-family:'IBM Plex Mono',monospace;font-size:11px\">{{m.dur}}</span>\n                          </span>\n                          <span style=\"display:block;padding:8px 12px 10px\"><span style=\"display:block;font-size:14px;font-weight:600;line-height:1.3\">{{m.caption}}</span><span style=\"display:block;margin-top:2px;font-size:12px;color:var(--p-sub)\">Shared video \u00b7 video.example</span></span>\n                        </span>\n                      </sc-if>\n                      <sc-if value=\"{{m.isLink}}\" hint-placeholder-val=\"{{ false }}\">\n                        <span style=\"display:block;width:220px\">\n                          <svg aria-hidden=\"true\" width=\"220\" height=\"84\" viewBox=\"0 0 220 84\" style=\"display:block\"><rect width=\"220\" height=\"84\" fill=\"#E9E2D0\"></rect><path d=\"M30 42h160\" stroke=\"#8B7355\" stroke-width=\"3\"></path><circle cx=\"40\" cy=\"42\" r=\"8\" fill=\"#FFFFFF\" stroke=\"#8B7355\" stroke-width=\"3\"></circle><circle cx=\"80\" cy=\"42\" r=\"8\" fill=\"#FFFFFF\" stroke=\"#8B7355\" stroke-width=\"3\"></circle><circle cx=\"120\" cy=\"42\" r=\"8\" fill=\"#FFFFFF\" stroke=\"#8B7355\" stroke-width=\"3\"></circle><circle cx=\"160\" cy=\"42\" r=\"8\" fill=\"#F2A65A\" stroke=\"#8B7355\" stroke-width=\"3\"></circle><text x=\"148\" y=\"24\" font-family=\"IBM Plex Mono, monospace\" font-size=\"10\" fill=\"#6B5843\">mrrp</text></svg>\n                          <span style=\"display:block;padding:8px 12px 10px\"><span style=\"display:block;font-size:14px;font-weight:600;line-height:1.3\">{{m.title}}</span><span style=\"display:block;margin-top:2px;font-size:13px;color:var(--p-sub);line-height:1.3\">{{m.desc}}</span><span style=\"display:block;margin-top:4px;font-size:12px;color:var(--p-sub)\">{{m.url}}</span></span>\n                        </span>\n                      </sc-if>\n                    </button>\n                  </sc-if>\n                </div>\n                <sc-if value=\"{{m.hasReactions}}\" hint-placeholder-val=\"{{ false }}\">\n                  <span role=\"img\" aria-label=\"{{m.reactLabel}}\" style=\"display:inline-flex;gap:4px;margin:-6px {{m.reactPad}} 0;padding:1px 7px;border-radius:999px;background:var(--p-chip);border:1px solid var(--p-line);font-size:12px\">{{m.reactText}}</span>\n                </sc-if>\n                <sc-if value=\"{{m.menuOpen2}}\" hint-placeholder-val=\"{{ false }}\">\n                  <div role=\"menu\" aria-label=\"Message actions\" onKeyDown=\"{{m.menuKey}}\" style=\"display:flex;flex-wrap:wrap;gap:2px;padding:4px;border-radius:12px;background:var(--p-menu);border:1px solid var(--p-line);box-shadow:0 6px 24px rgba(0,0,0,.18)\">\n                    <button type=\"button\" role=\"menuitem\" class=\"dm-pbtn\" onClick=\"{{m.pin}}\" style=\"min-height:36px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:var(--p-ink);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer\">{{m.pinWord}}</button>\n                    <button type=\"button\" role=\"menuitem\" class=\"dm-pbtn\" onClick=\"{{m.reply}}\" style=\"min-height:36px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:var(--p-ink);font-family:inherit;font-size:14px;cursor:pointer\">Reply</button>\n                    <button type=\"button\" role=\"menuitem\" class=\"dm-pbtn\" onClick=\"{{m.react}}\" aria-label=\"{{m.reactWord}}\" style=\"min-height:36px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:var(--p-ink);font-family:inherit;font-size:16px;cursor:pointer\">\ud83d\ude02</button>\n                    <button type=\"button\" role=\"menuitem\" class=\"dm-pbtn\" onClick=\"{{m.closeMenu}}\" style=\"min-height:36px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:var(--p-sub);font-family:inherit;font-size:14px;cursor:pointer\">Cancel</button>\n                  </div>\n                </sc-if>\n                <sc-if value=\"{{m.hasStatus}}\" hint-placeholder-val=\"{{ false }}\">\n                  <span style=\"display:flex;gap:6px;align-items:center;font-size:12px;color:{{m.statusColor}};padding:0 4px\">{{m.status}}<sc-if value=\"{{m.canRetry}}\" hint-placeholder-val=\"{{ false }}\"><button type=\"button\" class=\"dm-pbtn\" onClick=\"{{m.retry}}\" style=\"border:0;background:transparent;color:var(--p-link);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:2px 0\">Tap to retry</button></sc-if></span>\n                </sc-if>\n              </sc-if>\n            </div>\n          </sc-for>\n        </div>\n\n        <sc-if value=\"{{hasHint}}\" hint-placeholder-val=\"{{ false }}\">\n          <div role=\"status\" style=\"position:absolute;left:50%;bottom:{{hintBottom}};transform:translateX(-50%);max-width:300px;text-align:center;padding:6px 12px;border-radius:999px;background:var(--p-ink);color:var(--p-bg);font-size:12px\">{{hint}}</div>\n        </sc-if>\n\n        <sc-if value=\"{{hasReplyTo}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"flex:0 0 auto;display:flex;align-items:center;gap:8px;margin:0 12px;padding:6px 8px 6px 10px;border-radius:10px;background:var(--p-banner);font-size:12px;color:var(--p-sub)\">\n            <span style=\"flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">Replying to <b style=\"color:var(--p-ink)\">{{replyName}}</b> \u00b7 {{replySnippet}}</span>\n            <button type=\"button\" class=\"dm-pbtn\" onClick=\"{{cancelReply}}\" aria-label=\"Cancel reply\" style=\"flex:0 0 28px;height:28px;border:0;border-radius:50%;background:transparent;color:var(--p-ink);cursor:pointer\">\u2715</button>\n          </div>\n        </sc-if>\n\n        <sc-if value=\"{{showChips}}\" hint-placeholder-val=\"{{ true }}\">\n          <div class=\"dm-chips\" role=\"group\" aria-label=\"Try the demo\" style=\"flex:0 0 auto;display:flex;gap:6px;overflow-x:auto;padding:8px 12px 0;scrollbar-width:none\">\n            <sc-for list=\"{{chips}}\" as=\"c\" hint-placeholder-count=\"4\">\n              <button type=\"button\" class=\"dm-pbtn dm-chip\" onClick=\"{{c.go}}\" style=\"flex:0 0 auto;min-height:32px;padding:0 12px;border:1px solid var(--p-link);border-radius:999px;background:var(--p-chip);color:var(--p-link);font-family:inherit;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer\">{{c.label}}</button>\n            </sc-for>\n          </div>\n        </sc-if>\n\n        <sc-if value=\"{{trayOpen}}\" hint-placeholder-val=\"{{ false }}\">\n          <div role=\"group\" aria-label=\"Send something else\" style=\"flex:0 0 auto;display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px 0\">\n            <sc-for list=\"{{tray}}\" as=\"t\" hint-placeholder-count=\"6\">\n              <button type=\"button\" class=\"dm-pbtn\" onClick=\"{{t.go}}\" style=\"min-height:32px;padding:0 10px;border:1px solid var(--p-line);border-radius:999px;background:var(--p-chip);color:var(--p-ink);font-family:inherit;font-size:13px;cursor:pointer\">{{t.label}}</button>\n            </sc-for>\n          </div>\n        </sc-if>\n\n        <div style=\"flex:0 0 60px;display:flex;align-items:center;gap:6px;padding:0 10px 6px\">\n          <button type=\"button\" class=\"dm-pbtn\" onClick=\"{{sendPhoto}}\" aria-label=\"Send a photo\" style=\"flex:0 0 32px;height:32px;border:0;background:transparent;color:var(--p-ink);display:inline-grid;place-items:center;cursor:pointer\"><svg aria-hidden=\"true\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"><path d=\"M4 8h3l2-3h6l2 3h3v11H4z\"></path><circle cx=\"12\" cy=\"13\" r=\"3.5\"></circle></svg></button>\n          <label for=\"{{inputId}}\" style=\"position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)\">Message Remy</label>\n          <input id=\"{{inputId}}\" type=\"text\" autocomplete=\"off\" maxlength=\"80\" placeholder=\"Message Remy\" value=\"{{draft}}\" onChange=\"{{onDraft}}\" onKeyDown=\"{{onKey}}\" style=\"flex:1 1 auto;min-width:0;height:40px;box-sizing:border-box;padding:0 14px;border:0;border-radius:20px;background:var(--p-input);color:var(--p-ink);font-family:inherit;font-size:15px;outline-color:var(--p-focus)\">\n          <button type=\"button\" class=\"dm-pbtn\" onClick=\"{{sendVoice}}\" aria-label=\"Send a voice message\" style=\"flex:0 0 28px;height:32px;border:0;background:transparent;color:var(--p-ink);display:inline-grid;place-items:center;cursor:pointer\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><rect x=\"9\" y=\"3\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5 11a7 7 0 0 0 14 0M12 18v3\"></path></svg></button>\n          <button type=\"button\" class=\"dm-pbtn\" onClick=\"{{sendSticker}}\" aria-label=\"Send a sticker\" style=\"flex:0 0 28px;height:32px;border:0;background:transparent;color:var(--p-ink);display:inline-grid;place-items:center;cursor:pointer\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><circle cx=\"9\" cy=\"10\" r=\"1\" fill=\"currentColor\"></circle><circle cx=\"15\" cy=\"10\" r=\"1\" fill=\"currentColor\"></circle><path d=\"M8.5 14.5q3.5 3 7 0\"></path></svg></button>\n          <button type=\"button\" class=\"dm-pbtn\" onClick=\"{{toggleTray}}\" aria-label=\"More message types\" aria-expanded=\"{{trayExpanded}}\" style=\"flex:0 0 28px;height:32px;border:0;background:transparent;color:var(--p-ink);display:inline-grid;place-items:center;cursor:pointer\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 8v8M8 12h8\"></path></svg></button>\n          <button type=\"button\" class=\"dm-pbtn\" onClick=\"{{onSend}}\" aria-label=\"Send\" style=\"flex:0 0 34px;height:34px;border:0;border-radius:50%;background:var(--p-sent);color:#FFFFFF;display:inline-grid;place-items:center;cursor:pointer\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 19V5M5 12l7-7 7 7\"></path></svg></button>\n        </div>\n      </div>\n      <p style=\"margin:0;font-size:12px;color:var(--muted,#50555E)\">Press and hold any message to pin, reply or react (keyboard: focus it, press Enter). The + button sends photos, voice, video and links.</p>\n    </section>\n\n    <section class=\"dm-pane\" data-hidden=\"{{engHidden}}\" aria-label=\"What I see: simulated client internals\" style=\"flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:10px\">\n      <p class=\"dm-kicker\" style=\"margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted,#50555E)\">WHAT I SEE</p>\n      <div style=\"box-sizing:border-box;min-height:720px;background:#0B0D10;color:#E6E8EB;border:1px solid #242932;border-radius:14px;overflow:hidden;font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-feature-settings:'tnum' 1,'zero' 1;font-size:12px;line-height:1.45;display:flex;flex-direction:column\">\n        <div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:10px 12px 10px 16px;background:#12151A;border-bottom:1px solid #242932\">\n          <span style=\"font-weight:600;font-size:13px\">client</span>\n          <span style=\"color:#98A1AE\">chat with Remy</span>\n          <span style=\"font-size:11px;font-weight:600;letter-spacing:.08em;color:#F5B041;border:1px solid #F5B041;border-radius:4px;padding:1px 6px\">SIMULATED</span>\n          <span style=\"font-size:11px;letter-spacing:.06em;color:#98A1AE\">{{speedWord}}</span>\n          <span style=\"flex:1 1 auto\"></span>\n          <span style=\"display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.06em;color:#98A1AE\"><span style=\"width:7px;height:7px;border-radius:50%;background:{{connDot}}\"></span>{{connWord}}</span>\n          <button type=\"button\" class=\"dm-ebtn\" aria-pressed=\"{{flakyPressed}}\" onClick=\"{{toggleFlaky}}\" style=\"min-height:32px;padding:0 10px;background:{{flakyBg}};color:{{flakyFg}};border:1px solid {{flakyBorder}};border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer\">Flaky network</button>\n          <button type=\"button\" class=\"dm-ebtn\" aria-pressed=\"{{offPressed}}\" onClick=\"{{toggleOffline}}\" style=\"min-height:32px;padding:0 10px;background:{{offBg}};color:{{offFg}};border:1px solid {{offBorder}};border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer\">Offline</button>\n        </div>\n\n        <div style=\"padding:14px 16px 12px;border-bottom:1px solid #242932;display:flex;flex-direction:column;gap:10px\">\n          <p style=\"margin:0;font-size:11px;letter-spacing:.08em;color:#98A1AE\">PIPELINE \u00b7 {{machineFor}}</p>\n          <ol aria-label=\"Send pipeline for this message type\" style=\"list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center\">\n            <sc-for list=\"{{machine}}\" as=\"s\" hint-placeholder-count=\"6\">\n              <li style=\"display:flex;align-items:center;gap:6px\"><span aria-current=\"{{s.current}}\" style=\"padding:3px 8px;border-radius:4px;border:1px solid {{s.border}};background:{{s.bg}};color:{{s.fg}};font-size:11px;letter-spacing:.06em\">{{s.label}}</span><span aria-hidden=\"true\" style=\"color:#3A414D\">{{s.arrow}}</span></li>\n            </sc-for>\n          </ol>\n          <sc-if value=\"{{hasExc}}\" hint-placeholder-val=\"{{ false }}\">\n            <p style=\"margin:0;display:flex;gap:8px;align-items:center\"><span aria-hidden=\"true\" style=\"color:#3A414D\">\u21b3</span><span style=\"padding:3px 8px;border-radius:4px;border:1px solid {{excColor}};color:{{excColor}};font-size:11px;letter-spacing:.06em\">{{excText}}</span></p>\n          </sc-if>\n          <dl style=\"margin:4px 0 0;display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:6px 16px\">\n            <sc-for list=\"{{record}}\" as=\"r\" hint-placeholder-count=\"8\">\n              <div style=\"display:flex;flex-direction:column;min-width:0\"><dt style=\"font-size:10px;letter-spacing:.08em;color:#98A1AE\">{{r.k}}</dt><dd style=\"margin:0;color:#E6E8EB;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{r.v}}</dd></div>\n            </sc-for>\n          </dl>\n        </div>\n\n        <div style=\"flex:1 1 auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px\">\n          <p style=\"margin:0;display:flex;gap:12px;flex-wrap:wrap;font-size:11px;letter-spacing:.08em;color:#98A1AE\"><span>EVENT LOG</span><span style=\"color:#E6E8EB\">UI</span><span style=\"color:#8AB4FF\">DB</span><span style=\"color:#F5B041\">NET</span><span style=\"color:#3DDC84\">SYNC</span></p>\n          <ol aria-label=\"Event log, newest last\" style=\"list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px\">\n            <sc-for list=\"{{logs}}\" as=\"l\" hint-placeholder-count=\"10\">\n              <li style=\"display:grid;grid-template-columns:66px 40px 1fr;gap:8px;align-items:baseline\"><span style=\"color:#98A1AE;text-align:right\">{{l.t}}</span><span style=\"color:{{l.laneColor}};font-size:11px\">{{l.lane}}</span><span style=\"color:{{l.color}}\">{{l.text}}</span></li>\n            </sc-for>\n          </ol>\n        </div>\n\n        <p role=\"status\" aria-live=\"polite\" style=\"margin:0;padding:10px 16px;border-top:1px solid #242932;color:{{statusColor}}\">{{status}}</p>\n        <p style=\"margin:0;padding:10px 16px;border-top:1px solid #242932;font-family:'IBM Plex Sans',ui-sans-serif,sans-serif;font-size:12px;color:#98A1AE\">Simulated: a toy model of a chat client running in your browser, with a made-up conversation. Times and sizes are simulated and played back slowly. Not production code, not real data, and not any company's implementation.</p>\n      </div>\n    </section>\n  </div>\n</div>\n";
+class DCLogic { constructor(props){ this.props = props; this.state = undefined; } setState(o){ this.state = Object.assign({}, this.state, o); this.__render && this.__render(); } forceUpdate(){ this.__render && this.__render(); } }
+class Component extends DCLogic {
+  boot() {
+    if (this.b) return;
+    this.b = true;
+    let a = (Number(this.props.seed ?? 9) || 9) >>> 0;
+    this.rnd = function () {
+      a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    this.SLOW = 3; this.ACK_TIMEOUT = 800; this.MAX_ATTEMPTS = 5; this.LONG_PRESS = 450;
+    this.now = 0; this.q = []; this.n = 0; this.mid = 0; this.oid = 0; this.seq = 2000; this.pinV = 7;
+    this.conn = 'online'; this.flaky = false; this.epoch = 0; this.inflight = null; this.outbox = []; this.script = [];
+    this.logs = []; this.actT0 = 0; this.focusId = null; this.menuFor = null; this.replyTo = null; this.tray = false;
+    this.hint = ''; this.holdId = null; this.userActs = 0; this.peerTyping = false; this.noReplies = true; this.typingAt = -1e9; this.status = ''; this.k = 0;
+    this.playId = null; this.playPos = 0; this.stickerFlip = 0;
+    this.mode = this.props.mode ?? 'live';
+    this.reduced = this.mode === 'reduced';
+    this.instant = this.reduced || this.mode === 'still';
+    this.inputId = 'dm-in-' + Math.floor(this.rnd() * 1e6);
+    this.PIPES = {
+      text: { stages: ['LOCAL INSERT', 'SEND', 'ACK', 'DELIVERED', 'SEEN'], pre: [] },
+      sticker: { stages: ['LOCAL INSERT', 'SEND STICKER ID', 'ACK', 'DELIVERED', 'SEEN'], pre: [] },
+      image: { stages: ['LOCAL PREVIEW', 'COMPRESS', 'UPLOAD', 'SEND MEDIA REF', 'ACK', 'DELIVERED', 'SEEN'], pre: ['compress', 'upload'] },
+      album: { stages: ['LOCAL PREVIEWS', 'COMPRESS ×3', 'UPLOAD ×3', 'SEND MEDIA REFS', 'ACK', 'DELIVERED', 'SEEN'], pre: ['compress', 'upload'] },
+      voice: { stages: ['RECORD', 'ENCODE', 'UPLOAD', 'SEND MEDIA REF', 'ACK', 'DELIVERED', 'SEEN'], pre: ['encode', 'upload'] },
+      video: { stages: ['PICK VIDEO', 'RESOLVE REFERENCE', 'SEND REF ONLY', 'ACK', 'DELIVERED', 'SEEN'], pre: ['resolve'] },
+      link: { stages: ['DETECT URL', 'UNFURL PREVIEW', 'SEND URL + CARD', 'ACK', 'DELIVERED', 'SEEN'], pre: ['unfurl'] }
+    };
+    this.canned = ['can she review my PR next', 'please tell me you reverted it', 'is she taking interns', 'who gave the cat sudo'];
+    this.replies = ['she says thanks for the review', 'she is asking for equity', 'new rule: no cats in prod', 'lgtm (she sat on the trackpad)'];
+    this.msgs = []; this.pinOrder = [];
+    const add = (o) => {
+      const m = Object.assign({ id: ++this.mid, cid: this.cid(), mine: false, kind: 'text', text: '', state: 'recv', seq: null, attempt: 1, pinned: false, pinPending: false, reactions: [], replyTo: null, stage: 0, upload: null, retryIn: 0 }, o);
+      if (m.kind !== 'date' && m.kind !== 'system') m.seq = ++this.seq;
+      if (m.mine) m.stage = this.PIPES[m.kind].stages.length - 1;
+      this.msgs.push(m); return m;
+    };
+    add({ kind: 'date', text: 'Saturday 9:41 PM' });
+    add({ text: 'update: biscuit walked across my keyboard' });
+    const pushed = add({ text: 'and pushed to main' });
+    add({ kind: 'image', alt: 'Illustration: an orange cat asleep across a laptop keyboard' });
+    add({ mine: true, state: 'seen', text: 'did the tests at least pass', replyTo: pushed.id });
+    const star = add({ text: "all green. she's now our most reliable engineer", reactions: [{ e: '😂', n: 2, me: false }], pinned: true });
+    add({ kind: 'system', text: 'Remy pinned a message' });
+    add({ kind: 'voice', dur: 7 });
+    add({ mine: true, state: 'seen', kind: 'sticker', sticker: 'duck' });
+    add({ kind: 'link', url: 'catsofgit.example/biscuit', title: 'Commit history: 14 commits, all titled “mrrp”', desc: 'An independent audit of one very confident cat.' });
+    add({ kind: 'video', caption: 'How to cat-proof a keyboard (part 1 of 47)', dur: '0:15' });
+    const last = add({ mine: true, state: 'seen', text: "i'm adding her to the on-call rotation" });
+    this.pinOrder = [star.id]; this.focusId = last.id; this.starId = star.id; this.pushedId = pushed.id;
+    this.log('DB', 'opened chat: 12 rows from local DB, pins v' + this.pinV);
+    this.log('SYNC', 'connected; caught up to seq #' + this.seq, 'ok');
+    const by = (t) => this.msgs.find((m) => m.text === t);
+    const M = this.mode;
+    if (M === 'sent') { const m = this.send('text', { text: 'can she review my PR next' }); this.drainUntil(() => m.state === 'seen'); this.status = 'Seen.'; }
+    if (M === 'photo') { const m = this.send('image', {}); this.drainUntil(() => m.state === 'seen'); this.status = 'Seen.'; }
+    if (M === 'album') { const m = this.send('album', {}); this.drainUntil(() => m.upload != null && m.upload >= 60); this.status = 'Uploading 3 photos.'; }
+    if (M === 'voice') { const m = this.send('voice', {}); this.drainUntil(() => m.state === 'seen'); this.status = 'Seen.'; }
+    if (M === 'video') { const m = this.send('video', {}); this.drainUntil(() => m.state === 'seen'); this.status = 'Seen.'; }
+    if (M === 'link') { const m = this.send('link', {}); this.drainUntil(() => m.state === 'delivered'); this.status = 'Delivered.'; }
+    if (M === 'sticker') { const m = this.send('sticker', { sticker: 'paw' }); this.drainUntil(() => m.state === 'seen'); this.status = 'Seen.'; }
+    if (M === 'pinned') { this.pin(by('and pushed to main')); this.drainAll(); this.status = 'Pinned for both of you.'; }
+    if (['live', 'still', 'reduced'].indexOf(M) < 0) this.userActs = 2;
+    if (M === 'menu') { this.menuFor = this.starId; this.tray = true; this.startAction(); this.log('UI', 'long press 450 ms: message actions open'); }
+    if (M === 'reply') { this.replyTo = this.starId; this.initDraft = 'framing this for the office'; this.startAction(); this.log('UI', 'Reply tapped: draft now quotes #' + star.seq); }
+    if (M === 'retry') { this.flaky = true; this.script = ['acklost', 'ok']; const m = this.send('text', { text: 'please tell me you reverted it' }); this.drainUntil(() => m.state === 'delivered'); this.status = 'Delivered after a retry. Same client id, so Remy sees it once.'; }
+    if (M === 'offline') { this.goOffline(); this.send('image', {}); this.send('text', { text: 'who gave the cat sudo' }); this.drainAll(); this.status = 'Offline: the photo upload and the text wait for the network.'; }
+    this.noReplies = false;
+  }
+  ri(lo, hi) { return lo + Math.floor(this.rnd() * (hi - lo + 1)); }
+  cid() { const h = () => Math.floor(this.rnd() * 65536).toString(16).padStart(4, '0'); return h() + h(); }
+  msg(id) { return this.msgs.find((m) => m.id === id); }
+  schedule(dt, fn) { const at = this.now + dt; let i = this.q.length; while (i > 0 && this.q[i - 1].at > at) i--; this.q.splice(i, 0, { at: at, fn: fn }); }
+  step() { const e = this.q.shift(); this.now = Math.max(this.now, e.at); e.fn(); }
+  drainAll() { let k = 0; while (this.q.length && k++ < 800) this.step(); }
+  drainUntil(c) { let k = 0; while (this.q.length && !c() && k++ < 800) this.step(); }
+  startAction() { this.actT0 = this.now; }
+  log(lane, text, kind) { this.logs.push({ t: Math.max(0, Math.round(this.now - this.actT0)), lane: lane, text: text, kind: kind || '' }); if (this.logs.length > 80) this.logs.shift(); }
+  whenOnline(fn) { const go = () => { if (this.conn === 'online') fn(); else this.schedule(300, go); }; go(); }
+  short(m) { return m.cid.slice(0, 4); }
+  label(m) {
+    if (!m) return '';
+    return ({ text: m.text, sticker: 'Sticker', image: 'Photo', album: '3 photos', voice: 'Voice message', video: 'Video', link: m.title || 'Link' })[m.kind] || '';
+  }
+  opName(op) { const m = this.msg(op.msgId); return (op.type === 'send' ? 'send ' + m.kind : op.type) + ' ' + (m ? this.short(m) : ''); }
+  pendingOps() { return this.outbox.filter((o) => o.state !== 'done' && o.state !== 'failed').length; }
+  sysLine(text) { this.msgs.push({ id: ++this.mid, kind: 'system', text: text, mine: false, reactions: [], cid: this.cid() }); }
+
+  send(kind, data) {
+    this.startAction();
+    const P = this.PIPES[kind];
+    const m = Object.assign({ id: ++this.mid, cid: this.cid(), mine: true, kind: kind, text: '', state: 'local', seq: null, attempt: 0, stage: 1, stages: P.stages, upload: null, retryIn: 0, reactions: [], replyTo: this.replyTo, pinned: false, pinPending: false }, data);
+    if (kind === 'image') m.alt = m.alt || 'Illustration: the same cat, now wearing a tiny hard hat';
+    if (kind === 'album') m.alt = '3 photos: a coffee mug, a desk plant and a cat-shaped dent in a cushion';
+    if (kind === 'voice') m.dur = m.dur || this.ri(3, 9);
+    if (kind === 'video') { m.caption = 'Cat attends standup, says nothing, leaves'; m.dur = '0:12'; }
+    if (kind === 'link') { m.url = 'oncall.example/rotation'; m.title = 'On-call rotation: Biscuit (primary)'; m.desc = 'Escalation policy: knock things off the desk.'; }
+    if (kind === 'sticker') m.sticker = m.sticker || (this.stickerFlip++ % 2 ? 'duck' : 'paw');
+    this.replyTo = null; this.tray = false;
+    this.msgs.push(m); if (this.msgs.length > 60) this.msgs.shift();
+    this.focusId = m.id;
+    const rq = m.replyTo ? ' reply_to=#' + (this.msg(m.replyTo) || {}).seq : '';
+    const first = {
+      text: ['DB', 'insert text, client id ' + this.short(m) + ', status=pending' + rq],
+      sticker: ['DB', 'insert sticker "' + m.sticker + '" from the local pack (no upload needed)'],
+      image: ['DB', 'insert photo row with a local file path; preview drawn from disk'],
+      album: ['DB', 'insert 1 row with 3 local file paths; previews drawn from disk'],
+      voice: ['UI', 'recorded a ' + m.dur + ' s voice note (simulated)'],
+      video: ['UI', 'picked a video to share; it is already hosted elsewhere'],
+      link: ['UI', 'detected a URL in the draft']
+    }[kind];
+    this.log(first[0], first[1]);
+    this.log('UI', 'bubble shown at once (optimistic)');
+    const steps = P.pre.slice();
+    const next = () => {
+      const s = steps.shift();
+      if (!s) { this.enqueue({ type: 'send', msgId: m.id }); return; }
+      this['pre_' + s](m, () => { m.stage++; next(); });
+    };
+    next();
+    return m;
+  }
+  pre_compress(m, done) {
+    this.schedule(this.ri(120, 220), () => { this.log('UI', m.kind === 'album' ? 'compressed 3 photos, 11.8 MB → 1.1 MB (simulated)' : 'compressed photo, 4.1 MB → 0.4 MB (simulated)'); done(); });
+  }
+  pre_encode(m, done) {
+    this.schedule(this.ri(80, 160), () => { this.log('UI', 'encoded voice note to compressed audio, ' + (m.dur * 3) + ' KB (simulated)'); done(); });
+  }
+  pre_resolve(m, done) {
+    this.schedule(this.ri(20, 60), () => { this.log('NET', 'resolved the video to a reference (id + thumbnail URL)'); this.log('NET', 'no video bytes leave the device'); done(); });
+  }
+  pre_unfurl(m, done) {
+    this.schedule(this.ri(120, 260), () => { this.log('NET', 'fetched page title and image for the preview card'); done(); });
+  }
+  pre_upload(m, done) {
+    const total = m.kind === 'album' ? this.ri(1000, 1600) : m.kind === 'voice' ? this.ri(300, 500) : this.ri(600, 1000);
+    let waitLogged = false, started = false;
+    const tick = () => {
+      if (this.conn !== 'online') {
+        if (!waitLogged) { this.log('NET', 'upload paused at ' + (m.upload || 0) + '%: waiting for network', 'warn'); waitLogged = true; }
+        m.state = 'queued'; this.schedule(300, tick); return;
+      }
+      if (!started) { started = true; m.upload = m.upload || 0; this.log('NET', 'upload started in chunks, resumable'); }
+      waitLogged = false; m.state = 'uploading';
+      m.upload = Math.min(100, (m.upload || 0) + 10);
+      if (m.upload >= 100) { this.log('NET', 'upload done: storage returned a media reference', 'ok'); m.state = 'local'; done(); return; }
+      this.schedule(Math.round(total / 10), tick);
+    };
+    this.schedule(this.ri(5, 20), tick);
+  }
+  pin(m) {
+    this.startAction(); this.menuFor = null;
+    const type = m.pinned ? 'unpin' : 'pin';
+    m.pinned = !m.pinned; m.pinPending = true;
+    this.pinOrder = this.pinOrder.filter((x) => x !== m.id); if (m.pinned) this.pinOrder.push(m.id);
+    this.sysLine(type === 'pin' ? 'You pinned a message' : 'You unpinned a message');
+    this.log('UI', (type === 'pin' ? 'Pin' : 'Unpin') + ' tapped on a ' + m.kind + ' message');
+    this.log('DB', (type === 'pin' ? 'upsert' : 'delete') + ' pin ' + this.short(m) + ' (optimistic): banner updated');
+    this.enqueue({ type: type, msgId: m.id });
+  }
+  react(m) {
+    this.startAction(); this.menuFor = null;
+    let r = m.reactions.find((x) => x.e === '😂');
+    const adding = !(r && r.me);
+    if (adding) { if (r) { r.n++; r.me = true; } else m.reactions.push({ e: '😂', n: 1, me: true }); }
+    else { r.n--; r.me = false; if (r.n <= 0) m.reactions = m.reactions.filter((x) => x !== r); }
+    this.log('DB', (adding ? 'add' : 'remove') + ' reaction 😂 on ' + this.short(m) + ' (optimistic)');
+    this.enqueue({ type: 'react', msgId: m.id });
+  }
+  enqueue(op) {
+    op.id = ++this.oid; op.attempt = 0; op.state = 'queued'; op.applied = false; op.serverVal = null; op.waitLogged = false;
+    this.outbox.push(op); if (this.outbox.length > 60) this.outbox.shift();
+    this.log('DB', 'outbox += ' + this.opName(op) + ' (depth ' + this.pendingOps() + ')');
+    this.schedule(this.ri(1, 3), () => this.pump());
+  }
+  pump() {
+    if (this.inflight) return;
+    const queued = this.outbox.filter((o) => o.state === 'queued');
+    if (!queued.length) return;
+    if (this.conn !== 'online') {
+      queued.forEach((op) => { const m = this.msg(op.msgId); if (op.type === 'send' && m) m.state = 'queued'; if (!op.waitLogged) { this.log('NET', 'offline: ' + this.opName(op) + ' waits in outbox', 'warn'); op.waitLogged = true; } });
+      return;
+    }
+    this.transmit(queued[0]);
+  }
+  netStage(m) { return m.stages.length - 4; }
+  transmit(op) {
+    const m = this.msg(op.msgId);
+    if (this.conn !== 'online') { op.state = 'queued'; this.inflight = null; return; }
+    op.attempt++; op.state = 'inflight'; this.inflight = op;
+    if (op.type === 'send' && m) { m.state = 'sending'; m.attempt = op.attempt; m.stage = this.netStage(m); }
+    this.log('NET', this.opName(op) + ' → server, attempt ' + op.attempt);
+    const ep = this.epoch, att = op.attempt;
+    const rtt = this.flaky ? this.ri(160, 420) : this.ri(50, 140);
+    let outcome = 'ok';
+    if (this.script.length) outcome = this.script.shift();
+    else if (this.flaky && this.rnd() < 0.4) outcome = this.rnd() < 0.5 ? 'reqlost' : 'acklost';
+    const current = () => ep === this.epoch && op.attempt === att && this.inflight === op;
+    if (outcome === 'ok') this.schedule(rtt, () => { if (current()) this.ack(op, rtt); });
+    else {
+      if (outcome === 'acklost') this.schedule(Math.round(rtt / 2), () => {
+        if (!op.applied) { op.applied = true; op.serverVal = op.type === 'send' ? ++this.seq : ++this.pinV; }
+        this.log('NET', '(server) applied ' + this.opName(op) + ', but the ack was lost', 'warn');
+      });
+      this.schedule(this.ACK_TIMEOUT, () => { if (current()) this.timeout(op); });
+    }
+  }
+  timeout(op) {
+    this.inflight = null;
+    const m = this.msg(op.msgId);
+    if (op.attempt >= this.MAX_ATTEMPTS) {
+      op.state = 'failed';
+      if (op.type === 'send') { m.state = 'failed'; this.log('NET', 'no ack after ' + op.attempt + ' attempts: marked failed', 'err'); this.status = 'Not sent. The bubble offers Tap to retry.'; }
+      else if (op.type === 'react') { this.log('DB', 'reaction failed: optimistic change rolled back', 'err'); }
+      else { m.pinned = op.type === 'unpin'; m.pinPending = false; this.pinOrder = this.pinOrder.filter((x) => x !== m.id); if (m.pinned) this.pinOrder.push(m.id); this.log('DB', op.type + ' failed: optimistic change rolled back', 'err'); this.status = 'Pin failed and was rolled back.'; }
+      this.pump(); return;
+    }
+    const back = 200 * Math.pow(2, op.attempt - 1) + this.ri(0, 100);
+    op.state = 'retrying'; op.retryIn = back; this.inflight = op;
+    if (op.type === 'send' && m) { m.state = 'retrying'; m.retryIn = back; m.attempt = op.attempt; }
+    this.log('NET', 'no ack in ' + this.ACK_TIMEOUT + ' ms: retry in ' + back + ' ms (backoff + jitter)', 'warn');
+    this.status = 'Retrying (attempt ' + (op.attempt + 1) + ').';
+    const ep = this.epoch;
+    this.schedule(back, () => { if (ep === this.epoch && this.inflight === op) { this.inflight = null; this.transmit(op); } });
+  }
+  ack(op, rtt) {
+    this.inflight = null; op.state = 'done';
+    const m = this.msg(op.msgId); const dup = op.applied;
+    if (op.type === 'send') {
+      m.seq = op.serverVal ?? ++this.seq; m.state = 'sent'; m.stage = m.stages.length - 2;
+      this.log('NET', 'ack seq #' + m.seq + ', ' + rtt + ' ms' + (dup ? ': duplicate dropped by client id' : ''), 'ok');
+      this.log('DB', 'update ' + this.short(m) + ' status=sent seq=' + m.seq);
+      this.status = 'Sent.';
+      this.schedule(this.ri(40, 120), () => this.whenOnline(() => {
+        m.state = 'delivered'; m.stage = m.stages.length - 1; this.log('SYNC', 'delivery receipt: "Delivered"', 'ok'); this.status = 'Delivered.';
+        this.schedule(this.ri(500, 1000), () => this.whenOnline(() => {
+          m.state = 'seen'; m.stage = m.stages.length - 1; this.log('SYNC', 'read receipt: "Seen"', 'ok'); this.status = 'Seen.';
+          if (!this.noReplies && this.rnd() < 0.5) this.peerReply();
+        }));
+      }));
+    } else if (op.type === 'react') {
+      this.log('NET', 'reaction ack, ' + rtt + ' ms', 'ok');
+      this.log('SYNC', 'reaction event sent to Remy', 'ok');
+      this.status = 'Reaction synced.';
+    } else {
+      const v = op.serverVal ?? ++this.pinV; this.pinV = Math.max(this.pinV, v); m.pinPending = false;
+      this.log('NET', op.type + ' ack, pins v' + v + ', ' + rtt + ' ms' + (dup ? ': duplicate ignored' : ''), 'ok');
+      this.log('SYNC', op.type + ' event fanned out: Remy\'s banner updates too', 'ok');
+      this.status = op.type === 'pin' ? 'Pinned for both of you.' : 'Unpinned for both of you.';
+    }
+    this.pump();
+  }
+  peerReply() {
+    this.schedule(this.ri(300, 600), () => this.whenOnline(() => {
+      this.peerTyping = true; this.log('SYNC', 'typing indicator from Remy');
+      this.schedule(this.ri(700, 1200), () => this.whenOnline(() => {
+        this.peerTyping = false;
+        const r = this.rnd();
+        const base = { id: ++this.mid, cid: this.cid(), mine: false, state: 'recv', seq: ++this.seq, attempt: 1, pinned: false, pinPending: false, reactions: [], replyTo: null };
+        let m;
+        if (r < 0.65) m = Object.assign(base, { kind: 'text', text: this.replies[this.ri(0, this.replies.length - 1)] });
+        else if (r < 0.85) m = Object.assign(base, { kind: 'sticker', sticker: 'paw' });
+        else m = Object.assign(base, { kind: 'voice', dur: this.ri(2, 6) });
+        this.msgs.push(m);
+        this.log('SYNC', 'pushed #' + m.seq + ' (' + m.kind + ') from Remy: inserted locally, read receipt sent', 'ok');
+      }));
+    }));
+  }
+  goOffline() {
+    this.conn = 'offline'; this.epoch++;
+    if (this.inflight) { const op = this.inflight; op.state = 'queued'; op.waitLogged = false; this.log('NET', 'connection dropped: ' + this.opName(op) + ' back in outbox', 'warn'); this.inflight = null; }
+    this.status = 'Offline. Changes wait on the device.';
+    this.pump();
+  }
+  goOnline() {
+    this.startAction();
+    this.conn = 'connecting'; this.status = 'Reconnecting…';
+    const ep = ++this.epoch;
+    this.schedule(this.ri(120, 300), () => {
+      if (ep !== this.epoch) return;
+      this.conn = 'online';
+      const n = this.outbox.filter((o) => o.state === 'queued').length;
+      this.log('SYNC', 'reconnected; resuming uploads and flushing ' + n + ' outbox item' + (n === 1 ? '' : 's') + ' in order', 'ok');
+      this.status = 'Reconnected.';
+      this.outbox.forEach((o) => { o.waitLogged = false; });
+      this.pump();
+    });
+  }
+  bump() { this.setState({ v: ++this.n }); }
+  ensureLoop() {
+    if (this.instant) { this.drainAll(); this.bump(); return; }
+    if (!this.timer && this.q.length) {
+      this.timer = setInterval(() => {
+        this.now += 50 / this.SLOW;
+        while (this.q.length && this.q[0].at <= this.now) this.step();
+        if (!this.q.length) { clearInterval(this.timer); this.timer = null; }
+        this.bump();
+      }, 50);
+    }
+    this.bump();
+  }
+  flashHint(t) { this.hint = t; this.bump(); if (this.hintT) clearTimeout(this.hintT); this.hintT = setTimeout(() => { this.hint = ''; this.bump(); }, 1800); }
+  togglePlay(m) {
+    if (this.playT) { clearInterval(this.playT); this.playT = null; }
+    if (this.playId === m.id) { this.playId = null; this.bump(); return; }
+    this.playId = m.id; this.playPos = 0;
+    this.playT = setInterval(() => {
+      this.playPos += 0.25;
+      if (this.playPos >= m.dur) { clearInterval(this.playT); this.playT = null; this.playId = null; this.playPos = 0; }
+      this.bump();
+    }, 250);
+    this.bump();
+  }
+  componentDidMount() {
+    this.boot();
+    if (this.initDraft) this.setState({ draft: this.initDraft });
+    if (this.mode === 'live') this.auto = setTimeout(() => { this.send('text', { text: this.canned[this.k++] }); this.ensureLoop(); }, 1500);
+  }
+  componentWillUnmount() { [this.timer, this.playT].forEach((t) => t && clearInterval(t)); [this.auto, this.lp, this.hintT].forEach((t) => t && clearTimeout(t)); }
+  renderVals() {
+    this.boot();
+    const s = this.state || {};
+    const theme = this.props.theme ?? 'light';
+    const tab = s.tab || this.props.tab || 'user';
+    const draft = s.draft ?? '';
+    const amber = '#F5B041', ok = '#3DDC84', err = '#FF7A7A', muted = '#98A1AE';
+    const fmt = (sec) => '0:' + String(Math.floor(sec)).padStart(2, '0');
+    const WAVE = [6, 12, 18, 10, 22, 14, 8, 16, 24, 12, 6, 14, 20, 10, 16, 22, 8, 12, 18, 6];
+
+    const shown = this.msgs.slice(-24);
+    const lastMine = [...this.msgs].reverse().find((m) => m.mine);
+    const statusOf = (m) => m.state === 'uploading' ? 'Uploading ' + m.upload + '%' : ({ local: 'Sending…', queued: 'Waiting for network', sending: 'Sending…', retrying: 'Sending…', sent: 'Sent', delivered: 'Delivered', seen: 'Seen', failed: 'Not sent ·' })[m.state];
+    const items = shown.map((m, i) => {
+      const next = shown[i + 1], prev = shown[i - 1];
+      const isMsg = m.kind !== 'date' && m.kind !== 'system';
+      const lastOfRun = isMsg && !m.mine && (!next || next.mine || next.kind === 'system' || next.kind === 'date');
+      const showStatus = isMsg && m.mine && (m === lastMine || ['local', 'queued', 'sending', 'retrying', 'uploading', 'failed'].includes(m.state));
+      const plain = m.kind === 'sticker' || m.kind === 'image' || m.kind === 'album';
+      const card = m.kind === 'video' || m.kind === 'link';
+      const rep = m.replyTo ? this.msg(m.replyTo) : null;
+      const playing = this.playId === m.id;
+      const prog = playing ? this.playPos / m.dur : 0;
+      const mineText = m.mine && !plain && !card;
+      const rx = m.reactions || [];
+      return {
+        isDate: m.kind === 'date', isSystem: m.kind === 'system', isMsg: isMsg, text: m.text,
+        align: m.kind === 'date' || m.kind === 'system' ? 'center' : m.mine ? 'flex-end' : 'flex-start',
+        gapTop: (prev && isMsg && prev.mine !== m.mine) ? '8px' : '0',
+        pinnedLabel: !!m.pinned, labelPad: m.mine ? '4px' : '34px',
+        avatarSlot: isMsg && !m.mine, avatarBg: lastOfRun ? '#BFD9C9' : 'transparent', avatarText: lastOfRun ? 'R' : '',
+        isText: m.kind === 'text', isDuck: m.kind === 'sticker' && m.sticker === 'duck', isPaw: m.kind === 'sticker' && m.sticker === 'paw',
+        isImage: m.kind === 'image', isAlbum: m.kind === 'album', isVideo: m.kind === 'video', isLink: m.kind === 'link',
+        isVoice: m.kind === 'voice', notVoice: isMsg && m.kind !== 'voice',
+        alt: m.alt || '', caption: m.caption, dur: m.dur, title: m.title, desc: m.desc, url: m.url,
+        uploading: m.state === 'uploading' || (m.state === 'queued' && m.upload != null && m.upload < 100), uploadText: m.state === 'uploading' ? m.upload + '%' : 'Waiting for network',
+        pad: plain || card ? '0' : '9px 14px', radius: plain ? '14px' : card ? '16px' : '18px',
+        bg: plain ? 'transparent' : card ? 'var(--p-recv)' : (m.mine ? 'var(--p-sent)' : 'var(--p-recv)'), fg: mineText ? '#FFFFFF' : 'var(--p-ink)',
+        ring: this.menuFor === m.id ? '0 0 0 2px var(--p-link)' : 'none',
+        hasReply: !!rep, replyName: rep ? (rep.mine ? 'You' : 'Remy') : '', replySnippet: rep ? this.label(rep) : '', quoteBar: mineText ? 'rgba(255,255,255,.75)' : 'var(--p-link)',
+        playLabel: (playing ? 'Pause' : 'Play') + ' voice message, ' + m.dur + ' seconds', paused: !playing, playing: playing,
+        playBg: m.mine ? '#FFFFFF' : 'var(--p-ink)', playFg: m.mine ? '#3A55F5' : 'var(--p-bg)',
+        bars: m.kind === 'voice' ? WAVE.map((h, j) => ({ h: h + 'px', c: (j / WAVE.length) < prog ? (m.mine ? '#FFFFFF' : 'var(--p-link)') : (m.mine ? 'rgba(255,255,255,.5)' : 'var(--p-sub)') })) : [],
+        time: m.kind === 'voice' ? (playing ? fmt(this.playPos) + ' / ' + fmt(m.dur) : fmt(m.dur)) : '',
+        timeLabel: m.kind === 'voice' ? (playing ? fmt(this.playPos) + ' of ' + fmt(m.dur) : 'Duration ' + fmt(m.dur)) : '',
+        aria: (m.mine ? 'You: ' : 'Remy: ') + (m.kind === 'text' ? m.text : this.label(m) + (m.alt ? ', ' + m.alt : '') + (m.caption ? ', ' + m.caption : '')) + (rep ? ', replying to ' + this.label(rep) : '') + (m.pinned ? ', pinned' : '') + '. Press and hold, or press Enter, for actions.',
+        hasReactions: rx.length > 0, reactText: rx.map((r) => r.e + ' ' + r.n).join(' '), reactPad: m.mine ? '8px' : '40px',
+        reactLabel: 'Reactions: ' + rx.map((r) => 'laughing ' + r.n + (r.me ? ', including you' : '')).join(', '),
+        menuOpen: this.menuFor === m.id ? 'true' : 'false', menuOpen2: this.menuFor === m.id,
+        pinWord: m.pinned ? 'Unpin' : 'Pin', reactWord: rx.some((r) => r.me) ? 'Remove laughing reaction' : 'React with laughing',
+        hasStatus: showStatus, status: showStatus ? statusOf(m) : '', statusColor: m.state === 'failed' ? 'var(--p-err)' : 'var(--p-sub)', canRetry: m.state === 'failed',
+        down: (e) => { if (e && e.button > 0) return; if (this.lp) clearTimeout(this.lp); this.holdId = m.id; this.bump(); this.lp = setTimeout(() => { this.lp = null; this.holdId = null; this.userActs++; this.startAction(); this.log('UI', 'long press ' + this.LONG_PRESS + ' ms on a ' + m.kind + ' message: actions open'); this.menuFor = m.id; this.bump(); }, this.LONG_PRESS); },
+        up: () => { if (this.holdId) { this.holdId = null; this.bump(); } if (this.lp) { clearTimeout(this.lp); this.lp = null; if (this.menuFor !== m.id) this.flashHint(m.kind === 'video' ? 'The video would open in a player. Press and hold to pin.' : m.kind === 'link' ? 'The link would open. Press and hold to pin.' : 'Press and hold to pin, reply or react'); } },
+        leave: () => { if (this.holdId) { this.holdId = null; this.bump(); } if (this.lp) { clearTimeout(this.lp); this.lp = null; } },
+        holdCls: this.holdId === m.id ? 'dm-hold' : '',
+        ctx: (e) => { if (e && e.preventDefault) e.preventDefault(); },
+        click: (e) => { if (e && e.detail === 0) { this.startAction(); this.log('UI', 'Enter on a ' + m.kind + ' message: actions open'); this.menuFor = m.id; this.bump(); } },
+        pin: () => { this.pin(m); this.ensureLoop(); },
+        react: () => { this.react(m); this.ensureLoop(); },
+        reply: () => { this.menuFor = null; this.replyTo = m.id; this.startAction(); this.log('UI', 'Reply tapped: the next message will quote #' + m.seq); this.bump(); },
+        closeMenu: () => { this.menuFor = null; this.bump(); },
+        menuKey: (e) => { if (e.key === 'Escape') { e.preventDefault(); this.menuFor = null; this.bump(); } },
+        play: () => this.togglePlay(m),
+        retry: () => { m.state = 'local'; this.startAction(); this.log('UI', 'Tap to retry: same client id re-queued'); this.focusId = m.id; this.enqueue({ type: 'send', msgId: m.id }); this.ensureLoop(); }
+      };
+    }).reverse();
+    const lastPin = this.msg(this.pinOrder[this.pinOrder.length - 1]);
+    const bannerText = lastPin ? (lastPin.mine ? 'You: ' : 'Remy: ') + (lastPin.kind === 'text' ? lastPin.text : '[' + this.label(lastPin) + ']') : '';
+    const sendKind = (kind, data) => { this.userActs++; this.send(kind, data || {}); this.ensureLoop(); };
+    const sendText = () => {
+      const text = draft.trim() || this.canned[this.k++ % this.canned.length];
+      this.userActs++; this.send('text', { text: text }); this.setState({ draft: '' }); this.ensureLoop();
+    };
+    const tray = [
+      { label: 'Sticker', go: () => sendKind('sticker') }, { label: 'Photo', go: () => sendKind('image') },
+      { label: '3 photos', go: () => sendKind('album') }, { label: 'Voice', go: () => sendKind('voice') },
+      { label: 'Video', go: () => sendKind('video') }, { label: 'Link', go: () => sendKind('link') }
+    ];
+    const rep = this.replyTo ? this.msg(this.replyTo) : null;
+    const holdDemo = () => { const t = this.msg(this.starId) || this.msgs.filter((x) => x.kind !== 'date' && x.kind !== 'system').slice(-1)[0]; if (!t) return; this.userActs++; this.startAction(); this.log('UI', 'actions opened on #' + t.seq + ' (on a phone: press and hold 450 ms)'); this.menuFor = t.id; this.bump(); };
+    const chips = [
+      { label: 'Send a photo', go: () => sendKind('image') }, { label: 'Voice', go: () => sendKind('voice') },
+      { label: 'Video', go: () => sendKind('video') }, { label: 'Hold to pin', go: holdDemo }
+    ];
+    const showChips = this.userActs < 2 && !this.tray && !this.replyTo && !draft && !this.menuFor;
+
+    const f = this.msg(this.focusId) || lastMine;
+    const composing = draft.length > 0;
+    const stages = composing ? ['COMPOSING'].concat(this.PIPES.text.stages) : (f.stages || this.PIPES[f.kind].stages);
+    const cur = composing ? 0 : f.stage;
+    const allDone = !composing && f.state === 'seen';
+    const failed = !composing && f.state === 'failed';
+    const machine = stages.map((label, i) => {
+      const done = i < cur || allDone; const active = i === cur && !allDone;
+      const c = active ? (failed ? err : amber) : done ? ok : '#3A414D';
+      return { label: label, arrow: i < stages.length - 1 ? '→' : '', border: c, fg: active || done ? c : muted, bg: active ? '#2B2114' : 'transparent', current: active ? 'step' : 'false' };
+    });
+    let excText = '', excColor = amber;
+    if (!composing) {
+      if (f.state === 'uploading') excText = 'UPLOADING ' + f.upload + '% (simulated)';
+      if (f.state === 'queued') excText = f.upload != null && f.upload < 100 ? 'UPLOAD PAUSED at ' + f.upload + '% · waiting for network' : 'QUEUED · waiting for network';
+      if (f.state === 'retrying') excText = 'RETRY ' + (f.attempt + 1) + ' in ' + f.retryIn + ' ms (simulated)';
+      if (f.state === 'failed') { excText = 'FAILED after ' + f.attempt + ' attempts · user can retry'; excColor = err; }
+    }
+    const pinnedCount = this.msgs.filter((m) => m.pinned).length;
+    const payload = { text: 'text, ' + (f.text || '').length + ' chars', sticker: 'sticker id "' + f.sticker + '"', image: 'media ref + size + blurhash-style placeholder', album: '3 media refs', voice: 'media ref + ' + f.dur + ' s + waveform', video: 'video ref + thumbnail URL only', link: 'URL + preview card' }[f.kind];
+    const record = composing ? [
+      { k: 'TYPE', v: 'text (draft)' }, { k: 'PERSISTED', v: 'no (memory only)' }, { k: 'REPLY TO', v: rep ? '#' + rep.seq : 'none' },
+      { k: 'TYPING INDICATOR', v: '≤ 1 per 3 s' }, { k: 'OUTBOX', v: this.pendingOps() + ' pending' }, { k: 'PINS', v: 'v' + this.pinV + ' · ' + pinnedCount + ' pinned' }
+    ] : [
+      { k: 'TYPE', v: f.kind }, { k: 'CLIENT ID', v: f.cid.slice(0, 4) + '·' + f.cid.slice(4) }, { k: 'SERVER SEQ', v: f.seq ? '#' + f.seq : 'not assigned yet' },
+      { k: 'STATUS', v: f.state + (f.state === 'uploading' ? ' ' + f.upload + '%' : '') }, { k: 'PAYLOAD', v: payload || '' }, { k: 'ATTEMPTS', v: String(f.attempt) },
+      { k: 'OUTBOX', v: this.pendingOps() + ' pending' }, { k: 'PINS', v: 'v' + this.pinV + ' · ' + pinnedCount + ' pinned' }
+    ];
+    const laneColor = { UI: '#E6E8EB', DB: '#8AB4FF', NET: amber, SYNC: ok };
+    const kindColor = { '': '#E6E8EB', ok: '#E6E8EB', warn: amber, err: err };
+    const logs = this.logs.slice(-10).map((l) => ({ t: '+' + l.t + ' ms', lane: l.lane, laneColor: laneColor[l.lane], text: l.text, color: kindColor[l.kind] }));
+    const on = (x) => ({ bg: x ? '#2B2114' : 'transparent', fg: x ? amber : '#E6E8EB', border: x ? amber : '#3A414D' });
+    const fl = on(this.flaky), of = on(this.conn !== 'online');
+    const tabBtn = (sel) => ({ bg: sel ? 'var(--ink,#121417)' : 'transparent', fg: sel ? 'var(--bg,#F6F6F3)' : 'var(--ink,#121417)' });
+    const tu = tabBtn(tab === 'user'), te = tabBtn(tab === 'engineer');
+    return {
+      skin: theme === 'dark' ? 'dm-dark' : 'dm-light',
+      tabUserSel: tab === 'user' ? 'true' : 'false', tabEngSel: tab === 'engineer' ? 'true' : 'false',
+      tabUserBg: tu.bg, tabUserFg: tu.fg, tabEngBg: te.bg, tabEngFg: te.fg,
+      tabUser: () => this.setState({ tab: 'user' }), tabEng: () => this.setState({ tab: 'engineer' }),
+      userHidden: tab === 'user' ? 'false' : 'true', engHidden: tab === 'engineer' ? 'false' : 'true',
+      presence: this.peerTyping ? 'typing…' : this.conn === 'online' ? 'Active now' : 'Waiting for network',
+      items, peerTyping: this.peerTyping,
+      hasBanner: !!lastPin, bannerText, bannerNote: lastPin && lastPin.pinPending ? 'syncing…' : '', bannerLabel: 'Pinned message: ' + bannerText,
+      hasHint: !!this.hint, hint: this.hint, hintBottom: this.tray ? '112px' : '72px',
+      hasReplyTo: !!rep, replyName: rep ? (rep.mine ? 'yourself' : 'Remy') : '', replySnippet: rep ? this.label(rep) : '',
+      cancelReply: () => { this.replyTo = null; this.bump(); },
+      chips, showChips,
+      trayOpen: this.tray, trayExpanded: this.tray ? 'true' : 'false', tray,
+      toggleTray: () => { this.tray = !this.tray; this.bump(); },
+      sendPhoto: () => sendKind('image'), sendVoice: () => sendKind('voice'), sendSticker: () => sendKind('sticker'),
+      inputId: this.inputId, draft,
+      onDraft: (e) => {
+        const v = e.target.value;
+        if (!draft && v) { this.startAction(); this.log('UI', 'composing: draft held in memory'); }
+        if (v && Date.now() - this.typingAt > 3000) { this.typingAt = Date.now(); this.log('NET', 'typing indicator sent (throttled)'); }
+        this.setState({ draft: v });
+      },
+      onKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); sendText(); } },
+      onSend: sendText,
+      machineFor: composing ? 'draft (text)' : f.kind + ' · "' + (this.label(f).length > 20 ? this.label(f).slice(0, 19) + '…' : this.label(f)) + '"',
+      machine, hasExc: !!excText, excText, excColor, record, logs,
+      speedWord: this.instant ? 'INSTANT' : 'PLAYBACK ×' + this.SLOW,
+      connWord: this.conn === 'online' ? 'CONNECTED' : this.conn === 'connecting' ? 'CONNECTING' : 'OFFLINE',
+      connDot: this.conn === 'online' ? ok : this.conn === 'connecting' ? amber : muted,
+      flakyPressed: this.flaky ? 'true' : 'false', flakyBg: fl.bg, flakyFg: fl.fg, flakyBorder: fl.border,
+      offPressed: this.conn !== 'online' ? 'true' : 'false', offBg: of.bg, offFg: of.fg, offBorder: of.border,
+      toggleFlaky: () => { this.flaky = !this.flaky; this.status = this.flaky ? 'Flaky network on: about 4 in 10 requests lose the request or the ack.' : 'Flaky network off.'; this.bump(); },
+      toggleOffline: () => { if (this.conn === 'online') { this.startAction(); this.goOffline(); } else this.goOnline(); this.ensureLoop(); },
+      status: this.status || (this.reduced ? 'Reduced motion: every action completes instantly and nothing plays by itself.' : 'Send any message type, or press and hold one to pin it. Both panes react.'),
+      statusColor: this.status ? '#E6E8EB' : muted
+    };
+  }
+}
+
+const tplDoc = new DOMParser().parseFromString('<body>' + TPL + '</body>', 'text/html');
+const helmet = tplDoc.querySelector('helmet');
+if (helmet) { helmet.querySelectorAll('style,link').forEach(n => document.head.appendChild(n.cloneNode(true))); helmet.remove(); }
+const rootTpl = tplDoc.body;
+function look(path, scopes){ path = path.trim(); if (path === 'true') return true; if (path === 'false') return false; const parts = path.split('.'); for (let i = scopes.length-1; i >= 0; i--){ if (scopes[i] && parts[0] in scopes[i]){ let v = scopes[i][parts[0]]; for (const p of parts.slice(1)) v = v == null ? undefined : v[p]; return v; } } return undefined; }
+function interp(str, scopes){ const whole = str.match(/^\s*\{\{([^}]+)\}\}\s*$/); if (whole) return look(whole[1], scopes); return str.replace(/\{\{([^}]+)\}\}/g, (_, p) => { const v = look(p, scopes); return v == null ? '' : String(v); }); }
+const EV = { onClick:'click', onPointerDown:'pointerdown', onPointerUp:'pointerup', onPointerLeave:'pointerleave', onContextMenu:'contextmenu', onKeyDown:'keydown', onChange:'input', onMouseMove:'mousemove' };
+function render(node, scopes, out){
+  for (const ch of node.childNodes){
+    if (ch.nodeType === 3){ out.appendChild(document.createTextNode(interp(ch.nodeValue, scopes) ?? '')); continue; }
+    if (ch.nodeType !== 1) continue;
+    const tag = ch.localName;
+    if (tag === 'sc-if'){ if (interp(ch.getAttribute('value'), scopes)) render(ch, scopes, out); continue; }
+    if (tag === 'sc-for'){ const list = interp(ch.getAttribute('list'), scopes) || []; const as = ch.getAttribute('as'); list.forEach((it, i) => render(ch, scopes.concat([{ [as]: it, $index: i }]), out)); continue; }
+    const el = ch.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS(ch.namespaceURI, tag) : document.createElement(tag);
+    for (const a of ch.attributes){
+      const name = a.name.startsWith('on') ? Object.keys(EV).find(k => k.toLowerCase() === a.name) : null;
+      if (name){ const fn = interp(a.value, scopes); if (typeof fn === 'function') el.addEventListener(EV[name], fn); continue; }
+      const v = interp(a.value, scopes);
+      if (a.name === 'value' && tag === 'input'){ el.value = v ?? ''; continue; }
+      if (a.name === 'autofocus') continue;
+      el.setAttribute(a.name, v == null ? '' : String(v));
+    }
+    render(ch, scopes, el); out.appendChild(el);
+  }
+}
+const PANELS = [{"bg": "#F6F6F3", "ink": "#121417", "muted": "#50555E", "line": "#8A8D93", "label": "MOBILE \u00b7 user tab", "w": 390, "props": {"theme": "light", "mode": "reply", "seed": 9}}, {"bg": "#0E1013", "ink": "#E8E8E3", "muted": "#A3A8B1", "line": "#646A74", "label": "MOBILE \u00b7 engineer tab", "w": 390, "props": {"theme": "dark", "mode": "video", "seed": 5, "tab": "engineer"}}];
+const root = document.getElementById('root');
+PANELS.forEach(p => {
+  const box = document.createElement('section'); box.className = 'panel';
+  box.style.cssText = `background:${p.bg};color:${p.ink};--muted:${p.muted};--ink:${p.ink};--bg:${p.bg};--line-strong:${p.line};width:${p.w}px`;
+  const h = document.createElement('p'); h.textContent = p.label; h.style.cssText = 'margin:0 0 12px;font:600 12px monospace;letter-spacing:.08em'; box.appendChild(h);
+  const host = document.createElement('div'); box.appendChild(host); root.appendChild(box);
+  const c = new Component(p.props);
+  c.__render = () => { const ae = document.activeElement; const wasInput = ae && ae.tagName === 'INPUT' && host.contains(ae); host.innerHTML = ''; render(rootTpl, [c.renderVals()], host); if (wasInput) { const i = host.querySelector('input'); if (i){ i.focus(); i.selectionStart = i.selectionEnd = i.value.length; } } };
+  c.__render(); c.componentDidMount && c.componentDidMount();
+});
+</script></body></html>
