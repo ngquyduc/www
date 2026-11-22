@@ -7,6 +7,7 @@ import Figure from "../../components/Figure.astro";
 import Outcome from "../../components/Outcome.astro";
 import Outcomes from "../../components/Outcomes.astro";
 import Placeholder from "../../components/Placeholder.astro";
+import Arch from "../../components/orderbook/Arch.astro";
 import TryIt from "../../components/orderbook/TryIt.astro";
 import CaseStudy from "../../layouts/CaseStudy.astro";
 import DepthPage from "../../layouts/DepthPage.astro";
@@ -29,7 +30,7 @@ interface Props {
 }
 const { entry, next } = Astro.props;
 const { Content, headings } = await render(entry);
-const components = { Placeholder, Outcome, Outcomes, Figure, Callout, pre: CodeBlock, TryIt, Bench: BenchChart };
+const components = { Placeholder, Outcome, Outcomes, Figure, Callout, pre: CodeBlock, TryIt, Arch, Bench: BenchChart };
 ---
 
 {

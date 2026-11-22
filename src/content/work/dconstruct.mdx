@@ -7,9 +7,9 @@ role: Software Engineer Intern
 start: Jan 2024
 end: Jun 2024
 location: Singapore
-team: "[team size, who you worked with]"
+team: Small startup, no separate teams
 summary: Built the SolidJS UI and the C++17 and SQLite endpoints (sensor connections, live view, video playback) for a point-cloud surveillance system, and a C++ PDF report library.
-stack: [C++17, SQLite 3, SolidJS, TailwindCSS]
+stack: [C++17, SQLite 3, Emscripten, SolidJS, TailwindCSS]
 metrics:
   - { value: "−20%", label: "latency", source: resume }
   - { value: "−50%", label: "training time", source: resume }
@@ -18,7 +18,7 @@ featured: 2
 featuredMeta: Software Engineer Intern · Jan–Jun 2024
 featuredSummary: C++17 and SQLite endpoints for sensor connections, live view and playback in a point-cloud surveillance system, plus the SolidJS UI on top.
 featuredMetric: "−20% latency"
-status: published
+status: in-progress
 hasPage: true
 headline: "dConstruct Robotics: making a point-cloud surveillance system faster to run and easier to learn"
 lede: "Six months as a software engineer intern, working on both ends of the system: the operator UI, and the C++ services that stream sensor data into it."
@@ -28,25 +28,25 @@ lede: "Six months as a software engineer intern, working on both ends of the sys
 
 <Outcomes>
   <Outcome value="−20%" label="latency on sensor, live-view and playback endpoints" />
-  <Outcome value="−50%" label="user training time after the UI rebuild" />
-  <Outcome value="[n]" label="projects using the PDF report library" />
+  <Outcome value="−50%" label="training time for a new operator: 2 days down to 1" />
+  <Outcome value="1" label="project using the PDF report library so far" />
 </Outcomes>
 
-<p class="mono text-xs text-subtle">How each number was measured goes in a footnote. <Placeholder>[Method for the 20% and the 50%]</Placeholder></p>
+<p class="mono text-xs text-subtle">Training time is how long it took to train a new operator, before and after the UI rebuild. <Placeholder>[How the 20% latency was measured: which endpoints, before and after what change]</Placeholder></p>
 
 ## Context
 
-dConstruct builds a surveillance system that works on point clouds. Operators connect sensors, watch a live 3D view and play back recorded footage.
+dConstruct builds a surveillance system that works on point clouds. Operators connect sensors, watch a live 3D view and play back recorded footage. It is a small startup, so I worked across the whole stack rather than inside one team.
 
-<Placeholder>[Write: what was slow or hard to learn before you joined, in two or three sentences. Keep client details out.]</Placeholder>
+Before the rebuild, training a new operator on the system took two days.
 
 ## What I built
 
-**Endpoints in C++17 and SQLite 3** for sensor connections, live view and video playback. Together they cut latency for real-time surveillance by 20%.
+**Endpoints in C++17 and SQLite 3, compiled with Emscripten,** for sensor connections, live view and video playback. Together they cut latency for real-time surveillance by 20%.
 
-**The operator UI in SolidJS and TailwindCSS**, responsive across the screens operators actually use. Training time for new users fell by half.
+**The operator UI in SolidJS and TailwindCSS**, responsive across the screens operators actually use. Training a new operator now takes one day instead of two.
 
-**A C++ PDF report generator** packaged as a library and integrated into several projects to standardise documentation.
+**A C++ PDF report generator** packaged as a library, so reports come out the same way every time. One project uses it so far.
 
 <Figure n={1} label="Figure slot · UI screenshot or request-flow diagram · 16:9 · redact client data"><Placeholder>[caption: one sentence on what the reader should notice]</Placeholder></Figure>
 

@@ -4,21 +4,21 @@ tier: experience
 order: 1
 org: TikTok
 role: Mobile Software Engineer
-start: "[start]"
+start: Jul 2025
 location: Singapore
-team: "[team, at the level of public facts]"
+team: Social Foundation, IM SDK
 summary: "Instant-messaging SDK. TikTok is the main client; TikTok Shop and Lemon8 also build on it. Started on iOS; the team now works more and more cross-platform."
-stack: [iOS, "[languages and cross-platform stack]"]
+stack: [Objective-C, Swift, iOS]
 metrics:
   - { value: "[impact metric]", label: "", source: public }
 context: employment
 featured: 1
-featuredMeta: Mobile Software Engineer · [start]–now
+featuredMeta: Mobile Software Engineer · Jul 2025–now
 featuredSummary: Works on the instant-messaging SDK behind TikTok chat, on iOS and increasingly cross-platform.
 featuredMetric: "[impact metric]"
 status: in-progress
 hasPage: true
-headline: "TikTok: working on the instant-messaging SDK behind TikTok chat"
+headline: "TikTok: keeping direct messages reliable on iOS"
 lede: "Mobile software engineer on the messaging SDK that TikTok's chat is built on, and that TikTok Shop and Lemon8 also use. Started on iOS; the team now works more and more cross-platform."
 ---
 
@@ -28,16 +28,26 @@ lede: "Mobile software engineer on the messaging SDK that TikTok's chat is built
 ## Outcome
 
 <Outcomes>
-  <Outcome value="[impact]" label="one or two public-safe impact lines: what you own, scale only if already public" />
+  <Outcome value="[impact]" label="one public-safe impact line, approved by Duc" />
 </Outcomes>
 
 ## Context
 
-<Placeholder>[Your role, and the kind of problems a messaging SDK has to solve, in general terms. Nothing internal.]</Placeholder>
+Direct messages in TikTok run on an in-house instant-messaging SDK, and TikTok Shop and Lemon8 build on the same SDK. I joined the IM SDK team in Social Foundation in July 2025 and work on the iOS client in Objective-C and Swift.
+
+Messaging looks simple from the outside: you type, it arrives. Underneath, a phone drops between networks, a real-time connection expires, pushes arrive out of order, and people switch accounts. My work is making those cases invisible to the person sending the message.
 
 ## What I built
 
-<Placeholder>[What you work on, described at the level of public facts.]</Placeholder>
+**Automatic resend for failed sends.** When a message fails because of a client-side network error, the client now retries it without the user having to tap anything.
+
+**A fallback when the real-time connection's credentials expire**, so a send that would have failed goes through another path instead.
+
+**A client-side buffer for out-of-order pushes.** Real-time messages that arrive out of sequence are held and put back in order, instead of triggering a fresh fetch from the server each time.
+
+**Privacy checks for account switching.** Message traffic is checked against the signed-in user, with monitoring that flags a session bound to the wrong account.
+
+**One interface for conversation data.** I consolidated a sprawl of conversation APIs into a single SDK interface, so feature teams across TikTok messaging have one place to query.
 
 ## Decisions
 

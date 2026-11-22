@@ -1,18 +1,24 @@
 ---
-import Placeholder from "../components/Placeholder.astro";
+import { readFileSync } from "node:fs";
+import { Image } from "astro:assets";
 import PhText from "../components/PhText.astro";
 import Base from "../layouts/Base.astro";
 import { getWork, when } from "../lib/content";
 import { site } from "../site";
+import photo from "../assets/duc.jpg";
 
 const jobs = await getWork("experience");
+// Size and date of the résumé shown under the download button; placeholders until the real PDF is in public/.
+const pdf = readFileSync("public/resume.pdf");
+const pdfIsPlaceholder = pdf.includes("PLACEHOLDER RESUME");
+const pdfKb = Math.round(pdf.length / 1024);
 // One-line résumé summaries; numbers are the résumé's own (§2.4).
 const lines: Record<string, string> = {
   tiktok: "Instant-messaging SDK (TikTok, also used by TikTok Shop and Lemon8). iOS, increasingly cross-platform.",
-  kovalee: "About two iOS apps a month (SwiftUI, Fastlane). Analytics and in-app-purchase SDKs.",
+  kovalee: "About two iOS apps a month (SwiftUI, Fastlane). Analytics, in-app-purchase and ad SDKs used by about 20 apps.",
   dconstruct: "C++17 + SQLite endpoints, 20% lower latency. SolidJS UI, training time halved. C++ PDF report library.",
-  vebits: "MongoDB query and distributed DB work, 50% faster. Angular 13 redesign. React Native camera control under 100 ms.",
-  "nus-ta": "Led 6 junior TAs; tutorials for 100+ students.",
+  vebits: "Django geospatial queries, 300 ms to 200 ms. MongoDB replication and sharding for 500,000 reports a day.",
+  "nus-ta": "Led 6 junior TAs; taught 100+ students (feedback 4.8 / 5). Automated grading for SQL assignments.",
 };
 ---
 
@@ -20,9 +26,15 @@ const lines: Record<string, string> = {
   <section class="wrap pt-12 md:pt-[72px]">
     <div class="flex items-start gap-16 max-md:flex-col max-md:items-stretch max-md:gap-10">
       <aside class="flex shrink-0 flex-col gap-4 md:sticky md:top-6 md:w-[260px]" aria-label="Profile">
-        <Placeholder block class="grid size-40 place-items-center !rounded-lg !p-2 text-center">
-          <span class="kicker !text-[11px]">Photo slot · 1:1 · 320 px source</span>
-        </Placeholder>
+        <Image
+          src={photo}
+          alt="Duc smiling in a black puffer jacket and scarf on a Paris street, the Eiffel Tower behind him"
+          width={160}
+          height={160}
+          densities={[1, 2]}
+          loading="eager"
+          class="size-40 rounded-lg border border-line object-cover"
+        />
         <div>
           <p class="text-lg font-semibold">{site.fullName}</p>
           <p class="text-[15px] text-muted">Mobile software engineer at TikTok · {site.location}</p>
@@ -30,7 +42,9 @@ const lines: Record<string, string> = {
         <a class="btn btn-primary" href={site.resumePath} download>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>Download résumé (PDF)
         </a>
-        <p class="mono text-xs text-subtle">resume.pdf · <PhText text="[size] KB" /> · updated <PhText text="[YYYY-MM]" /></p>
+        <p class="mono text-xs text-subtle">
+          resume.pdf · {pdfIsPlaceholder ? <PhText text="[real résumé PDF]" /> : <>{pdfKb} KB · updated {site.resumeUpdated}</>}
+        </p>
         <nav aria-label="Elsewhere" class="flex flex-wrap gap-x-4 gap-y-1.5 border-t border-line pt-3 text-[15px]">
           <a href={site.socials.github.href} rel="me">GitHub</a>
           <a href={site.socials.linkedin.href} rel="me">LinkedIn</a>
@@ -50,12 +64,12 @@ const lines: Record<string, string> = {
           <p>
             Before TikTok I was an iOS developer intern at Kovalee, shipping about two apps a month and maintaining their
             analytics and in-app-purchase SDKs. Before that I wrote C++ services and a SolidJS UI for a point-cloud
-            surveillance system at dConstruct Robotics, and worked on MongoDB performance at Vebits. I studied Computer
+            surveillance system at dConstruct Robotics, and made a road-inspection app's queries faster at Vebits. I studied Computer
             Science at NUS.
           </p>
           <p>
-            Outside work I build systems to understand them: an exchange matching engine in C++ and Go, an async TCP server
-            in Rust, a distributed chat service in Go. <Placeholder>[One personal line, optional.]</Placeholder>
+            Outside work I build systems to understand them: an async TCP server in Rust, a distributed chat service in Go,
+            and an exchange matching engine I first wrote in C++ for a course and am now hardening.
           </p>
         </div>
 
@@ -81,8 +95,8 @@ const lines: Record<string, string> = {
           <h2 id="edu-h" class="t2 mb-1 text-[28px] font-semibold tracking-[-0.02em]">Education</h2>
           <div class="border-t border-ink">
             <div class="flex flex-wrap gap-x-8 gap-y-1 border-b border-line py-[18px]">
-              <span class="mono shrink-0 text-[13px] text-muted md:w-[160px]">2021 – <Placeholder>[grad year]</Placeholder></span>
-              <span class="min-w-0 flex-[1_1_360px]"><b class="font-semibold">National University of Singapore</b><br /><span class="text-[15px] text-muted">Bachelor of Computing (Hons) in Computer Science. Focus: software engineering, database systems.</span></span>
+              <span class="mono shrink-0 text-[13px] text-muted md:w-[160px]">Aug 2021 – May 2025</span>
+              <span class="min-w-0 flex-[1_1_360px]"><b class="font-semibold">National University of Singapore</b><br /><span class="text-[15px] text-muted">Bachelor of Computing (Hons) in Computer Science. Focus areas: software engineering and database systems.</span></span>
             </div>
             <div class="flex flex-wrap gap-x-8 gap-y-1 border-b border-line py-[18px]">
               <span class="mono shrink-0 text-[13px] text-muted md:w-[160px]">2024</span>
@@ -95,7 +109,7 @@ const lines: Record<string, string> = {
           <h2 id="tools-h" class="t2 mb-3 text-[28px] font-semibold tracking-[-0.02em]">Tools I've shipped with</h2>
           <dl class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-x-8 gap-y-4">
             <div><dt class="kicker !text-[11px] text-subtle">Systems and backend</dt><dd class="mono mt-1.5 text-[13px]">C++17 · Go · Rust (Tokio) · SQLite · MongoDB · Redis · Kitex RPC · MPI · CUDA</dd></div>
-            <div><dt class="kicker !text-[11px] text-subtle">Apps and frontend</dt><dd class="mono mt-1.5 text-[13px]">Swift · SwiftUI · Fastlane · <Placeholder>[cross-platform stack]</Placeholder> · SolidJS · Angular · React Native · TailwindCSS</dd></div>
+            <div><dt class="kicker !text-[11px] text-subtle">Apps and frontend</dt><dd class="mono mt-1.5 text-[13px]">Objective-C · Swift · SwiftUI · Fastlane · SolidJS · Angular · React Native · TailwindCSS</dd></div>
           </dl>
         </section>
       </div>

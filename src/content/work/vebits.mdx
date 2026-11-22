@@ -1,49 +1,47 @@
 ---
-title: Vebits
+title: Vebits AI
 tier: experience
 order: 4
-org: Vebits
+org: Vebits AI
 role: Software Engineer Intern
 start: May 2023
-end: Aug 2023
-location: "[location]"
-team: "[team size, who you worked with]"
-summary: MongoDB query and distributed database work, an Angular 13 frontend redesign, and a React Native app that controls 360° cameras.
-stack: [MongoDB, Django, Angular 13, React Native]
+end: Jul 2023
+location: Singapore
+summary: Made a high-traffic road-inspection web app faster with geospatial query work in Django, and scaled its MongoDB with replication and sharding.
+stack: [Django, MongoDB]
 metrics:
-  - { value: "−50%", label: "runtime", source: resume }
-  - { value: "<100 ms", label: "camera control", source: resume }
+  - { value: "−33%", label: "processing time", source: resume }
+  - { value: "500k", label: "reports / day", source: resume }
 context: internship
 status: in-progress
 hasPage: true
-headline: "Vebits: faster queries, a redesigned frontend and a camera remote"
-lede: "A summer internship across the stack: MongoDB performance, an Angular 13 redesign, and a React Native app that controls 360° cameras."
+headline: "Vebits AI: faster queries for a road-inspection web app"
+lede: "A summer internship on the backend of a high-traffic road-inspection app used for urban infrastructure management."
 ---
 
 ## Outcome
 
 <Outcomes>
-  <Outcome value="−50%" label="query runtime after the MongoDB and distributed database work" />
-  <Outcome value="<100 ms" label="camera control from the React Native app" />
+  <Outcome value="−33%" label="data processing time, from 300 ms to 200 ms" />
+  <Outcome value="500k" label="inspection reports a day, handled after replication and sharding" />
+  <Outcome value="<200 ms" label="average query response time at that load" />
 </Outcomes>
 
-<p class="mono text-xs text-subtle"><Placeholder>[Method for the 50% and the 100 ms]</Placeholder></p>
+<p class="mono text-xs text-subtle">Figures as on my résumé.</p>
 
 ## Context
 
-<Placeholder>[Write: what Vebits builds and what was slow before, in two or three sentences.]</Placeholder>
+Vebits AI runs a road-inspection web app that city infrastructure teams rely on. Reports come in all day, and the app has to keep querying them quickly as the volume grows.
 
 ## What I built
 
-**MongoDB query and distributed database work** that halved runtime.
+**Geospatial query enhancements in Django** that brought data processing down from 300 ms to 200 ms.
 
-**An Angular 13 frontend redesign.**
-
-**A React Native app that controls 360° cameras** with under 100 ms of control latency.
+**Replication and sharding in MongoDB**, so the system handles 500,000 inspection reports a day while average query response stays under 200 ms.
 
 ## Decisions
 
-<Callout kind="Decision" title="[e.g. which queries you changed and why]">
+<Callout kind="Decision" title="[e.g. how you chose the shard key]">
   <Placeholder>[Options considered, what you chose, the trade-off you accepted.]</Placeholder>
 </Callout>
 
