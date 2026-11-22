@@ -1,0 +1,25 @@
+---
+// Code block (§5.12): instrument colours in both themes, header bar with filename,
+// language and Copy. Used as the MDX `pre` override.
+const { "data-language": lang, "data-title": title, class: cls, ...rest } = Astro.props as Record<string, string>;
+const names: Record<string, string> = { cpp: "C++", ts: "TypeScript", js: "JavaScript", go: "Go", rust: "Rust", rs: "Rust", swift: "Swift", sh: "Shell", bash: "Shell", plaintext: "Text", txt: "Text" };
+const label = lang ? (names[lang] ?? lang.toUpperCase()) : "";
+---
+
+<figure class="code bleed mx-auto my-7 max-w-[48rem] overflow-hidden rounded-lg border border-term-line bg-term-bg text-term-ink">
+  <div class="flex items-center gap-3 border-b border-term-line bg-term-raised py-2 pr-2 pl-4">
+    {title && <span class="mono text-xs text-term-muted">{title}</span>}
+    {label && <span class="mono ml-auto text-[11px] tracking-[.08em] text-term-muted uppercase">{label}</span>}
+    <button type="button" data-copy data-copy-done="Code copied" class:list={["mono min-h-8 rounded-[6px] border border-term-ctl px-2.5 text-xs text-term-ink hover:border-term-ink", !label && "ml-auto"]}>Copy</button>
+  </div>
+  <pre class:list={[cls, "mono m-0 overflow-x-auto px-5 py-4 text-[14px] leading-[1.65]"]} {...rest}><slot /></pre>
+</figure>
+
+<style is:global>
+  figure.code :focus-visible {
+    outline-color: var(--color-term-amber);
+  }
+  figure.code pre {
+    background: transparent !important;
+  }
+</style>
