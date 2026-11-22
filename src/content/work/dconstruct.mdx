@@ -8,8 +8,8 @@ start: Jan 2024
 end: Jun 2024
 location: Singapore
 team: Small startup, no separate teams
-summary: Built the operator web app for a LiDAR surveillance system in SolidJS and TailwindCSS. New operators now learn it in one day instead of two.
-stack: [SolidJS, TailwindCSS]
+summary: Built the operator web app for a LiDAR surveillance system in SolidJS, plus some of the C++ endpoints behind it and sensor calibration. New operators now learn it in one day instead of two.
+stack: [SolidJS, TailwindCSS, C++17, SQLite 3]
 metrics:
   - { value: "−50%", label: "training time", source: resume }
 context: internship
@@ -20,11 +20,12 @@ featuredMetric: "−50% training time"
 status: published
 hasPage: true
 headline: "dConstruct Robotics: making a point-cloud surveillance system easier to learn"
-lede: "Six months as a software engineer intern on a LiDAR surveillance system, building the web app operators use to watch and review what the sensors see."
+lede: "Six months as a software engineer intern on a LiDAR surveillance system: mostly the web app operators use to watch and review what the sensors see, plus some of the C++ endpoints and sensor calibration behind it."
 ---
 
-{/* Duc worked on the SolidJS frontend. The C++ services behind it were not his work:
-    do not describe them as his (DESIGN.md §2, evidence before adjectives). */}
+{/* Duc's part: the SolidJS app (most of his time), some of the C++ endpoints, and sensor
+    calibration. He did not build the whole streaming pipeline: do not describe it as his
+    (DESIGN.md §2, evidence before adjectives). */}
 
 ## Outcome
 
@@ -39,11 +40,15 @@ lede: "Six months as a software engineer intern on a LiDAR surveillance system, 
 
 dConstruct builds a surveillance system on LiDAR. Each sensor streams a point cloud to a server, and operators watch it as a live 3D view in a web app, or play back what was recorded. Over Wi-Fi the live view ran about 2 seconds behind the sensor.
 
-It is a small startup, so there were no separate teams. I worked on the web app: the part operators actually touch. Before the rebuild, training a new operator took two days.
+It is a small startup, so there were no separate teams. I spent most of my time on the web app, the part operators actually touch, and also worked on some of the C++ endpoints behind it and on sensor calibration. Before the rebuild, training a new operator took two days.
 
 ## What I built
 
 **The operator web app in SolidJS and TailwindCSS**, responsive across the screens operators actually use, on top of the backend's endpoints for connecting sensors, the live view and playback. After the rebuild, training a new operator takes one day instead of two.
+
+**Some of the C++ endpoints behind the app**, the server side the web app calls to connect sensors and fetch live and recorded data.
+
+**Sensor calibration.** Each LiDAR measures in its own coordinates, so the system stores every sensor's position and rotation on the site map in SQLite and uses it to place each point it sees on the map. I worked on getting those values right, so that what a sensor saw lined up with the map.
 
 **A C++ PDF report generator** packaged as a library, so reports come out the same way every time. One project uses it so far.
 
@@ -57,4 +62,4 @@ It is a small startup, so there were no separate teams. I worked on the web app:
 
 ## In hindsight
 
-I treated the streaming pipeline behind the app as a black box. It worked, so I didn't need to open it, but the 2-second delay operators lived with was decided there, and the UI could only work around it. Next time I'd learn how the data gets from sensor to screen early on, even if I never change that code myself.
+I worked on pieces of the pipeline, the app, some endpoints and calibration, but never followed one frame all the way from sensor to screen. The 2-second delay operators lived with was decided somewhere along that path, and the UI could only work around it. Next time I'd trace the whole path early on, even through code I don't own.
