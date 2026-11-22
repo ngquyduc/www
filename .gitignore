@@ -12,3 +12,4 @@ design/prototype/
 design/build_prototype.py
 design/screenshots/
 .claude/
+.venv/

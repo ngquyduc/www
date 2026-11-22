@@ -72,6 +72,6 @@ test("honesty: simulations are labelled, the Go port is unlinked", async ({ page
   await expect(page.getByText("Not market data, and not a benchmark of the engine.")).toBeVisible();
   await expect(page.locator('a[href*="matching-engine-go"]')).toHaveCount(0);
   await page.goto("/work");
-  await expect(page.getByText("Go port: private repo")).toBeVisible();
+  await expect(page.getByText("Go version: private repo")).toBeVisible();
   await expect(page.locator('a[href*="matching-engine-go"]')).toHaveCount(0);
 });
