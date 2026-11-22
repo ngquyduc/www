@@ -1,0 +1,55 @@
+---
+title: Exchange matching engine
+tier: depth
+order: 1
+start: "[dates]"
+summary: Limit order book with price-time priority, written in C++ and ported to Go to compare the two. The flagship depth page.
+stack: [C++, Go]
+links:
+  - { label: "Code (C++)", href: "https://github.com/ngquyduc/matching-engine-cpp" }
+  - { label: "Go port: private repo" }
+demo: orderbook
+featured: 3
+featuredMeta: C++ · Go port (private) · side project
+featuredSummary: A limit order book with price-time priority, written twice to compare the languages. Write-up and benchmarks in progress.
+featuredMetric: "[Benchmarks: TBD]"
+status: in-progress
+hasPage: true
+team: "[solo, or co-authors]"
+headline: Exchange matching engine, in C++ and Go
+lede: A limit order book that matches orders by price, then time. I wrote it in C++ and ported it to Go to see what each language costs and buys.
+---
+
+## Problem
+
+<Placeholder>[Two or three sentences: what a matching engine must guarantee (price-time priority, no crossed book, every fill accounted for) and what you set out to learn.]</Placeholder>
+
+## Architecture
+
+<Figure n={1} ratio="16/7" label="Architecture diagram slot · inline SVG drawn from the real code: order intake → book (bid and ask price levels, FIFO queue per level) → trade output · currentColor, 16:7"><Placeholder>[caption]</Placeholder></Figure>
+
+<Placeholder>[Data structures and why: e.g. how a price level is stored, how cancels find an order, what the hot path allocates.]</Placeholder>
+
+<TryIt />
+
+## Benchmarks
+
+<p class="text-muted">Every number on this page comes from a run you can reproduce. Until the runs exist, the slots stay empty on purpose.</p>
+
+<Bench />
+
+<Callout kind="Caveat">
+  <Placeholder>[Limits of these numbers: one machine, a synthetic order mix, what the latency sample does and does not include.]</Placeholder>
+</Callout>
+
+## Findings
+
+<ol>
+  <li><Placeholder>[Finding, backed by a number from the table above.]</Placeholder></li>
+  <li><Placeholder>[Finding.]</Placeholder></li>
+  <li><Placeholder>[A surprise, or something that did not work.]</Placeholder></li>
+</ol>
+
+## Next
+
+<Placeholder>[What you would build next, e.g. replaying a recorded order trace through the demo book above.]</Placeholder>
