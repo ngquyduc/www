@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mobile views at 390 px</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width:3220px;box-sizing:border-box;padding:48px 40px 64px;background:#E4E4DF;font-family:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;color:#121417;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;gap:24px;align-items:baseline">
+    <h1 style="margin:0;font-size:32px;letter-spacing:-0.02em">Mobile, 390 px</h1>
+    <p style="margin:0;color:#50555E;max-width:1400px">These are the same page components as the desktop boards, mounted in a 390 px container. Layout switches on a container query at 760 px: 16 px gutter, the nav wraps to a second row, the TOC and side columns drop, and display type goes from 60 to 38. Nothing scrolls sideways. Header theme toggles work here too.</p>
+  </div>
+  <div style="display:flex;gap:60px;align-items:flex-start">
+    <div style="flex:0 0 390px;display:flex;flex-direction:column;gap:10px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#50555E">HOME · LIGHT</p>
+      <div style="width:390px;border-radius:24px;overflow:hidden;border:1px solid #8A8D93;background:#F6F6F3"><dc-import name="Home" theme="light" hint-size="390px,3600px"></dc-import></div>
+    </div>
+    <div style="flex:0 0 390px;display:flex;flex-direction:column;gap:10px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#50555E">HOME · DARK</p>
+      <div style="width:390px;border-radius:24px;overflow:hidden;border:1px solid #8A8D93;background:#0E1013"><dc-import name="Home" theme="dark" hint-size="390px,3600px"></dc-import></div>
+    </div>
+    <div style="flex:0 0 390px;display:flex;flex-direction:column;gap:10px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#50555E">WORK</p>
+      <div style="width:390px;border-radius:24px;overflow:hidden;border:1px solid #8A8D93;background:#F6F6F3"><dc-import name="Work" theme="light" hint-size="390px,4200px"></dc-import></div>
+    </div>
+    <div style="flex:0 0 390px;display:flex;flex-direction:column;gap:10px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#50555E">CASE STUDY · DARK</p>
+      <div style="width:390px;border-radius:24px;overflow:hidden;border:1px solid #8A8D93;background:#0E1013"><dc-import name="CaseStudy" theme="dark" hint-size="390px,4000px"></dc-import></div>
+    </div>
+    <div style="flex:0 0 390px;display:flex;flex-direction:column;gap:10px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#50555E">POST</p>
+      <div style="width:390px;border-radius:24px;overflow:hidden;border:1px solid #8A8D93;background:#F6F6F3"><dc-import name="Post" theme="light" hint-size="390px,3200px"></dc-import></div>
+    </div>
+    <div style="flex:0 0 390px;display:flex;flex-direction:column;gap:10px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#50555E">ABOUT</p>
+      <div style="width:390px;border-radius:24px;overflow:hidden;border:1px solid #8A8D93;background:#F6F6F3"><dc-import name="About" theme="light" hint-size="390px,3400px"></dc-import></div>
+    </div>
+    <div style="flex:0 0 390px;display:flex;flex-direction:column;gap:10px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#50555E">CONTACT · DARK</p>
+      <div style="width:390px;border-radius:24px;overflow:hidden;border:1px solid #8A8D93;background:#0E1013"><dc-import name="Contact" theme="dark" hint-size="390px,1400px"></dc-import></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":3220,"height":4400}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

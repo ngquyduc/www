@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simulated order book</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ob-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ob-roll{display:inline-flex;vertical-align:bottom}
+.ob-col{display:inline-block;height:1.4em;line-height:1.4em;overflow:hidden}
+.ob-strip{display:flex;flex-direction:column;transition:transform 320ms cubic-bezier(.2,.7,.2,1)}
+.ob-strip>span{height:1.4em;line-height:1.4em;text-align:center}
+@media (prefers-reduced-motion: reduce){.ob-strip{transition:none}}
+</style>
+</helmet>
+<div role="region" aria-label="Simulated order book" style="box-sizing:border-box;width:100%;background:#0B0D10;color:#E6E8EB;border:1px solid #242932;border-radius:14px;font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-feature-settings:'tnum' 1,'zero' 1;font-size:13px;line-height:1.4;overflow:hidden;text-align:left">
+
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px 12px 10px 16px;background:#12151A;border-bottom:1px solid #242932">
+    <span style="font-weight:600;font-size:13px">SIM/USD</span>
+    <span style="font-size:12px;color:#98A1AE">order book</span>
+    <span style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#F5B041;border:1px solid #F5B041;border-radius:4px;padding:1px 6px">SIMULATED</span>
+    <span style="flex:1 1 auto"></span>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.06em;color:#98A1AE"><span style="width:7px;height:7px;border-radius:50%;background:{{dot}}"></span>{{statusWord}}</span>
+    <sc-if value="{{showStep}}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{step}}" style="min-height:32px;padding:0 10px;background:transparent;color:#E6E8EB;border:1px solid #3A414D;border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer">Step</button>
+    </sc-if>
+    <button type="button" onClick="{{togglePause}}" style="min-height:32px;padding:0 10px;background:transparent;color:#E6E8EB;border:1px solid #3A414D;border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer">{{pauseLabel}}</button>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:4px 24px;padding:10px 16px;border-bottom:1px solid #242932;font-size:12px;color:#98A1AE;align-items:baseline">
+    <span>LAST <b style="font-weight:600;font-size:16px;color:{{lastColor}}"><span class="ob-sr">{{last}}</span><span class="ob-roll" aria-hidden="true"><sc-for list="{{lastD}}" as="d" hint-placeholder-count="6"><sc-if value="{{d.dig}}" hint-placeholder-val="{{ true }}"><span class="ob-col"><span class="ob-strip" style="transform:translateY({{d.y}})"><span> </span><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></sc-if><sc-if value="{{d.sep}}" hint-placeholder-val="{{ false }}"><span>{{d.ch}}</span></sc-if></sc-for></span></b> <span style="color:{{lastColor}}" aria-hidden="true">{{lastArrow}}</span></span>
+    <span>MID <b style="font-weight:500;color:#E6E8EB"><span class="ob-sr">{{mid}}</span><span class="ob-roll" aria-hidden="true"><sc-for list="{{midD}}" as="d" hint-placeholder-count="6"><sc-if value="{{d.dig}}" hint-placeholder-val="{{ true }}"><span class="ob-col"><span class="ob-strip" style="transform:translateY({{d.y}})"><span> </span><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></sc-if><sc-if value="{{d.sep}}" hint-placeholder-val="{{ false }}"><span>{{d.ch}}</span></sc-if></sc-for></span></b></span>
+    <span>SPREAD <b style="font-weight:500;color:#E6E8EB"><span class="ob-sr">{{spread}}</span><span class="ob-roll" aria-hidden="true"><sc-for list="{{spreadD}}" as="d" hint-placeholder-count="6"><sc-if value="{{d.dig}}" hint-placeholder-val="{{ true }}"><span class="ob-col"><span class="ob-strip" style="transform:translateY({{d.y}})"><span> </span><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></sc-if><sc-if value="{{d.sep}}" hint-placeholder-val="{{ false }}"><span>{{d.ch}}</span></sc-if></sc-for></span></b></span>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap">
+    <div role="table" aria-label="Order book, top five price levels each side" style="flex:1 1 290px;min-width:0;padding:6px 0 8px">
+      <div role="row" style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));padding:4px 16px;font-size:11px;letter-spacing:.06em;color:#98A1AE">
+        <span role="columnheader">PRICE</span><span role="columnheader" style="text-align:right">SIZE</span><span role="columnheader" style="text-align:right">TOTAL</span>
+      </div>
+      <div role="rowgroup" aria-label="Asks, lowest at the bottom">
+        <sc-for list="{{asks}}" as="r" hint-placeholder-count="5">
+          <div role="row" style="position:relative;display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));padding:3px 16px;background:{{r.bg}}">
+            <span aria-hidden="true" style="position:absolute;top:2px;bottom:2px;right:0;width:{{r.w}};background:rgba(255,122,122,.13)"></span>
+            <span role="cell" style="position:relative;color:#FF7A7A">{{r.price}}</span>
+            <span role="cell" style="position:relative;text-align:right"><span class="ob-sr">{{r.size}}</span><span class="ob-roll" aria-hidden="true"><sc-for list="{{r.sizeD}}" as="d" hint-placeholder-count="6"><sc-if value="{{d.dig}}" hint-placeholder-val="{{ true }}"><span class="ob-col"><span class="ob-strip" style="transform:translateY({{d.y}})"><span> </span><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></sc-if><sc-if value="{{d.sep}}" hint-placeholder-val="{{ false }}"><span>{{d.ch}}</span></sc-if></sc-for></span></span>
+            <span role="cell" style="position:relative;text-align:right;color:#98A1AE">{{r.total}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div role="row" style="display:flex;justify-content:space-between;gap:8px;margin:4px 0;padding:5px 16px;border-top:1px dashed #2E3440;border-bottom:1px dashed #2E3440;font-size:12px;color:#98A1AE">
+        <span role="cell">SPREAD {{spread}}</span><span role="cell">MID <span style="color:#E6E8EB">{{mid}}</span></span>
+      </div>
+      <div role="rowgroup" aria-label="Bids, highest at the top">
+        <sc-for list="{{bids}}" as="r" hint-placeholder-count="5">
+          <div role="row" style="position:relative;display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));padding:3px 16px;background:{{r.bg}}">
+            <span aria-hidden="true" style="position:absolute;top:2px;bottom:2px;right:0;width:{{r.w}};background:rgba(61,220,132,.13)"></span>
+            <span role="cell" style="position:relative;color:#3DDC84">{{r.price}}</span>
+            <span role="cell" style="position:relative;text-align:right"><span class="ob-sr">{{r.size}}</span><span class="ob-roll" aria-hidden="true"><sc-for list="{{r.sizeD}}" as="d" hint-placeholder-count="6"><sc-if value="{{d.dig}}" hint-placeholder-val="{{ true }}"><span class="ob-col"><span class="ob-strip" style="transform:translateY({{d.y}})"><span> </span><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></sc-if><sc-if value="{{d.sep}}" hint-placeholder-val="{{ false }}"><span>{{d.ch}}</span></sc-if></sc-for></span></span>
+            <span role="cell" style="position:relative;text-align:right;color:#98A1AE">{{r.total}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div role="table" aria-label="Trade tape, newest first" style="flex:1 1 210px;min-width:0;padding:6px 0 8px;border-left:1px solid #242932;border-top:1px solid #242932;margin-left:-1px;margin-top:-1px">
+      <div role="row" style="display:grid;grid-template-columns:62px 1fr 34px 64px;gap:6px;padding:4px 16px;font-size:11px;letter-spacing:.06em;color:#98A1AE">
+        <span role="columnheader">TIME</span><span role="columnheader">SIDE</span><span role="columnheader" style="text-align:right">QTY</span><span role="columnheader" style="text-align:right">PRICE</span>
+      </div>
+      <sc-for list="{{tape}}" as="t" hint-placeholder-count="8">
+        <div role="row" style="display:grid;grid-template-columns:62px 1fr 34px 64px;gap:6px;padding:3px 16px;background:{{t.bg}}">
+          <span role="cell" style="color:#98A1AE">{{t.t}}</span>
+          <span role="cell" style="color:{{t.color}}">{{t.side}}<sc-if value="{{t.you}}" hint-placeholder-val="{{ false }}"><span style="margin-left:6px;font-size:10px;font-weight:600;letter-spacing:.06em;color:#0B0D10;background:#F5B041;border-radius:3px;padding:0 4px">YOU</span></sc-if></span>
+          <span role="cell" style="text-align:right">{{t.q}}</span>
+          <span role="cell" style="text-align:right">{{t.price}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;border-top:1px solid #242932;align-items:center">
+    <button type="button" onClick="{{buy}}" style="flex:1 1 140px;min-height:44px;background:#3DDC84;color:#04210F;border:0;border-radius:8px;font-family:inherit;font-weight:600;font-size:14px;cursor:pointer">Buy 10 <span style="font-weight:400">@ <span class="ob-sr">{{bestAsk}}</span><span class="ob-roll" aria-hidden="true"><sc-for list="{{bestAskD}}" as="d" hint-placeholder-count="6"><sc-if value="{{d.dig}}" hint-placeholder-val="{{ true }}"><span class="ob-col"><span class="ob-strip" style="transform:translateY({{d.y}})"><span> </span><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></sc-if><sc-if value="{{d.sep}}" hint-placeholder-val="{{ false }}"><span>{{d.ch}}</span></sc-if></sc-for></span></span></button>
+    <button type="button" onClick="{{sell}}" style="flex:1 1 140px;min-height:44px;background:#FF6B6B;color:#2B0606;border:0;border-radius:8px;font-family:inherit;font-weight:600;font-size:14px;cursor:pointer">Sell 10 <span style="font-weight:400">@ <span class="ob-sr">{{bestBid}}</span><span class="ob-roll" aria-hidden="true"><sc-for list="{{bestBidD}}" as="d" hint-placeholder-count="6"><sc-if value="{{d.dig}}" hint-placeholder-val="{{ true }}"><span class="ob-col"><span class="ob-strip" style="transform:translateY({{d.y}})"><span> </span><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></sc-if><sc-if value="{{d.sep}}" hint-placeholder-val="{{ false }}"><span>{{d.ch}}</span></sc-if></sc-for></span></span></button>
+    <p role="status" aria-live="polite" style="flex:1 1 100%;margin:2px 0 0;font-size:12px;min-height:34px;color:{{msgColor}}">{{msg}}</p>
+  </div>
+
+  <p style="margin:0;padding:10px 16px;border-top:1px solid #242932;font-family:'IBM Plex Sans',ui-sans-serif,sans-serif;font-size:12px;color:#98A1AE">Simulated: random order flow generated in your browser. Not market data, and not a benchmark of the engine.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["live","filled","reduced"],"default":"live"},"seed":{"editor":"int","default":7,"min":1,"max":9999},"tapeRows":{"editor":"int","default":8,"min":3,"max":12},"$preview":{"width":720,"height":660}}'>
+class Component extends DCLogic {
+  boot() {
+    if (this.b) return;
+    this.b = true;
+    let a = (Number(this.props.seed ?? 7) || 7) >>> 0;
+    this.rnd = function () {
+      a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    this.asks = []; this.bids = []; this.tape = []; this.flash = {};
+    this.ticks = 0; this.seq = 0; this.n = 0; this.last = 10000; this.dir = 0; this.msg = '';
+    for (let i = 0; i < 8; i++) {
+      this.asks.push({ p: 10001 + i, q: this.ri(6, 24) + i * 4 });
+      this.bids.push({ p: 9999 - i, q: this.ri(6, 24) + i * 4 });
+    }
+    for (let k = 0; k < 8; k++) { this.ticks++; this.fill(this.rnd() < 0.5 ? 'buy' : 'sell', this.ri(1, 8), 'sim'); }
+    const mode = this.props.mode ?? 'live';
+    this.paused = mode !== 'live';
+    if (mode === 'filled') { this.ticks++; this.market('buy'); }
+  }
+  digits(str, width) {
+    const s = String(str); const pad = Math.max(0, (width || 0) - s.length);
+    const out = [];
+    for (let i = 0; i < pad; i++) out.push({ dig: true, sep: false, y: '0em' });
+    for (const ch of s) {
+      if (ch >= '0' && ch <= '9') out.push({ dig: true, sep: false, y: '-' + ((+ch + 1) * 1.4).toFixed(1) + 'em' });
+      else out.push({ dig: false, sep: true, ch: ch });
+    }
+    return out;
+  }
+  ri(lo, hi) { return lo + Math.floor(this.rnd() * (hi - lo + 1)); }
+  fmt(c) { return (c / 100).toFixed(2); }
+  clock() {
+    const s = this.ticks * 0.7; const m = Math.floor(s / 60); const r = s - m * 60;
+    return String(m).padStart(2, '0') + ':' + r.toFixed(1).padStart(4, '0');
+  }
+  refill() {
+    while (this.asks.length < 8) { const base = this.asks.length ? this.asks[this.asks.length - 1].p : this.bids[0].p; this.asks.push({ p: base + 1, q: this.ri(10, 40) }); }
+    while (this.bids.length < 8) { const base = this.bids.length ? this.bids[this.bids.length - 1].p : this.asks[0].p; this.bids.push({ p: base - 1, q: this.ri(10, 40) }); }
+    if (this.asks[0].p - this.bids[0].p > 2 && this.rnd() < 0.6) {
+      if (this.rnd() < 0.5) this.asks.unshift({ p: this.asks[0].p - 1, q: this.ri(3, 12) });
+      else this.bids.unshift({ p: this.bids[0].p + 1, q: this.ri(3, 12) });
+    }
+    if (this.asks.length > 8) this.asks.length = 8;
+    if (this.bids.length > 8) this.bids.length = 8;
+  }
+  fill(side, qty, who) {
+    const book = side === 'buy' ? this.asks : this.bids;
+    const prev = this.last; const fills = [];
+    let left = qty, notional = 0;
+    while (left > 0 && book.length) {
+      const l = book[0]; const t = Math.min(left, l.q);
+      l.q -= t; left -= t; notional += t * l.p; fills.push({ p: l.p, q: t }); this.last = l.p;
+      if (l.q === 0) book.shift();
+    }
+    const filled = qty - left;
+    if (this.last !== prev) this.dir = this.last > prev ? 1 : -1;
+    this.tape.unshift({ id: ++this.seq, t: this.clock(), side: side, q: filled, avg: notional / filled, who: who });
+    if (this.tape.length > 12) this.tape.length = 12;
+    this.refill();
+    return { filled: filled, avg: notional / filled, fills: fills };
+  }
+  tick() {
+    this.ticks++; this.flash = {};
+    const r = this.rnd();
+    if (r < 0.5) {
+      const side = this.rnd() < 0.5 ? this.asks : this.bids;
+      const i = Math.min(side.length - 1, Math.floor(this.rnd() * this.rnd() * 6));
+      const l = side[i];
+      if (this.rnd() < 0.6) l.q = Math.min(99, l.q + this.ri(1, 10));
+      else { l.q -= this.ri(1, 8); if (l.q <= 0) side.splice(i, 1); }
+      this.refill();
+    } else if (r < 0.85) {
+      this.fill(this.rnd() < 0.5 ? 'buy' : 'sell', this.ri(1, 8), 'sim');
+    } else {
+      const side = this.rnd() < 0.5 ? this.asks : this.bids;
+      if (side.length > 1) side.shift();
+      this.refill();
+    }
+    this.setState({ v: ++this.n });
+  }
+  market(side) {
+    const res = this.fill(side, 10, 'you');
+    const book = side === 'buy' ? this.asks : this.bids;
+    this.flash = {};
+    res.fills.forEach((f) => { if (book.some((l) => l.p === f.p)) this.flash[f.p] = 1; });
+    if (!Object.keys(this.flash).length && book.length) this.flash[book[0].p] = 1;
+    const verb = side === 'buy' ? 'Bought' : 'Sold';
+    const best = side === 'buy' ? 'best ask' : 'best bid';
+    if (res.fills.length === 1) this.msg = verb + ' 10 @ ' + this.fmt(res.fills[0].p) + ', filled at the ' + best + '.';
+    else this.msg = verb + ' 10 across ' + res.fills.length + ' levels: ' + res.fills.map((f) => f.q + ' @ ' + this.fmt(f.p)).join(', ') + ' (avg ' + (res.avg / 100).toFixed(3) + '). The ' + best + ' only had ' + res.fills[0].q + '.';
+  }
+  start() { this.stop(); this.timer = setInterval(() => this.tick(), 700); }
+  stop() { if (this.timer) clearInterval(this.timer); this.timer = null; }
+  componentDidMount() { this.boot(); if (!this.paused) this.start(); }
+  componentWillUnmount() { this.stop(); }
+  renderVals() {
+    this.boot();
+    const mode = this.props.mode ?? 'live';
+    const n = Number(this.props.tapeRows ?? 8);
+    const a5 = this.asks.slice(0, 5), b5 = this.bids.slice(0, 5);
+    let ca = 0, cb = 0;
+    const ac = a5.map((l) => (ca += l.q));
+    const bc = b5.map((l) => (cb += l.q));
+    const max = Math.max(ca, cb, 1);
+    const row = (l, cum) => ({ price: this.fmt(l.p), size: l.q, sizeD: this.digits(l.q, 2), total: cum, w: Math.round(cum / max * 100) + '%', bg: this.flash[l.p] ? 'rgba(245,176,65,.22)' : 'transparent' });
+    const asks = a5.map((l, i) => row(l, ac[i])).reverse();
+    const bids = b5.map((l, i) => row(l, bc[i]));
+    const tape = this.tape.slice(0, n).map((t) => ({
+      t: t.t, side: t.side === 'buy' ? 'BUY' : 'SELL', color: t.side === 'buy' ? '#3DDC84' : '#FF7A7A', q: t.q,
+      price: Number.isInteger(t.avg) ? (t.avg / 100).toFixed(2) : (t.avg / 100).toFixed(3),
+      you: t.who === 'you', bg: t.who === 'you' ? 'rgba(245,176,65,.14)' : 'transparent'
+    }));
+    const reducedIdle = mode === 'reduced' && this.paused;
+    return {
+      asks, bids, tape,
+      last: this.fmt(this.last), lastD: this.digits(this.fmt(this.last)),
+      lastArrow: this.dir > 0 ? '▲' : this.dir < 0 ? '▼' : '',
+      lastColor: this.dir > 0 ? '#3DDC84' : this.dir < 0 ? '#FF7A7A' : '#E6E8EB',
+      mid: ((this.asks[0].p + this.bids[0].p) / 200).toFixed(3),
+      midD: this.digits(((this.asks[0].p + this.bids[0].p) / 200).toFixed(3)),
+      spread: this.fmt(this.asks[0].p - this.bids[0].p),
+      spreadD: this.digits(this.fmt(this.asks[0].p - this.bids[0].p)),
+      bestAsk: this.fmt(this.asks[0].p), bestBid: this.fmt(this.bids[0].p),
+      bestAskD: this.digits(this.fmt(this.asks[0].p)), bestBidD: this.digits(this.fmt(this.bids[0].p)),
+      statusWord: this.paused ? (reducedIdle ? 'PAUSED · REDUCED MOTION' : 'PAUSED') : 'LIVE',
+      dot: this.paused ? '#98A1AE' : '#3DDC84',
+      pauseLabel: this.paused ? 'Play' : 'Pause',
+      showStep: this.paused,
+      msg: this.msg || (reducedIdle ? 'Auto-updates are off because your device asks for reduced motion. Press Play or Step, or place an order.' : 'Place a market order. It fills against the best price on the other side.'),
+      msgColor: this.msg ? '#E6E8EB' : '#98A1AE',
+      togglePause: () => { this.paused = !this.paused; if (this.paused) this.stop(); else this.start(); this.setState({ v: ++this.n }); },
+      step: () => this.tick(),
+      buy: () => { this.ticks++; this.market('buy'); this.setState({ v: ++this.n }); },
+      sell: () => { this.ticks++; this.market('sell'); this.setState({ v: ++this.n }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

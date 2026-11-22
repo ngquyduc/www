@@ -1,0 +1,223 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-22T15:00:00Z"
+  },
+  "title": "Duc site redesign",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 2200,
+      "title": "Tokens"
+    },
+    "Components.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 2400,
+      "title": "Components and states",
+      "is_interactive": true
+    },
+    "Palette.dc.html": {
+      "x": 3360,
+      "y": 2800,
+      "w": 1280,
+      "h": 820,
+      "title": "Command palette (Cmd/Ctrl+K)",
+      "is_interactive": true
+    },
+    "Home.dc.html": {
+      "x": 0,
+      "y": 10900,
+      "w": 1440,
+      "h": 3100,
+      "title": "Home, light",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "HomeDark.dc.html": {
+      "x": 1520,
+      "y": 10900,
+      "w": 1440,
+      "h": 3100,
+      "title": "Home, dark",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Work.dc.html": {
+      "x": 0,
+      "y": 14400,
+      "w": 1440,
+      "h": 3200,
+      "title": "Work index (three tiers)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "CaseStudy.dc.html": {
+      "x": 1520,
+      "y": 14400,
+      "w": 1440,
+      "h": 3300,
+      "title": "Experience case study: dConstruct",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Project.dc.html": {
+      "x": 3040,
+      "y": 14400,
+      "w": 1440,
+      "h": 4300,
+      "title": "Project depth page: matching engine (order-book demo inside)",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "OrderBook.dc.html": {
+      "x": 4560,
+      "y": 14400,
+      "w": 720,
+      "h": 660,
+      "title": "Order-book demo (matching-engine page only)",
+      "is_interactive": true
+    },
+    "Writing.dc.html": {
+      "x": 0,
+      "y": 19200,
+      "w": 1440,
+      "h": 1700,
+      "title": "Writing index",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Post.dc.html": {
+      "x": 1520,
+      "y": 19200,
+      "w": 1440,
+      "h": 2900,
+      "title": "Post template",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "About.dc.html": {
+      "x": 3040,
+      "y": 19200,
+      "w": 1440,
+      "h": 2800,
+      "title": "About and résumé",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Contact.dc.html": {
+      "x": 4560,
+      "y": 19200,
+      "w": 1440,
+      "h": 1200,
+      "title": "Contact",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "NotFound.dc.html": {
+      "x": 6080,
+      "y": 19200,
+      "w": 1440,
+      "h": 1000,
+      "title": "404",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Mobile.dc.html": {
+      "x": 0,
+      "y": 22600,
+      "w": 3220,
+      "h": 4600,
+      "title": "Mobile, 390 px",
+      "is_interactive": true
+    },
+    "DmDemo.dc.html": {
+      "x": 0,
+      "y": 2800,
+      "w": 1000,
+      "h": 840,
+      "title": "Hero demo: what users see vs what I see (live component)",
+      "is_interactive": true
+    },
+    "DmStates.dc.html": {
+      "x": 1080,
+      "y": 2800,
+      "w": 2200,
+      "h": 7400,
+      "title": "Hero demo: message types and states (light, dark, mobile, reduced motion)",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Components.dc.html",
+    "DmDemo.dc.html",
+    "DmStates.dc.html",
+    "Palette.dc.html",
+    "OrderBook.dc.html",
+    "Home.dc.html",
+    "HomeDark.dc.html",
+    "Work.dc.html",
+    "CaseStudy.dc.html",
+    "Project.dc.html",
+    "Writing.dc.html",
+    "Post.dc.html",
+    "About.dc.html",
+    "Contact.dc.html",
+    "NotFound.dc.html",
+    "Mobile.dc.html"
+  ],
+  "notes": {
+    "t1": {
+      "x": 0,
+      "y": -300,
+      "text": "1 · System: tokens and components",
+      "kind": "title1",
+      "maxW": 4480
+    },
+    "t2": {
+      "x": 0,
+      "y": 2500,
+      "text": "2 · Signature: hero demo (what users see vs what I see) and command palette",
+      "kind": "title1",
+      "maxW": 4500
+    },
+    "t3": {
+      "x": 0,
+      "y": 10600,
+      "text": "3 · Home (theme toggle in header works)",
+      "kind": "title1",
+      "maxW": 2960
+    },
+    "t4": {
+      "x": 0,
+      "y": 14100,
+      "text": "4 · Work: index, case study, depth page",
+      "kind": "title1",
+      "maxW": 5280
+    },
+    "t5": {
+      "x": 0,
+      "y": 18900,
+      "text": "5 · Writing, About, Contact, 404",
+      "kind": "title1",
+      "maxW": 7520
+    },
+    "t6": {
+      "x": 0,
+      "y": 22300,
+      "text": "6 · Mobile (same pages, container width 390)",
+      "kind": "title1",
+      "maxW": 3220
+    }
+  },
+  "designSystems": []
+}
