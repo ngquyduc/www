@@ -1,5 +1,5 @@
 ---
-import FeaturedRow from "../components/FeaturedRow.astro";
+import ExpCard from "../components/ExpCard.astro";
 import HeroDemo from "../components/hero/HeroDemo.astro";
 import Ledger from "../components/Ledger.astro";
 import LiveLabel from "../components/LiveLabel.astro";
@@ -8,9 +8,8 @@ import Base from "../layouts/Base.astro";
 import { getPosts, getWork, isoDate, readingMinutes } from "../lib/content";
 import { site } from "../site";
 
-// Real jobs only, newest first (content order), then visible depth projects, if any (§9).
+// Real jobs only, newest first (content order) (§9, §13.4).
 const experience = await getWork("experience");
-const projects = await getWork("depth");
 const posts = (await getPosts()).slice(0, 3);
 ---
 
@@ -55,22 +54,15 @@ const posts = (await getPosts()).slice(0, 3);
 
   <section class="wrap below-fold sec" aria-labelledby="exp">
     <SectionHead n="01" id="exp" title="Experience" more={{ href: "/work#experience", label: "All experience" }} />
-    {experience.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
+    <div class="xc-grid mt-7">
+      {experience.map((item) => <ExpCard item={item} />)}
+    </div>
   </section>
-
-  {
-    projects.length > 0 && (
-      <section class="wrap below-fold sec" aria-labelledby="proj">
-        <SectionHead n="02" id="proj" title="Projects" more={{ href: "/work#depth", label: "All projects" }} />
-        {projects.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
-      </section>
-    )
-  }
 
   {
     posts.length > 0 && (
       <section class="wrap below-fold sec" aria-labelledby="wr">
-        <SectionHead n={projects.length > 0 ? "03" : "02"} id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
+        <SectionHead n="03" id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
         {posts.map((p) => (
           <a class="row-link flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-line py-[18px]" href={`/writing/${p.id}`}>
             <time class="w-[110px] shrink-0 text-[13px] text-muted" datetime={isoDate(p.data.date)}>{isoDate(p.data.date)}</time>

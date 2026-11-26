@@ -1,0 +1,125 @@
+---
+// Experience card (§13.3), on Home and /work #experience. The whole card is one link to the case
+// study; its plate draws in on hover and focus (`plate-draw`), the card lifts (`card-lift`) and the
+// metric rolls in on first view (`roll-in`). The figure is on the résumé (§2.4).
+import type { Work } from "../lib/content";
+import { when, workHref } from "../lib/content";
+import Plate from "./Plate.astro";
+import PhText from "./PhText.astro";
+import Roll from "./Roll.astro";
+
+interface Props {
+  item: Work;
+  /** Heading level inside the card: h3 under a section h2. */
+  level?: "h2" | "h3";
+}
+const { item, level = "h3" } = Astro.props;
+const d = item.data;
+const H = level;
+const Tag = d.hasPage ? "a" : "article";
+---
+
+<Tag class="xc pl-host" href={d.hasPage ? workHref(item) : undefined} data-io>
+  {d.plate && <Plate kind={d.plate} />}
+  <span class="xc-body">
+    <span class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+      <H class="text-2xl font-[650] leading-[1.2] tracking-[-0.02em] max-md:text-xl">{d.org ?? d.title}</H>
+      <span class="text-[15px] text-muted">{d.role}</span>
+      <span class="mono ml-auto text-xs text-muted"><PhText text={when(d.start, d.end)} /></span>
+    </span>
+    <span class="text-base leading-[1.55] text-muted"><PhText text={d.featuredSummary ?? d.summary} /></span>
+    {
+      d.cardMetric && (
+        <span class="xc-metric">
+          <span class="mono text-metric whitespace-nowrap text-ink">
+            <Roll value={d.cardMetric} />
+          </span>
+          {d.cardMetricLabel && <span class="max-w-[14rem] text-sm leading-[1.4] text-muted">{d.cardMetricLabel}</span>}
+        </span>
+      )
+    }
+    <span class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+      <span class="mono text-xs text-subtle"><PhText text={d.stack.join(" · ")} /></span>
+      {
+        d.hasPage && (
+          <span class="xc-go ml-auto text-[15px] font-medium">
+            Case study <span class="xc-arrow" aria-hidden="true">→</span>
+          </span>
+        )
+      }
+    </span>
+  </span>
+</Tag>
+
+<style>
+  .xc {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 14px;
+    background: var(--color-raised);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition:
+      transform 180ms var(--ease-out),
+      border-color 180ms var(--ease-out),
+      box-shadow 180ms var(--ease-out);
+  }
+  .xc :global(.pl) {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .xc-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 22px 22px;
+  }
+  .xc-metric {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px dashed var(--color-line);
+  }
+  .xc-go {
+    color: var(--color-ink);
+    transition: color 120ms var(--ease-out);
+  }
+  .xc-arrow {
+    display: inline-block;
+    transition: transform 180ms var(--ease-out);
+  }
+  /* card-lift (§13.2) */
+  a.xc:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-ink);
+    box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.35);
+    color: var(--color-ink);
+  }
+  a.xc:hover .xc-go,
+  a.xc:focus-visible .xc-go {
+    color: var(--color-accent);
+  }
+  a.xc:hover .xc-arrow,
+  a.xc:focus-visible .xc-arrow {
+    transform: translateX(3px);
+  }
+  a.xc:focus-visible {
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    a.xc:hover {
+      transform: none;
+    }
+  }
+  @media (width < 47.5rem) {
+    .xc-body {
+      padding: 16px 18px 18px;
+    }
+  }
+</style>

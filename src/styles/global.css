@@ -304,6 +304,18 @@
     color: var(--color-ink);
   }
 
+  /* Experience cards: 2 columns, 24 px gap; 1 column under 760 px (§13.3). */
+  .xc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  @media (width < 47.5rem) {
+    .xc-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
   .live {
     display: inline-flex;
     align-items: center;

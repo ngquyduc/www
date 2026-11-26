@@ -1,8 +1,9 @@
 ---
 import CourseworkTable from "../../components/CourseworkTable.astro";
 import DepthCard from "../../components/DepthCard.astro";
-import ExperienceRow from "../../components/ExperienceRow.astro";
+import ExpCard from "../../components/ExpCard.astro";
 import FunItem from "../../components/FunItem.astro";
+import SectionHead from "../../components/SectionHead.astro";
 import Base from "../../layouts/Base.astro";
 import { getWork } from "../../lib/content";
 import { site } from "../../site";
@@ -38,15 +39,9 @@ const tiers = [
   </section>
 
   <section id="experience" class="wrap scroll-mt-6 pt-16 md:pt-20" aria-labelledby="h-exp">
-    <div class="flex items-start gap-10 max-md:flex-col max-md:items-stretch">
-      <div class="flex flex-col gap-1.5 md:w-[220px] md:shrink-0">
-        <span class="mono text-[13px] text-accent">A</span>
-        <h2 id="h-exp" class="t2 text-[28px] leading-[1.2] font-semibold tracking-[-0.02em]">Real-world experience</h2>
-        <p class="text-sm text-muted">Paid work, with a team, on production systems. Each one links to a case study once it is written.</p>
-      </div>
-      <div class="min-w-0 flex-[1_1_600px] border-t border-ink">
-        {exp.map((e) => <ExperienceRow item={e} />)}
-      </div>
+    <SectionHead n="01" id="h-exp" title="Experience" />
+    <div class="xc-grid mt-7">
+      {exp.map((e) => <ExpCard item={e} />)}
     </div>
   </section>
 

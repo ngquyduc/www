@@ -41,6 +41,10 @@ const work = defineCollection({
         featuredMeta: z.string().optional(),
         featuredSummary: z.string().optional(),
         featuredMetric: z.string().optional(),
+        // Rev 5 experience card (§13.3): the figure (mono 40) and its label, and the plate kind.
+        cardMetric: z.string().optional(),
+        cardMetricLabel: z.string().optional(),
+        plate: z.enum(["tiktok", "kovalee", "dconstruct", "vebits"]).optional(),
         status: z.enum(["published", "in-progress", "upcoming"]),
         hasPage: z.boolean(),
         // Case-study and depth-page header.
