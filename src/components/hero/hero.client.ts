@@ -25,11 +25,14 @@ export function mount(root: HTMLElement): void {
   const threadEl = $("[data-r=thread]");
   const statusEl = $("[data-e=status]");
   const cache = new Map<string, string>();
+  // The server rendered the boot frame with the same view functions, so the first pass only
+  // records what is already in the DOM instead of rewriting every region on mount.
+  let priming = true;
 
   const set = (el: HTMLElement, html: string, key: string) => {
     if (cache.get(key) !== html) {
       cache.set(key, html);
-      el.innerHTML = html;
+      if (!priming) el.innerHTML = html;
     }
   };
 
@@ -91,12 +94,14 @@ export function mount(root: HTMLElement): void {
     }
     if (!timer && sim.q.length)
       timer = window.setInterval(() => {
+        const v = sim.v;
         sim.advance(50 / SLOW);
         if (!sim.q.length) {
           clearInterval(timer);
           timer = 0;
         }
-        render();
+        // Most 50 ms ticks only move the clock; re-render only when the simulation changed.
+        if (sim.v !== v || !timer) render();
       }, 50);
     render();
   }
@@ -363,6 +368,7 @@ export function mount(root: HTMLElement): void {
   }).observe(root);
 
   render();
+  priming = false;
   // Live mode plays one message once (§4.4), then moves only in response to the visitor.
   const auto = reduced
     ? 0
