@@ -1,0 +1,76 @@
+---
+// Plate (§13.3): an illustration of the kind of problem, never data. Inline SVG drawn in theme
+// tokens only, so dark mode needs no second asset. Content stays inside y 22–158 so covers never clip.
+import Chat from "./plates/chat.svg.astro";
+import Dconstruct from "./plates/dconstruct.svg.astro";
+import Gym from "./plates/gym.svg.astro";
+import Kovalee from "./plates/kovalee.svg.astro";
+import Next from "./plates/next.svg.astro";
+import Shop from "./plates/shop.svg.astro";
+import Tiktok from "./plates/tiktok.svg.astro";
+import Vebits from "./plates/vebits.svg.astro";
+
+export type PlateKind = "tiktok" | "kovalee" | "dconstruct" | "vebits" | "next" | "gym" | "shop" | "chat";
+
+interface Props {
+  kind: PlateKind;
+  /** 16/9 cards, 16/10 the Next card, 16/5 covers. */
+  ratio?: string;
+  /** slice for cards; meet for covers, where the dot grid fills the extra width. */
+  fit?: "slice" | "meet";
+  /** Draw the accent paths once on first view (covers). */
+  play?: boolean;
+  radius?: string;
+  class?: string;
+}
+const { kind, ratio = "16/9", fit = "slice", play = false, radius = "0", class: cls } = Astro.props;
+const Art = { tiktok: Tiktok, kovalee: Kovalee, dconstruct: Dconstruct, vebits: Vebits, next: Next, gym: Gym, shop: Shop, chat: Chat }[kind];
+---
+
+<div class:list={["pl", play && "pl-play", cls]} style={`aspect-ratio:${ratio};border-radius:${radius}`} data-io={play ? "" : undefined} data-plate={kind}>
+  <svg class="pl-svg" viewBox="0 0 320 180" preserveAspectRatio={`xMidYMid ${fit}`} width="100%" height="100%" aria-hidden="true" focusable="false">
+    <Art />
+  </svg>
+</div>
+
+<style is:global>
+  .pl {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--color-sunken);
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--color-line-strong) 60%, transparent) 1px,
+      transparent 1.1px
+    );
+    background-size: 12px 12px;
+    background-position: center;
+  }
+  .pl-svg {
+    display: block;
+    font-family: var(--font-mono);
+  }
+  .pl-svg .pd {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  /* plate-draw (§13.2): on card hover and focus, and once on first view for covers. */
+  .pl-host:hover .pd,
+  .pl-host:focus-within .pd,
+  .pl-play.io-in .pd {
+    animation: draw 900ms var(--ease-out) both;
+  }
+  .pl-host:hover .pl-pop,
+  .pl-host:focus-within .pl-pop {
+    animation: rise 500ms 300ms var(--ease-out) both;
+  }
+  .pl-play.io-wait .pd {
+    stroke-dashoffset: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pl-svg .pd,
+    .pl-svg .pl-pop {
+      animation: none !important;
+    }
+  }
+</style>

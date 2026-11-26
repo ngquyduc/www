@@ -1,0 +1,19 @@
+---
+// TikTok plate (§13.3): generic bubbles and a retry loop. Not TikTok's chat UI.
+---
+
+<path d="M18 92 C30 80 42 104 54 92 S78 80 86 90" fill="none" stroke="var(--color-line-strong)" stroke-width="1.6" stroke-linecap="round"></path>
+<path d="M100 92 C108 82 116 102 126 92" fill="none" stroke="var(--color-line-strong)" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="3 4"></path>
+<text x="18" y="118" font-size="8.5" fill="var(--color-muted)">flaky network</text>
+<rect x="148" y="30" width="136" height="28" rx="14" fill="var(--color-ink)"></rect>
+<rect x="160" y="41" width="70" height="6" rx="3" fill="var(--color-bg)" opacity=".7"></rect>
+<text x="270" y="72" text-anchor="end" font-size="8.5" fill="var(--color-muted)">seen ✓✓</text>
+<rect x="168" y="80" width="116" height="28" rx="14" fill="none" stroke="var(--color-line-strong)" stroke-width="1.5" stroke-dasharray="4 3"></rect>
+<rect x="180" y="91" width="54" height="6" rx="3" fill="var(--color-line-strong)" opacity=".6"></rect>
+<text x="160" y="98" text-anchor="end" font-size="8.5" fill="var(--color-muted)">no ack</text>
+<path class="pd" pathLength="1" d="M288 94 C304 94 306 140 286 140" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round"></path>
+<path d="M290 135 l-5 5 6 3" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+<rect x="148" y="126" width="136" height="28" rx="14" fill="var(--color-accent)"></rect>
+<rect x="160" y="137" width="80" height="6" rx="3" fill="var(--color-on-accent)" opacity=".8"></rect>
+<text class="pl-pop" x="140" y="144" text-anchor="end" font-size="8.5" fill="var(--color-accent)">resend · same id</text>
+<text x="18" y="164" font-size="8.5" fill="var(--color-subtle)">retry · backoff · dedupe</text>

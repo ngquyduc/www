@@ -1,0 +1,24 @@
+---
+// Kovalee plate (§13.3): six months, a new app every few weeks.
+const months = ["A", "S", "O", "N", "D", "J"].map((m, i) => {
+  const x = 30 + i * 46;
+  return { m, x, cx: x + 13, gx: x + 8, c: i === 5 ? "var(--color-accent)" : "var(--color-line-strong)" };
+});
+---
+
+<text x="22" y="34" font-size="8.5" fill="var(--color-muted)">ship cadence · Aug → Jan</text>
+{
+  months.map((mo) => (
+    <g>
+      <rect x={mo.x} y="58" width="26" height="26" rx="7" fill="var(--color-raised)" stroke="var(--color-line-strong)" stroke-width="1.2" />
+      <circle cx={mo.cx} cy="71" r="5" fill={mo.c} />
+      <rect x={mo.x} y="92" width="26" height="26" rx="7" fill="var(--color-raised)" stroke="var(--color-line-strong)" stroke-width="1.2" />
+      <rect x={mo.gx} y="100" width="10" height="10" rx="2.5" fill={mo.c} />
+      <text x={mo.cx} y="146" text-anchor="middle" font-size="9" fill="var(--color-muted)">{mo.m}</text>
+    </g>
+  ))
+}
+<path d="M22 130 H298" stroke="var(--color-line-strong)" stroke-width="1"></path>
+<path class="pd" pathLength="1" d="M22 130 H298" stroke="var(--color-accent)" stroke-width="2.2" stroke-linecap="round"></path>
+<text class="pl-pop" x="298" y="34" text-anchor="end" font-size="8.5" fill="var(--color-accent)">2 apps / month</text>
+<text x="22" y="166" font-size="8.5" fill="var(--color-subtle)">SwiftUI kits · Fastlane · shared SDKs</text>

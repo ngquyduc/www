@@ -1,0 +1,25 @@
+---
+// Vebits plate (§13.3): a road on a street grid with inspection pins. 300 → 200 ms is on the résumé.
+const pins: [number, number][] = [
+  [40, 142],
+  [96, 110],
+  [160, 84],
+  [222, 64],
+];
+---
+
+<path d="M0 40 H320 M0 84 H320 M0 128 H320 M52 0 V180 M118 0 V180 M190 0 V180 M262 0 V180" stroke="var(--color-line)" stroke-width="5" fill="none"></path>
+<path d="M-4 150 C60 150 70 104 118 100 S196 58 236 62 S300 40 330 36" fill="none" stroke="var(--color-ink)" stroke-width="5" stroke-linecap="round" opacity=".85"></path>
+<path class="pd" pathLength="1" d="M-4 150 C60 150 70 104 118 100 S196 58 236 62" fill="none" stroke="var(--color-accent)" stroke-width="5" stroke-linecap="round"></path>
+{
+  pins.map(([x, y]) => (
+    <g>
+      <path d={`M${x} ${y} c-6 -8 -9 -11 -9 -16 a9 9 0 0 1 18 0 c0 5 -3 8 -9 16z`} fill="var(--color-accent)" />
+      <circle cx={x} cy={y - 16} r="3" fill="var(--color-bg)" />
+    </g>
+  ))
+}
+<rect x="196" y="108" width="108" height="44" rx="6" fill="var(--color-raised)" stroke="var(--color-line-strong)" stroke-width="1"></rect>
+<text x="206" y="125" font-size="8.5" fill="var(--color-muted)">geo query</text>
+<text class="pl-pop" x="206" y="142" font-size="10" font-weight="600" fill="var(--color-ink)">300 → 200 ms</text>
+<text x="22" y="34" font-size="8.5" fill="var(--color-muted)">road inspection reports</text>

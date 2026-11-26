@@ -1,0 +1,43 @@
+---
+// dConstruct plate (§13.3): an illustrated LiDAR frame, not sensor data. The point cloud is
+// generated here at build time from a fixed seed (mulberry32, seed 41), so it ships as static SVG.
+let a = 41;
+const rnd = () => {
+  a = (a + 0x6d2b79f5) | 0;
+  let t = Math.imul(a ^ (a >>> 15), 1 | a);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+const ground: { x: string; y: string; r: string; o: string }[] = [];
+for (let i = 0; i < 150; i++) {
+  const y = 100 + rnd() ** 0.8 * 80;
+  ground.push({
+    x: (rnd() * 340 - 10).toFixed(1),
+    y: y.toFixed(1),
+    r: (0.6 + ((y - 100) / 80) * 1.2).toFixed(2),
+    o: (0.25 + rnd() * 0.4).toFixed(2),
+  });
+}
+const people: { x: string; y: string }[] = [];
+const person = (cx: number, top: number, h: number) => {
+  for (let i = 0; i < 46; i++) {
+    const t = rnd();
+    const y = top + t * h;
+    const w = t < 0.18 ? 5 : t < 0.55 ? 9 : 6;
+    people.push({ x: (cx + (rnd() - 0.5) * 2 * w).toFixed(1), y: y.toFixed(1) });
+  }
+};
+person(121, 62, 60);
+person(218, 74, 48);
+---
+
+<path d="M0 150 L120 96 M80 180 L150 96 M180 180 L170 96 M290 180 L200 96 M320 140 L230 96 M0 120 H320" stroke="var(--color-line-strong)" stroke-width=".7" opacity=".55" fill="none"></path>
+<g fill="var(--color-muted)">{ground.map((p) => <circle cx={p.x} cy={p.y} r={p.r} opacity={p.o} />)}</g>
+<g fill="var(--color-ink)" opacity=".9">{people.map((p) => <circle cx={p.x} cy={p.y} r="1.3" />)}</g>
+<path class="pd" pathLength="1" d="M60 150 C80 140 96 128 112 118" fill="none" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round"></path>
+<rect x="104" y="58" width="34" height="66" rx="3" fill="none" stroke="var(--color-accent)" stroke-width="1.4" stroke-dasharray="4 3"></rect>
+<text class="pl-pop" x="104" y="52" font-size="8.5" fill="var(--color-accent)">#07 person</text>
+<rect x="204" y="70" width="28" height="54" rx="3" fill="none" stroke="var(--color-ink)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"></rect>
+<text x="204" y="64" font-size="8.5" fill="var(--color-muted)">#12</text>
+<text x="22" y="34" font-size="8.5" fill="var(--color-muted)">LiDAR frame · illustration</text>
+<text x="22" y="166" font-size="8.5" fill="var(--color-subtle)">detect · track · review</text>
