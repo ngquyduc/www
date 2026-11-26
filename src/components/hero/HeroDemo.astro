@@ -79,15 +79,21 @@ const icon = (d: string, w = 20, sw = 1.8) =>
 </div>
 
 <script>
-  // Start the demo only when it scrolls into view (client:visible equivalent, §11).
+  // Start the demo once a quarter of it is on screen (client:visible equivalent, §11), and never
+  // during the initial page load: on a phone its top edge peeks in at load, which used to pull
+  // the 11 KB script, the mount and the autoplay loop into the load window.
   const el = document.querySelector<HTMLElement>("[data-hero]");
+  const idle = (fn: () => void) =>
+    "requestIdleCallback" in window ? requestIdleCallback(fn, { timeout: 2000 }) : setTimeout(fn, 200);
+  const afterLoad = (fn: () => void) =>
+    document.readyState === "complete" ? idle(fn) : addEventListener("load", () => idle(fn), { once: true });
   if (el) {
     const io = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {
         io.disconnect();
-        import("./hero.client").then((m) => m.mount(el));
+        afterLoad(() => import("./hero.client").then((m) => m.mount(el)));
       }
-    });
+    }, { threshold: 0.25 });
     io.observe(el);
   }
 </script>
