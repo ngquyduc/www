@@ -16,7 +16,7 @@ describe("order book engine", () => {
     const b = new Book(7);
     expect(a.view()).toEqual(b.view());
     expect(a.asks).toHaveLength(8);
-    expect(a.tape).toHaveLength(8);
+    expect(a.tape.length).toBeGreaterThanOrEqual(8); // 8 takers, one print per level each
     invariant(a);
   });
 
@@ -35,7 +35,10 @@ describe("order book engine", () => {
     best.q = 6;
     const second = b.asks[1]?.p as number;
     b.market("buy");
-    expect(b.tape[0]).toMatchObject({ side: "buy", q: USER_QTY, who: "you" });
+    // One print per level at that level's price, newest (the deeper level) first.
+    expect(b.tape[0]).toMatchObject({ side: "buy", q: 4, p: second, who: "you" });
+    expect(b.tape[1]).toMatchObject({ side: "buy", q: 6, p: best.p, who: "you" });
+    expect((b.tape[0]?.q ?? 0) + (b.tape[1]?.q ?? 0)).toBe(USER_QTY);
     expect(b.msg).toMatch(
       /^Bought 10 across 2 levels: 6 @ \d+\.\d{2}, 4 @ \d+\.\d{2} \(avg \d+\.\d{3}\)\. The best ask only had 6\.$/,
     );
@@ -52,6 +55,16 @@ describe("order book engine", () => {
     b.market("sell");
     expect(b.msg).toBe(`Sold 10 @ ${(best.p / 100).toFixed(2)}, filled at the best bid.`);
     expect(b.flash.has(best.p)).toBe(true);
+  });
+
+  it("never prints a trade between ticks: every tape price is a level price", () => {
+    const b = new Book(11);
+    for (let i = 0; i < 500; i++) {
+      b.tick();
+      if (i % 50 === 0) b.market(i % 100 === 0 ? "buy" : "sell");
+    }
+    for (const t of b.view(12).tape) expect(t.price).toMatch(/^\d+\.\d{2}$/);
+    for (const t of b.tape) expect(Number.isInteger(t.p)).toBe(true);
   });
 
   it("formats the view: mid to 3 dp, spread and prices to 2 dp", () => {

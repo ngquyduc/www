@@ -12,7 +12,8 @@ export interface Trade {
   t: string;
   side: Side;
   q: number;
-  avg: number;
+  /** Execution price of this print: the level it traded at. */
+  p: Cents;
   who: "sim" | "you";
 }
 export interface Fill {
@@ -117,7 +118,10 @@ export class Book {
     }
     const filled = qty - left;
     if (this.last !== prev) this.dir = this.last > prev ? 1 : -1;
-    this.tape.unshift({ id: ++this.seq, t: this.clock(), side, q: filled, avg: notional / filled, who });
+    // One print per level, at that level's price, in execution order (newest first on the tape),
+    // as a price-time engine reports them. The average only goes in the status line.
+    const t = this.clock();
+    for (const f of fills) this.tape.unshift({ id: ++this.seq, t, side, q: f.q, p: f.p, who });
     if (this.tape.length > TAPE) this.tape.length = TAPE;
     this.refill();
     return { filled, avg: notional / filled, fills };
@@ -189,7 +193,7 @@ export class Book {
         t: t.t,
         side: t.side,
         q: t.q,
-        price: Number.isInteger(t.avg) ? (t.avg / 100).toFixed(2) : (t.avg / 100).toFixed(3),
+        price: fmt(t.p),
         you: t.who === "you",
       })),
       last: fmt(this.last),
