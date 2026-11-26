@@ -11,7 +11,7 @@ export const site = {
   description:
     "Duc Nguyen is a systems-minded iOS software engineer in Singapore, working on the instant-messaging SDK at TikTok.",
   resumePath: "/resume.pdf",
-  resumeUpdated: "2026-09",
+  resumeUpdated: "2026-11",
   socials: {
     github: { label: "GitHub", href: "https://github.com/ngquyduc", handle: "github.com/ngquyduc" },
     linkedin: {
