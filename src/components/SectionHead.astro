@@ -1,5 +1,7 @@
 ---
-// Numbered section heading on Home: "01 Selected work" with an optional link on the right.
+// Numbered section head (§13.3): "01" numeral, a 40 px title, an optional link on the right, and an
+// ink rule that draws in from the left the first time it enters the viewport (`rule`, §13.2).
+// Until the observer runs (or with no JS, or under reduced motion) the rule is simply drawn.
 interface Props {
   n: string;
   id: string;
@@ -9,8 +11,33 @@ interface Props {
 const { n, id, title, more } = Astro.props;
 ---
 
-<div class="flex items-baseline gap-4 border-b border-line pb-3">
-  <span class="mono text-[13px] text-accent">{n}</span>
-  <h2 id={id} class="text-2xl font-semibold tracking-[-0.02em]">{title}</h2>
+<div class="shead" data-io>
+  <span class="mono text-[14px] text-accent">{n}</span>
+  <h2 id={id} class="text-section">{title}</h2>
   {more && <a href={more.href} class="ml-auto text-[15px]">{more.label} <span aria-hidden="true">→</span></a>}
 </div>
+
+<style>
+  .shead {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 16px;
+    padding-bottom: 14px;
+  }
+  .shead::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background: var(--color-ink);
+    transform-origin: left;
+  }
+  .shead.io-wait::after {
+    transform: scaleX(0);
+  }
+  .shead.io-in::after {
+    animation: rule 600ms var(--ease-out) both;
+  }
+</style>
