@@ -12,7 +12,7 @@
         "http://localhost:4330/about",
         "http://localhost:4330/contact"
       ],
-      "numberOfRuns": 1,
+      "numberOfRuns": 3,
       "settings": { "chromeFlags": "--headless=new --no-sandbox" }
     },
     "assert": {

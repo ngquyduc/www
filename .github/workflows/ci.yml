@@ -45,3 +45,4 @@ jobs:
             test-results/
             .lighthouseci/
           retention-days: 7
+          include-hidden-files: true
