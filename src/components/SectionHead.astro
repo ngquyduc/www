@@ -7,14 +7,17 @@ interface Props {
   id: string;
   title: string;
   more?: { href: string; label: string };
+  /** A short mono aside on the right, when there is no link. */
+  note?: string;
 }
-const { n, id, title, more } = Astro.props;
+const { n, id, title, more, note } = Astro.props;
 ---
 
 <div class="shead" data-io>
   <span class="mono text-[14px] text-accent">{n}</span>
   <h2 id={id} class="text-section">{title}</h2>
   {more && <a href={more.href} class="ml-auto text-[15px]">{more.label} <span aria-hidden="true">→</span></a>}
+  {!more && note && <span class="mono ml-auto text-xs text-subtle">{note}</span>}
 </div>
 
 <style>

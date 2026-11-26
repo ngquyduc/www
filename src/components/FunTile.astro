@@ -1,0 +1,63 @@
+---
+// Built-for-fun tile (§13.3): a glyph plate, title + ↗, one line, the stack. The whole tile links
+// to GitHub. A one-liner Duc hasn't written yet ("[…]") is left out of production builds (§13.6).
+import type { Work } from "../lib/content";
+import Plate from "./Plate.astro";
+import PhText from "./PhText.astro";
+
+interface Props {
+  item: Work;
+}
+const d = Astro.props.item.data;
+const href = d.links?.find((l) => l.href)?.href ?? "https://github.com/ngquyduc";
+const pending = /^\[.*\]$/.test(d.summary.trim());
+const line = pending && !import.meta.env.DEV ? "" : d.summary;
+---
+
+<a class="fun pl-host" href={href}>
+  {d.plate && <Plate kind={d.plate} class="fun-plate" />}
+  <span class="flex items-baseline gap-2.5">
+    <h3 class="fun-title text-xl font-semibold">{d.title}</h3>
+    <span class="fun-arrow ml-auto" aria-hidden="true">↗</span>
+  </span>
+  {line && <span class="text-[15px] text-muted"><PhText text={line} /></span>}
+  <span class="mono text-xs text-subtle">{d.stack.join(" · ")}</span>
+</a>
+
+<style>
+  .fun {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .fun:hover {
+    color: var(--color-ink);
+  }
+  .fun :global(.fun-plate) {
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+  }
+  .fun-title,
+  .fun-arrow {
+    transition:
+      color 120ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+  .fun-arrow {
+    display: inline-block;
+    color: var(--color-muted);
+  }
+  .fun:hover .fun-title,
+  .fun:hover .fun-arrow,
+  .fun:focus-visible .fun-title,
+  .fun:focus-visible .fun-arrow {
+    color: var(--color-accent);
+  }
+  .fun:hover .fun-arrow,
+  .fun:focus-visible .fun-arrow {
+    transform: translate(2px, -2px);
+  }
+</style>

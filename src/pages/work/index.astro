@@ -2,13 +2,14 @@
 import CourseworkTable from "../../components/CourseworkTable.astro";
 import DepthCard from "../../components/DepthCard.astro";
 import ExpCard from "../../components/ExpCard.astro";
-import FunItem from "../../components/FunItem.astro";
+import FunTile from "../../components/FunTile.astro";
 import NextCard from "../../components/NextCard.astro";
 import SectionHead from "../../components/SectionHead.astro";
 import Base from "../../layouts/Base.astro";
 import { getWork, showBuilding } from "../../lib/content";
-import { site } from "../../site";
 
+// §13.4: Experience, Building next, Built for fun. The depth and coursework tiers stay wired up
+// for later and render nothing while they're empty (every project in them is hidden today).
 const [exp, depth, course, fun] = await Promise.all([
   getWork("experience"),
   getWork("depth"),
@@ -16,83 +17,105 @@ const [exp, depth, course, fun] = await Promise.all([
   getWork("fun"),
 ]);
 const building = await showBuilding();
-const tiers = [
-  { id: "experience", label: "A · Real-world experience", n: exp.length },
-  { id: "depth", label: "B · Depth projects", n: depth.length },
-  { id: "foundations", label: `${depth.length ? "C" : "B"} · ${course.length ? "Foundations and built for fun" : "Built for fun"}`, n: course.length + fun.length },
-].filter((t) => t.n > 0);
+let n = 0;
+const num = () => String(++n).padStart(2, "0");
 ---
 
-<Base title="Work" description="Shipped work first, then things built for fun.">
-  <section class="wrap flex flex-col gap-5 pt-12 md:pt-[72px]">
-    <p class="kicker text-muted">Work</p>
-    <h1 class="max-w-[46rem] text-3xl font-bold tracking-[-0.025em]">
-      Ordered by strength of evidence: shipped work first.
-    </h1>
-    <nav aria-label="On this page" class="mono flex flex-wrap gap-2 text-[13px]">
-      {
-        tiers.map((t) => (
-          <a href={`#${t.id}`} class="rounded-full border border-line-strong px-3 py-1.5 no-underline hover:border-ink">
-            {t.label} <span class="text-muted">{t.n}</span>
-          </a>
-        ))
-      }
-    </nav>
+<Base title="Work" description="Shipped work first, then side projects: four jobs with case studies, and a few things built for fun.">
+  <section class="wrap relative pt-12 md:pt-[72px]">
+    <div class="dots work-dots" aria-hidden="true"></div>
+    <div class="relative flex max-w-[46rem] flex-col gap-4">
+      <p class="kicker text-muted">Work</p>
+      <h1 class="work-h1">Shipped work first. <span class="text-accent">Side projects</span> after.</h1>
+      <p class="text-[19px] text-muted">
+        Four jobs, each with a case study: what I built, the numbers as they appear on my résumé, and what I'd do
+        differently. Then what I'm building now, and a few things I made for fun.
+      </p>
+    </div>
   </section>
 
-  <section id="experience" class="wrap scroll-mt-6 pt-16 md:pt-20" aria-labelledby="h-exp">
-    <SectionHead n="01" id="h-exp" title="Experience" />
+  <section id="experience" class="wrap scroll-mt-6 pt-16 md:pt-[88px]" aria-labelledby="h-exp">
+    <SectionHead n={num()} id="h-exp" title="Experience" />
     <div class="xc-grid mt-7">
       {exp.map((e) => <ExpCard item={e} />)}
     </div>
   </section>
 
-  {building && (
-  <section id="next" class="wrap scroll-mt-6 pt-16 md:pt-24" aria-labelledby="h-next">
-    <SectionHead n="02" id="h-next" title="Building next" />
-    <div class="mt-7"><NextCard /></div>
-  </section>
-  )}
-
-  {depth.length > 0 && (
-  <section id="depth" class="wrap scroll-mt-6 pt-16 md:pt-24" aria-labelledby="h-depth">
-    <div class="flex items-start gap-10 max-md:flex-col max-md:items-stretch">
-      <div class="flex flex-col gap-1.5 md:w-[220px] md:shrink-0">
-        <span class="mono text-[13px] text-accent">B</span>
-        <h2 id="h-depth" class="t2 text-[28px] leading-[1.2] font-semibold tracking-[-0.02em]">Depth projects</h2>
-        <p class="text-sm text-muted">Systems work I went deep on, most of it for NUS parallel and concurrent programming. Each gets a depth page: architecture, benchmarks with method, findings.</p>
-      </div>
-      <div class="grid min-w-0 flex-[1_1_600px] grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
-        {depth.map((d) => <DepthCard item={d} />)}
-      </div>
-    </div>
-  </section>
-  )}
-
-  <section id="foundations" class="wrap scroll-mt-6 pt-16 md:pt-24" aria-labelledby="h-found">
-    <div class="flex items-start gap-10 max-md:flex-col max-md:items-stretch">
-      <div class="flex flex-col gap-1.5 md:w-[220px] md:shrink-0">
-        <span class="mono text-[13px] text-accent">{depth.length ? "C" : "B"}</span>
-        <h2 id="h-found" class="t2 text-[28px] leading-[1.2] font-semibold tracking-[-0.02em]">{course.length ? "Foundations and built for fun" : "Built for fun"}</h2>
-        {course.length > 0 && <p class="text-sm text-muted">Coursework is labelled as coursework and credits the people I built it with. None of it is presented as production work.</p>}
-      </div>
-      <div class="flex min-w-0 flex-[1_1_600px] flex-col gap-10">
-        {course.length > 0 && (
-          <div>
-            <h3 class="kicker mb-1 text-muted">Coursework</h3>
-            <CourseworkTable items={course} />
-          </div>
-        )}
-        <div>
-          <h3 class="kicker mb-3 text-muted">Built for fun</h3>
-          <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-x-6 gap-y-1">
-            {fun.map((f) => <FunItem item={f} />)}
-          </div>
-          <p class="mt-4 text-sm text-muted">
-            Older experiments (Music Hub, Modifiles and others) stay on <a href={site.socials.github.href}>GitHub</a>.
-          </p>
+  {
+    building && (
+      <section id="next" class="wrap scroll-mt-6 pt-16 md:pt-28" aria-labelledby="h-next">
+        <SectionHead n={num()} id="h-next" title="Building next" />
+        <div class="mt-7">
+          <NextCard />
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
+    )
+  }
+
+  {
+    depth.length > 0 && (
+      <section id="depth" class="wrap scroll-mt-6 pt-16 md:pt-28" aria-labelledby="h-depth">
+        <SectionHead n={num()} id="h-depth" title="Depth projects" />
+        <div class="mt-7 grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
+          {depth.map((d) => <DepthCard item={d} />)}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    course.length > 0 && (
+      <section id="coursework" class="wrap scroll-mt-6 pt-16 md:pt-28" aria-labelledby="h-course">
+        <SectionHead n={num()} id="h-course" title="Coursework" />
+        <p class="mt-4 max-w-prose text-sm text-muted">
+          Coursework is labelled as coursework and credits the people I built it with. None of it is presented as
+          production work.
+        </p>
+        <div class="mt-4">
+          <CourseworkTable items={course} />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    fun.length > 0 && (
+      <section id="fun" class="wrap scroll-mt-6 pt-16 md:pt-28" aria-labelledby="h-fun">
+        <SectionHead n={num()} id="h-fun" title="Built for fun" note="Small, unpolished, on GitHub" />
+        <div class="fun-grid mt-7">
+          {fun.map((f) => <FunTile item={f} />)}
+        </div>
+      </section>
+    )
+  }
 </Base>
+
+<style>
+  .work-dots {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 480px;
+    opacity: 0.55;
+    mask-image: radial-gradient(ellipse 60% 70% at 75% 30%, #000 20%, transparent 70%);
+    pointer-events: none;
+  }
+  .work-h1 {
+    font-size: 60px;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+  .fun-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+  @media (width < 47.5rem) {
+    .work-h1 {
+      font-size: 44px;
+    }
+    .fun-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
