@@ -53,7 +53,7 @@ Messaging looks simple from the outside: you type, it arrives. Underneath, a pho
 
 **A reorder buffer for out-of-order pushes.** Real-time messages that arrive out of sequence wait briefly and are put back in order, instead of each gap triggering a fresh fetch from the server. Processing failures fell by 78%, re-fetches halved, and the server team could ship a concurrency change that this had been blocking.
 
-**A fix for data showing up under the wrong account after switching accounts.** Every message payload is now checked against the signed-in user, with tracking to detect a session bound to the wrong account and a tool that reproduces the timing that caused it.
+**Privacy protection during account switching.** I added user-ID validation to all HTTP and WebSocket message traffic, and built the first monitoring to detect sessions bound to the wrong user.
 
 **A cleaner public API for the SDK.** I consolidated about 40 scattered conversation APIs into one protocol-oriented entry point, made the query API type-safe, and removed most of a legacy wrapper layer. Each step shipped behind an A/B test.
 
