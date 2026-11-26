@@ -1,0 +1,73 @@
+---
+// "Two cities so far" (§13.4): Singapore and Paris lanes, an accent route that draws in on first
+// view (`route`, §13.2). Kovalee's Paris stop is unconfirmed (§13.7), so the caller only renders
+// this in production once about.yaml says kovaleeInParis; until then Paris is a placeholder.
+import Placeholder from "./Placeholder.astro";
+
+interface Props {
+  confirmed: boolean;
+}
+const { confirmed } = Astro.props;
+const stops = [
+  { name: "NUS", when: "2021", x: 96, y: 40, ty: 22, dy: 62 },
+  { name: "Vebits", when: "2023", x: 236, y: 40, ty: 22, dy: 62 },
+  { name: "dConstruct", when: "2024", x: 318, y: 40, ty: 22, dy: 62 },
+  { name: "Kovalee", when: "Aug 2024", x: 411, y: 120, ty: 144, dy: 102 },
+  { name: "TikTok", when: "Jul 2025", x: 500, y: 40, ty: 22, dy: 62 },
+];
+const label =
+  "Timeline: NUS in Singapore from 2021; Vebits, Singapore, 2023; dConstruct Robotics, Singapore, 2024; Kovalee, Paris, August 2024 to January 2025; TikTok, Singapore, from July 2025.";
+---
+
+<section aria-labelledby="route-h">
+  <h2 id="route-h" class="t2 mb-1 text-[28px] font-semibold tracking-[-0.02em]">Two cities so far</h2>
+  <p class="mb-3 text-[15px] text-muted">
+    Singapore for school and most of my work, with five months in {confirmed ? "Paris" : <Placeholder>[Paris: confirm]</Placeholder>} for Kovalee.
+  </p>
+  <figure class="tl border-t border-ink pt-3" data-io tabindex="0">
+    <svg viewBox="0 0 640 150" width="100%" role="img" aria-label={label}>
+      <text x="0" y="36" font-size="11" fill="var(--color-muted)">SINGAPORE</text>
+      <text x="0" y="116" font-size="11" fill="var(--color-muted)">PARIS</text>
+      <path d="M84 40 H636 M84 120 H636" stroke="var(--color-line)" stroke-width="1" stroke-dasharray="2 4"></path>
+      <path class="route" pathLength="1" d="M96 40 H352 C372 40 372 120 392 120 H430 C450 120 450 40 470 40 H630" fill="none" stroke="var(--color-accent)" stroke-width="2.5" stroke-linecap="round"></path>
+      {
+        stops.map((s) => (
+          <g>
+            <circle cx={s.x} cy={s.y} r="5" fill="var(--color-bg)" stroke="var(--color-ink)" stroke-width="2" />
+            <text x={s.x} y={s.ty} text-anchor="middle" font-size="11" font-weight="600" fill="var(--color-ink)">{s.name}</text>
+            <text x={s.x} y={s.dy} text-anchor="middle" font-size="10" fill="var(--color-muted)">{s.when}</text>
+          </g>
+        ))
+      }
+      <circle cx="630" cy="40" r="4" fill="var(--color-accent)"></circle>
+      <text x="630" y="62" text-anchor="end" font-size="10" fill="var(--color-accent)">now</text>
+    </svg>
+  </figure>
+</section>
+
+<style>
+  .tl svg {
+    display: block;
+    overflow: visible;
+    font-family: var(--font-mono);
+  }
+  .route {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  .tl.io-wait .route {
+    stroke-dashoffset: 1;
+  }
+  .tl.io-in .route {
+    animation: draw 1400ms 200ms var(--ease-out) both;
+  }
+  /* Keep the labels legible on a phone: the figure scrolls sideways instead of shrinking. */
+  @media (width < 47.5rem) {
+    .tl {
+      overflow-x: auto;
+    }
+    .tl svg {
+      min-width: 560px;
+    }
+  }
+</style>

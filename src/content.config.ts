@@ -105,4 +105,19 @@ const building = defineCollection({
   }),
 });
 
-export const collections = { work, writing, building };
+// About-page details (§13.4 Now, Uses → Desk, the personal line). One entry, id "about".
+const about = defineCollection({
+  loader: file("src/content/about.yaml"),
+  schema: z.object({
+    nowUpdated: z.string().default(""),
+    learning: z.string().default(""),
+    reading: z.string().default(""),
+    laptop: z.string().default(""),
+    editor: z.string().default(""),
+    keyboard: z.string().default(""),
+    personal: z.string().default(""),
+    kovaleeInParis: z.boolean().default(false),
+  }),
+});
+
+export const collections = { work, writing, building, about };

@@ -1,13 +1,31 @@
 ---
 import { readFileSync } from "node:fs";
 import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
+import CityTimeline from "../components/CityTimeline.astro";
+import Placeholder from "../components/Placeholder.astro";
 import PhText from "../components/PhText.astro";
 import Base from "../layouts/Base.astro";
-import { getWork, when } from "../lib/content";
+import { getWork, showBuilding, when } from "../lib/content";
 import { site } from "../site";
 import photo from "../assets/duc.jpg";
 
 const jobs = await getWork("experience");
+const dev = import.meta.env.DEV;
+// Facts Duc still owes (§13.7) render as placeholders in `astro dev` and are left out of production.
+const about = (await getEntry("about", "about"))?.data;
+const building = (await getEntry("building", "next"))?.data;
+const showBuildingRow = await showBuilding();
+type Row = { k: string; v?: string; ph: string };
+const nowRows = [
+  { k: "Learning", v: about?.learning, ph: "[One thing you're learning]" },
+  { k: "Reading", v: about?.reading, ph: "[A book or a blog]" },
+] satisfies Row[];
+const desk = [
+  { v: about?.laptop, ph: "[laptop]" },
+  { v: about?.editor, ph: "[editor and terminal]" },
+  { v: about?.keyboard, ph: "[keyboard]" },
+].filter((x) => x.v || dev);
 // Size and date of the résumé shown under the download button; placeholders until the real PDF is in public/.
 const pdf = readFileSync("public/resume.pdf");
 const pdfIsPlaceholder = pdf.includes("PLACEHOLDER RESUME");
@@ -68,8 +86,48 @@ const lines: Record<string, string> = {
           </p>
           <p>
             At NUS I went deep on parallel and concurrent systems.
+            {about?.personal ? ` ${about.personal}` : dev && <Placeholder>[One personal line: what you do when you're not at a keyboard.]</Placeholder>}
           </p>
         </div>
+
+        <section aria-labelledby="now-h" class="now dots rounded-[14px] border border-line-strong bg-raised px-[26px] py-6 max-md:p-[18px]">
+          <div class="mb-3.5 flex flex-wrap items-baseline gap-x-3.5 gap-y-1.5">
+            <h2 id="now-h" class="t2 text-[28px] font-semibold tracking-[-0.02em]">Now</h2>
+            {
+              (about?.nowUpdated || dev) && (
+                <span class="mono text-xs text-muted">updated {about?.nowUpdated || <Placeholder>[Month YYYY]</Placeholder>}</span>
+              )
+            }
+          </div>
+          <dl class="now-list">
+            <dt>Working on</dt>
+            <dd>The messaging SDK at TikTok, on iOS and more and more cross-platform.</dd>
+            {
+              showBuildingRow && (
+                <>
+                  <dt>Building</dt>
+                  <dd>
+                    {building?.name || <Placeholder>[Project name]</Placeholder>}
+                    {building?.tagline && `, ${building.tagline}`}: the server half of what I do all day.{" "}
+                    <a href="/work#next">On the Work page →</a>
+                  </dd>
+                </>
+              )
+            }
+            {
+              nowRows
+                .filter((r) => r.v || dev)
+                .map((r) => (
+                  <>
+                    <dt>{r.k}</dt>
+                    <dd>{r.v || <Placeholder>{r.ph}</Placeholder>}</dd>
+                  </>
+                ))
+            }
+          </dl>
+        </section>
+
+        {(about?.kovaleeInParis || dev) && <CityTimeline confirmed={Boolean(about?.kovaleeInParis)} />}
 
         <section aria-labelledby="exp-h">
           <h2 id="exp-h" class="t2 mb-1 text-[28px] font-semibold tracking-[-0.02em]">Experience</h2>
@@ -104,13 +162,58 @@ const lines: Record<string, string> = {
         </section>
 
         <section aria-labelledby="tools-h">
-          <h2 id="tools-h" class="t2 mb-3 text-[28px] font-semibold tracking-[-0.02em]">Tools I've worked with</h2>
+          <h2 id="tools-h" class="t2 mb-3 text-[28px] font-semibold tracking-[-0.02em]">Uses</h2>
           <dl class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-x-8 gap-y-4">
             <div><dt class="kicker !text-[11px] text-subtle">Systems and backend</dt><dd class="mono mt-1.5 text-[13px]">C++17 · Go · Rust (Tokio) · SQLite · MongoDB · Redis · Kitex RPC · MPI · CUDA</dd></div>
             <div><dt class="kicker !text-[11px] text-subtle">Apps and frontend</dt><dd class="mono mt-1.5 text-[13px]">Objective-C · Swift · SwiftUI · Fastlane · SolidJS · Angular · React Native · TailwindCSS</dd></div>
+            {
+              desk.length > 0 && (
+                <div>
+                  <dt class="kicker !text-[11px] text-subtle">Desk</dt>
+                  <dd class="mono mt-1.5 text-[13px]">
+                    {desk.map((x, i) => (
+                      <>
+                        {i > 0 && " · "}
+                        {x.v || <Placeholder>{x.ph}</Placeholder>}
+                      </>
+                    ))}
+                  </dd>
+                </div>
+              )
+            }
           </dl>
         </section>
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  /* The Now card's dot grid is drawn in `line`, softer than the hero's (§13.2). */
+  .now {
+    background-image: radial-gradient(var(--color-line) 0.8px, transparent 0.9px);
+  }
+  .now-list {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 10px 20px;
+    font-size: 16px;
+  }
+  .now-list dt {
+    padding-top: 3px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  @media (width < 47.5rem) {
+    .now-list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px;
+    }
+    .now-list dd + dt {
+      margin-top: 10px;
+    }
+  }
+</style>

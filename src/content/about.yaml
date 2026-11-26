@@ -1,0 +1,16 @@
+# About-page details Duc still owes (DESIGN.md §13.7). Anything left empty is shown as a striped
+# placeholder in `astro dev` and left out of production builds.
+about:
+  # Now card (§13.4). "Working on" comes from the TikTok entry; "Building" from building.yaml.
+  nowUpdated: "" # Month YYYY, e.g. "Nov 2026"
+  learning: ""
+  reading: ""
+  # Uses → Desk.
+  laptop: ""
+  editor: "" # editor and terminal
+  keyboard: ""
+  # One personal line for the bio: what you do when you're not at a keyboard.
+  personal: ""
+  # The "Two cities so far" timeline draws Kovalee in Paris. Set to true once Duc confirms it;
+  # until then the timeline shows only in `astro dev`, with Paris as a placeholder.
+  kovaleeInParis: false
