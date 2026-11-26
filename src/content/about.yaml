@@ -11,6 +11,3 @@ about:
   keyboard: ""
   # One personal line for the bio: what you do when you're not at a keyboard.
   personal: ""
-  # The "Two cities so far" timeline draws Kovalee in Paris. Set to true once Duc confirms it;
-  # until then the timeline shows only in `astro dev`, with Paris as a placeholder.
-  kovaleeInParis: false

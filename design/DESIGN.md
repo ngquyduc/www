@@ -730,4 +730,4 @@ Boards: **Character kit** (`Character.dc.html`), the components **Plate**, **Exp
 - **Building next:** project name, one sentence on what it does and why, start month, repo link (if public), 2–4 milestones with done or next.
 - **Built for fun:** one line each for Gymaite and Caroubuy.
 - **About → Now:** Learning, Reading, and the month it was last updated. **Uses → Desk:** laptop, editor and terminal, keyboard. One personal line for the bio.
-- **Confirm:** Kovalee in Paris (the timeline draws a Paris stop from the content file).
+- ~~**Confirm:** Kovalee in Paris~~ **Confirmed** by Duc (Nov 2026): Kovalee was in Paris. The timeline, the About bio and the Kovalee case study show it as real content.

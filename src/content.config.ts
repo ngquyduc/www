@@ -116,7 +116,6 @@ const about = defineCollection({
     editor: z.string().default(""),
     keyboard: z.string().default(""),
     personal: z.string().default(""),
-    kovaleeInParis: z.boolean().default(false),
   }),
 });
 

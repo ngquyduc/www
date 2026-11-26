@@ -1,13 +1,6 @@
 ---
 // "Two cities so far" (§13.4): Singapore and Paris lanes, an accent route that draws in on first
-// view (`route`, §13.2). Kovalee's Paris stop is unconfirmed (§13.7), so the caller only renders
-// this in production once about.yaml says kovaleeInParis; until then Paris is a placeholder.
-import Placeholder from "./Placeholder.astro";
-
-interface Props {
-  confirmed: boolean;
-}
-const { confirmed } = Astro.props;
+// view (`route`, §13.2). Kovalee in Paris is confirmed by Duc (§13.7).
 const stops = [
   { name: "NUS", when: "2021", x: 96, y: 40, ty: 22, dy: 62 },
   { name: "Vebits", when: "2023", x: 236, y: 40, ty: 22, dy: 62 },
@@ -22,7 +15,7 @@ const label =
 <section aria-labelledby="route-h">
   <h2 id="route-h" class="t2 mb-1 text-[28px] font-semibold tracking-[-0.02em]">Two cities so far</h2>
   <p class="mb-3 text-[15px] text-muted">
-    Singapore for school and most of my work, with five months in {confirmed ? "Paris" : <Placeholder>[Paris: confirm]</Placeholder>} for Kovalee.
+    Singapore for school and most of my work, with five months in Paris for Kovalee.
   </p>
   <figure class="tl border-t border-ink pt-3" data-io tabindex="0">
     <svg viewBox="0 0 640 150" width="100%" role="img" aria-label={label}>

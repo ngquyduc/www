@@ -79,7 +79,7 @@ const lines: Record<string, string> = {
             more cross-platform work.
           </p>
           <p>
-            Before TikTok I was an iOS developer intern at Kovalee, shipping about two apps a month and maintaining their
+            Before TikTok I was an iOS developer intern at Kovalee in Paris, shipping about two apps a month and maintaining their
             analytics and in-app-purchase SDKs. Before that I built the SolidJS operator app for a LiDAR
             surveillance system at dConstruct Robotics, and made a road-inspection app's queries faster at Vebits. I studied Computer
             Science at NUS.
@@ -127,7 +127,7 @@ const lines: Record<string, string> = {
           </dl>
         </section>
 
-        {(about?.kovaleeInParis || dev) && <CityTimeline confirmed={Boolean(about?.kovaleeInParis)} />}
+        <CityTimeline />
 
         <section aria-labelledby="exp-h">
           <h2 id="exp-h" class="t2 mb-1 text-[28px] font-semibold tracking-[-0.02em]">Experience</h2>
