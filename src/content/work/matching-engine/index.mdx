@@ -34,7 +34,7 @@ In C++, each client connection gets its own thread. An order first looks up its 
 
 The Go version takes the opposite approach: no goroutine shares data. One goroutine per client sends orders to a distributor, which forwards each one to a master goroutine for its instrument; the master hands orders to a buyer and a seller worker over channels, and each worker owns its own queue. A client waits for a done signal before its next order, so orders from one client stay in sequence.
 
-In C++ we checked the locking with ThreadSanitizer and the memory handling with AddressSanitizer, and generated test cases with a Python script, from one client up to 40 clients across 10 instruments and 100,000 transactions. In Go we compiled with the race detector and ran the same kind of generated tests with 1 to 40 clients.
+In C++ we checked the locking with ThreadSanitizer and the memory handling with AddressSanitizer, and generated test cases with a Python script: from one client up to 40 clients across up to 10 instruments, plus separate runs of 100,000 transactions with 10 and 20 clients. In Go we compiled with the race detector and ran the same kind of generated tests with 1 to 40 clients.
 
 <TryIt />
 
