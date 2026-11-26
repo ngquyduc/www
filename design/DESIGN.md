@@ -40,7 +40,7 @@ Positioning: **a systems-minded engineer who ships.** The proof today is the mes
 
 | Route | Template | Notes |
 |---|---|---|
-| `/` | Home | Pitch, "What users see vs what I see" hero demo, 4 featured items, latest writing (hidden if none), contact line |
+| `/` | Home | Pitch, "What users see vs what I see" hero demo, Experience (real jobs only), Projects, latest writing (hidden if none), contact line |
 | `/work` | Work index | Three tiers, anchors `#experience`, `#depth`, `#foundations` |
 | `/work/tiktok`, `/work/kovalee`, `/work/dconstruct`, `/work/vebits` | Case study | dConstruct is drawn. The TikTok study must stay at the level of public facts and Duc's own role (see §12) |
 | `/work/matching-engine` | Depth page | Architecture slot, **"Try it" order-book demo**, benchmark slots, method, findings |
@@ -558,17 +558,15 @@ Desktop is drawn at 1440 (container 1152); mobile at 390 (16 px gutters). All pa
    - Lede: "I'm Duc, a mobile software engineer at TikTok, working on the instant-messaging SDK: on iOS, and more and more cross-platform. Before that I shipped at Kovalee, dConstruct Robotics and Vebits."
    - CTAs: "See my work →" and "Résumé (PDF)".
    - The demo section opens with an ink rule, an accent kicker "What users see vs what I see" and the mono hint "Send a text, photo, voice note or video, or press and hold any message to pin it. The right side shows what the client does underneath. Simulated, with an invented conversation; not production code."
-2. `01 Selected work`, 4 rows:
-   - TikTok (Experience · `[impact metric]` placeholder).
-   - dConstruct Robotics (−20% latency).
-   - Exchange matching engine (Depth · side project · "Benchmarks: TBD").
-   - Kovalee (2 apps / month).
-3. `02 Latest writing`: 3 newest posts, or omitted entirely.
-4. Contact line: "Want to talk mobile, SDKs or systems? Email me." + email + Copy + GitHub + LinkedIn.
+2. `01 Experience`: real jobs only (tier `experience`), newest first: TikTok, Kovalee, dConstruct Robotics, Vebits AI. Each row shows role and dates, one line of what the job was, and one résumé number. Links to the case study. "All experience →" goes to `/work#experience`.
+3. `02 Projects`: depth projects, the matching engine first, then the async TCP server and the distributed chat. Each row keeps its context tag (Coursework, Programme) and its credit line (module and co-authors, or programme). "All projects →" goes to `/work#depth`.
+   *Changed after rev 4 at Duc's request: the old mixed "Selected work" list put projects among jobs; Home now separates real experience from projects, the same split as `/work`.*
+4. `03 Latest writing`: 3 newest posts, or omitted entirely.
+5. Contact line: "Want to talk mobile, SDKs or systems? Email me." + email + Copy + GitHub + LinkedIn.
 
 **Mobile:** single column; the demo becomes two tabs (What users see / What I see) below the CTAs.
 
-**Work.** h1 "Ordered by strength of evidence: shipped work first, then depth, then the foundations." + pill anchors (5 / 3 / 7).
+**Work.** h1 "Ordered by strength of evidence: shipped work first, then depth, then the foundations." + pill anchors (5 / 3 / 7). Same split as Home: real experience first (A), projects after it (B depth projects, C coursework and built for fun); no project appears in the experience tier.
 - **A · Real-world experience:**
   - TikTok (`[start] – now`, Mobile Software Engineer, "Instant-messaging SDK. TikTok is the main client; TikTok Shop and Lemon8 also build on it. Started on iOS; the team now works more and more cross-platform.", metric placeholder, stack placeholder).
   - Kovalee (`Aug 2024 – [end]`, past tense).

@@ -4,10 +4,12 @@ import HeroDemo from "../components/hero/HeroDemo.astro";
 import LiveLabel from "../components/LiveLabel.astro";
 import SectionHead from "../components/SectionHead.astro";
 import Base from "../layouts/Base.astro";
-import { getFeatured, getPosts, isoDate, readingMinutes } from "../lib/content";
+import { getPosts, getWork, isoDate, readingMinutes } from "../lib/content";
 import { site } from "../site";
 
-const featured = await getFeatured();
+// Real jobs only, newest first (content order), then projects: the matching engine first (§9).
+const experience = await getWork("experience");
+const projects = await getWork("depth");
 const posts = (await getPosts()).slice(0, 3);
 ---
 
@@ -47,15 +49,20 @@ const posts = (await getPosts()).slice(0, 3);
     </div>
   </section>
 
-  <section class="wrap below-fold pt-16 md:pt-24" aria-labelledby="sel">
-    <SectionHead n="01" id="sel" title="Selected work" more={{ href: "/work", label: "All work" }} />
-    {featured.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
+  <section class="wrap below-fold pt-16 md:pt-24" aria-labelledby="exp">
+    <SectionHead n="01" id="exp" title="Experience" more={{ href: "/work#experience", label: "All experience" }} />
+    {experience.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
+  </section>
+
+  <section class="wrap below-fold pt-16 md:pt-24" aria-labelledby="proj">
+    <SectionHead n="02" id="proj" title="Projects" more={{ href: "/work#depth", label: "All projects" }} />
+    {projects.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
   </section>
 
   {
     posts.length > 0 && (
       <section class="wrap below-fold pt-16 md:pt-24" aria-labelledby="wr">
-        <SectionHead n="02" id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
+        <SectionHead n="03" id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
         {posts.map((p) => (
           <a class="row-link flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-line py-[18px]" href={`/writing/${p.id}`}>
             <time class="w-[110px] shrink-0 text-[13px] text-muted" datetime={isoDate(p.data.date)}>{isoDate(p.data.date)}</time>

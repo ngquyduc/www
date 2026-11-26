@@ -8,11 +8,6 @@ export async function getWork(tier?: Work["data"]["tier"]): Promise<Work[]> {
   return all.sort((a, b) => a.data.order - b.data.order);
 }
 
-export async function getFeatured(): Promise<Work[]> {
-  const all = await getCollection("work", (e) => e.data.featured !== undefined);
-  return all.sort((a, b) => (a.data.featured ?? 0) - (b.data.featured ?? 0));
-}
-
 export const workHref = (e: Work): string => `/work/${e.id}`;
 
 const year = (s: string) => s.match(/\b(\d{4})$/)?.[1];
