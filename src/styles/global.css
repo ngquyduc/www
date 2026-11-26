@@ -27,9 +27,9 @@
   --color-term-db: #8ab4ff;
   --color-term-press: #2b2114;
 
-  --font-sans: var(--font-plex-sans), "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system,
+  --font-sans: var(--font-plex-sans), "Plex Sans Fallback", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, sans-serif;
-  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas,
+  --font-mono: var(--font-plex-mono), "Plex Mono Fallback", ui-monospace, "SF Mono", Menlo, Consolas,
     monospace;
 
   --text-sm: 0.9375rem;
@@ -53,6 +53,40 @@
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
   --container-page: 72rem;
   --container-prose: 40rem;
+}
+
+/* Metric-matched fallbacks for IBM Plex (§4.2: keep CLS near 0). The size and ascent numbers
+   are the ones Astro computes against Arial and Courier New. Each face also lists the fonts that
+   share those metrics (Liberation and Arimo/Cousine on Linux and ChromeOS, Helvetica on Apple),
+   so systems without Arial get the same adjustment instead of an unadjusted system font. */
+@font-face {
+  font-family: "Plex Sans Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans"), local("Arimo"),
+    local("Helvetica"), local("Helvetica Neue");
+  font-weight: 100 650;
+  size-adjust: 101.1663%;
+  ascent-override: 101.3184%;
+  descent-override: 27.183%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Plex Sans Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold"),
+    local("Arimo Bold"), local("Helvetica Bold"), local("Helvetica Neue Bold");
+  font-weight: 651 900;
+  size-adjust: 93.9622%;
+  ascent-override: 109.0865%;
+  descent-override: 29.2671%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Plex Mono Fallback";
+  src: local("Courier New"), local("CourierNewPSMT"), local("Liberation Mono"), local("LiberationMono"),
+    local("Cousine"), local("Courier");
+  size-adjust: 99.9837%;
+  ascent-override: 102.5167%;
+  descent-override: 27.5045%;
+  line-gap-override: 0%;
 }
 
 [data-theme="dark"] {

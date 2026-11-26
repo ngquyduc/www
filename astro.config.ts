@@ -6,7 +6,9 @@ import { defineConfig, fontProviders } from "astro/config";
 import type { Plugin } from "vite";
 import { codeTheme, titleTransformer } from "./src/lib/code-theme.mjs";
 
-// Self-hosted Fontsource WOFF2, Latin subset (§4.2). Astro generates metric-matched fallbacks.
+// Self-hosted Fontsource WOFF2, Latin subset (§4.2). The metric-matched fallback faces live in
+// src/styles/global.css: Astro's own fallback only tries local("Arial"), which Linux and Android
+// don't have, so text reflowed when Plex loaded (CLS 0.18 on the CI runner).
 const variants = (pkg: "sans" | "mono", weights: [string, ...string[]]) => {
   const v = (w: string) => ({
     src: [`@fontsource/ibm-plex-${pkg}/files/ibm-plex-${pkg}-latin-${w}-normal.woff2`] as [string],
@@ -69,14 +71,16 @@ export default defineConfig({
       provider: fontProviders.local(),
       name: "IBM Plex Sans",
       cssVariable: "--font-plex-sans",
-      fallbacks: ["ui-sans-serif", "system-ui", "sans-serif"],
+      fallbacks: [],
+      optimizedFallbacks: false,
       options: { variants: variants("sans", ["400", "500", "600", "700"]) },
     },
     {
       provider: fontProviders.local(),
       name: "IBM Plex Mono",
       cssVariable: "--font-plex-mono",
-      fallbacks: ["ui-monospace", "monospace"],
+      fallbacks: [],
+      optimizedFallbacks: false,
       options: { variants: variants("mono", ["400", "500", "600"]) },
     },
   ],
