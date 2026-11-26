@@ -1,16 +1,18 @@
 ---
 import ExpCard from "../components/ExpCard.astro";
+import NextCard from "../components/NextCard.astro";
 import HeroDemo from "../components/hero/HeroDemo.astro";
 import Ledger from "../components/Ledger.astro";
 import LiveLabel from "../components/LiveLabel.astro";
 import SectionHead from "../components/SectionHead.astro";
 import Base from "../layouts/Base.astro";
-import { getPosts, getWork, isoDate, readingMinutes } from "../lib/content";
+import { getPosts, getWork, isoDate, readingMinutes, showBuilding } from "../lib/content";
 import { site } from "../site";
 
 // Real jobs only, newest first (content order) (§9, §13.4).
 const experience = await getWork("experience");
 const posts = (await getPosts()).slice(0, 3);
+const building = await showBuilding();
 ---
 
 <Base>
@@ -60,9 +62,20 @@ const posts = (await getPosts()).slice(0, 3);
   </section>
 
   {
+    building && (
+      <section class="wrap below-fold sec" aria-labelledby="next">
+        <SectionHead n="02" id="next" title="Building next" />
+        <div class="mt-7">
+          <NextCard />
+        </div>
+      </section>
+    )
+  }
+
+  {
     posts.length > 0 && (
       <section class="wrap below-fold sec" aria-labelledby="wr">
-        <SectionHead n="03" id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
+        <SectionHead n={building ? "03" : "02"} id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
         {posts.map((p) => (
           <a class="row-link flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-line py-[18px]" href={`/writing/${p.id}`}>
             <time class="w-[110px] shrink-0 text-[13px] text-muted" datetime={isoDate(p.data.date)}>{isoDate(p.data.date)}</time>

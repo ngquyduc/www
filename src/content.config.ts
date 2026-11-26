@@ -1,5 +1,5 @@
 import { defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 // §11. Strings wrapped in [brackets] are placeholders for facts Duc still owes (§12);
@@ -91,4 +91,17 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { work, writing };
+// The side project in progress (§13.3 NextCard). One entry, id "next".
+const building = defineCollection({
+  loader: file("src/content/building.yaml"),
+  schema: z.object({
+    name: z.string().default(""),
+    tagline: z.string().default(""),
+    sentence: z.string().default(""),
+    started: z.string().default(""),
+    repo: z.union([z.url(), z.literal("")]).default(""),
+    milestones: z.array(z.object({ text: z.string(), done: z.boolean() })).default([]),
+  }),
+});
+
+export const collections = { work, writing, building };

@@ -1,0 +1,15 @@
+# "Building next" (DESIGN.md §13.3, §13.7). Duc fills this in. Until `name` is set the card is left
+# out of production builds; `astro dev` shows it with striped placeholders so the layout can be checked.
+# No results, no dates that aren't Duc's, and no architecture he hasn't built (§13.1).
+next:
+  name: ""
+  # Shown after the name in the heading.
+  tagline: a messaging backend
+  # One sentence on what it does and why, in Duc's words. Follows "This is the other half:".
+  sentence: ""
+  # Month YYYY, e.g. "Nov 2026".
+  started: ""
+  # Public repo URL, or leave empty.
+  repo: ""
+  # 2–4 milestones, each { text, done }.
+  milestones: []

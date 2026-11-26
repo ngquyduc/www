@@ -1,4 +1,4 @@
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection, getEntry } from "astro:content";
 
 export type Work = CollectionEntry<"work">;
 export type Post = CollectionEntry<"writing">;
@@ -37,3 +37,9 @@ export function readingMinutes(body: string | undefined): number {
 }
 
 export const isoDate = (d: Date): string => d.toISOString().slice(0, 10);
+
+/** The Building-next card shows once Duc has named the project; `astro dev` always shows it (§13.3). */
+export async function showBuilding(): Promise<boolean> {
+  const e = await getEntry("building", "next");
+  return Boolean(e?.data.name) || import.meta.env.DEV;
+}

@@ -1,0 +1,133 @@
+---
+// Building next (§13.3): the side project in progress, from src/content/building.yaml.
+// Production builds leave it out until `name` is filled in; `astro dev` shows the empty fields as
+// striped placeholders. No results and no architecture Duc hasn't built (§13.1).
+import { getEntry } from "astro:content";
+import { site } from "../site";
+import Placeholder from "./Placeholder.astro";
+import Plate from "./Plate.astro";
+
+interface Props {
+  /** Heading level for the project name. */
+  level?: "h2" | "h3";
+}
+const { level = "h3" } = Astro.props;
+const H = level;
+const d = (await getEntry("building", "next"))?.data;
+const milestones = d?.milestones.length
+  ? d.milestones
+  : [
+      { text: "", done: true },
+      { text: "", done: true },
+      { text: "", done: false },
+      { text: "", done: false },
+    ];
+---
+
+{
+  d && (d.name || import.meta.env.DEV) && (
+    <article class="nx" aria-labelledby="nx-h">
+      <div class="nx-art">
+        <Plate kind="next" ratio="16/10" />
+      </div>
+      <div class="nx-body">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <span class="nx-chip">
+            <span class="nx-dot" aria-hidden="true" />
+            IN PROGRESS
+          </span>
+          <span class="mono text-xs text-muted">
+            Side project · started {d.started || <Placeholder>[Month YYYY]</Placeholder>}
+          </span>
+        </div>
+        <H id="nx-h" class="text-[28px] font-[650] leading-[1.15] tracking-[-0.02em]">
+          {d.name || <Placeholder>[Project name]</Placeholder>}
+          {d.tagline && `: ${d.tagline}`}
+        </H>
+        <p class="text-muted">
+          I spend my days on the client side of chat. This is the other half:{" "}
+          {d.sentence || <Placeholder>[one sentence on what it does and why, in Duc's words]</Placeholder>}
+        </p>
+        <ul aria-label="Milestones" class="mono flex flex-col gap-1.5 text-[13px]">
+          {milestones.map((m) => (
+            <li class="flex items-baseline gap-2.5">
+              <span aria-hidden="true" class:list={["w-3.5 shrink-0", m.done ? "text-[#2F9E5B]" : "text-line-strong"]}>
+                {m.done ? "✓" : "○"}
+              </span>
+              <span class:list={[m.done ? "text-ink" : "text-muted"]}>
+                {m.text || <Placeholder>{m.done ? "[milestone done]" : "[next milestone]"}</Placeholder>}
+              </span>
+              <span class="sr-only">{m.done ? "(done)" : "(next)"}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="nx-note">No results yet. Numbers go here once there are numbers, measured and with the method.</p>
+        <a href={d.repo || site.socials.github.href} class="self-start text-[15px] font-medium">
+          Follow along on GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </article>
+  )
+}
+
+<style>
+  .nx {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border: 1px dashed var(--color-line-strong);
+    border-radius: 14px;
+    background: var(--color-bg);
+  }
+  .nx-art {
+    display: flex;
+    flex: 1 1 380px;
+    align-items: center;
+    min-width: 0;
+    border-right: 1px dashed var(--color-line);
+    background: var(--color-sunken);
+  }
+  .nx-body {
+    display: flex;
+    flex: 1 1 380px;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+    padding: 24px 26px;
+  }
+  .nx-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px;
+    border: 1px solid var(--color-mark-x);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+  }
+  .nx-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-mark-x);
+  }
+  .nx-note {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px dashed var(--color-line);
+    font-size: 14px;
+    color: var(--color-muted);
+  }
+  @media (width < 47.5rem) {
+    .nx-art {
+      border-right: 0;
+      border-bottom: 1px dashed var(--color-line);
+    }
+    .nx-body {
+      padding: 18px;
+    }
+  }
+</style>

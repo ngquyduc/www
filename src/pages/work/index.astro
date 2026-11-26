@@ -3,9 +3,10 @@ import CourseworkTable from "../../components/CourseworkTable.astro";
 import DepthCard from "../../components/DepthCard.astro";
 import ExpCard from "../../components/ExpCard.astro";
 import FunItem from "../../components/FunItem.astro";
+import NextCard from "../../components/NextCard.astro";
 import SectionHead from "../../components/SectionHead.astro";
 import Base from "../../layouts/Base.astro";
-import { getWork } from "../../lib/content";
+import { getWork, showBuilding } from "../../lib/content";
 import { site } from "../../site";
 
 const [exp, depth, course, fun] = await Promise.all([
@@ -14,6 +15,7 @@ const [exp, depth, course, fun] = await Promise.all([
   getWork("coursework"),
   getWork("fun"),
 ]);
+const building = await showBuilding();
 const tiers = [
   { id: "experience", label: "A · Real-world experience", n: exp.length },
   { id: "depth", label: "B · Depth projects", n: depth.length },
@@ -44,6 +46,13 @@ const tiers = [
       {exp.map((e) => <ExpCard item={e} />)}
     </div>
   </section>
+
+  {building && (
+  <section id="next" class="wrap scroll-mt-6 pt-16 md:pt-24" aria-labelledby="h-next">
+    <SectionHead n="02" id="h-next" title="Building next" />
+    <div class="mt-7"><NextCard /></div>
+  </section>
+  )}
 
   {depth.length > 0 && (
   <section id="depth" class="wrap scroll-mt-6 pt-16 md:pt-24" aria-labelledby="h-depth">
