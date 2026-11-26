@@ -24,7 +24,7 @@ const building = await showBuilding();
           <span class="size-2 rounded-full bg-[#2F9E5B]" aria-hidden="true"></span>Singapore · iOS software engineer
         </p>
         <h1 id="pitch" class="text-display">
-          Systems-minded engineer who <span class="ships">ships<svg class="swoosh" viewBox="0 0 200 18" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M3 13 C50 4 120 3 197 9" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path></svg></span>.
+          Systems-minded<br /> engineer who<br class="h1-br" /> <span class="ships">ships<svg class="swoosh" viewBox="0 0 200 18" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M3 13 C50 4 120 3 197 9" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path></svg></span>.
         </h1>
         <p class="max-w-[36rem] text-lg text-muted">
           I'm Duc. I work on the <span class="mark">instant-messaging SDK</span> behind TikTok chat: on iOS, and more and
@@ -131,6 +131,18 @@ const building = await showBuilding();
     opacity: 0.55;
     mask-image: radial-gradient(ellipse 60% 70% at 75% 30%, #000 20%, transparent 70%);
     pointer-events: none;
+  }
+
+  /* The h1 breaks at fixed points so Plex and its fallback wrap the same way and the font swap
+     can't reflow the hero (CLS): always after "Systems-minded" (the fallback would fit "engineer"
+     on line one at 832 px, Plex doesn't), and under 760 px after "who" as well. */
+  .h1-br {
+    display: none;
+  }
+  @media (width < 47.5rem) {
+    .h1-br {
+      display: inline;
+    }
   }
 
   /* "ships" in accent, with the swoosh drawn in once on load (`swoosh`, §13.2). */
