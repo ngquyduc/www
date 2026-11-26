@@ -1,0 +1,70 @@
+---
+// Ledger strip (§13.3): four figures under the Home pitch. Every number is on the résumé (§2.4).
+import Roll from "./Roll.astro";
+
+const cells = [
+  { value: "iOS", label: "now: messaging SDK at TikTok", accent: true },
+  { value: "−75%", label: "failed message sends at TikTok" },
+  { value: "2 / mo", label: "iOS apps shipped at Kovalee" },
+  { value: "500k", label: "reports a day handled at Vebits" },
+];
+---
+
+<dl class="ledger" aria-label="At a glance" data-io>
+  {
+    cells.map((c) => (
+      <div class="ledger-cell">
+        <dt class="mono text-xs leading-[1.4] text-muted">{c.label}</dt>
+        <dd class:list={["mono", c.accent ? "text-accent" : "text-ink"]}>
+          <Roll value={c.value} />
+        </dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .ledger {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0;
+    border-top: 1px solid var(--color-ink);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .ledger-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 20px 18px 0;
+  }
+  .ledger-cell + .ledger-cell {
+    padding-left: 20px;
+    border-left: 1px solid var(--color-line);
+  }
+  dt {
+    order: 2;
+  }
+  dd {
+    order: 1;
+    margin: 0;
+    font-size: 34px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  @media (width < 47.5rem) {
+    .ledger {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .ledger-cell:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .ledger-cell:nth-child(n + 3) {
+      border-top: 1px solid var(--color-line);
+    }
+    dd {
+      font-size: 28px;
+    }
+  }
+</style>

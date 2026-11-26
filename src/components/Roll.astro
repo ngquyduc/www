@@ -1,0 +1,26 @@
+---
+// Rolling figure (§7.5 roller, `roll-in` in §13.2). Each digit is a 1 em clipped column holding 0–9;
+// the strip sits on its digit by default, so with no JS or under reduced motion the figure is just
+// there. While its [data-io] ancestor waits off-screen the strips rest on 0, then roll up with a
+// 60 ms stagger. The roller is aria-hidden; the real value sits beside it, visually hidden.
+interface Props {
+  value: string;
+}
+const { value } = Astro.props;
+let i = 0;
+const parts = [...value].map((ch) => (ch >= "0" && ch <= "9" ? { d: +ch, i: i++ } : { ch }));
+---
+
+<span class="sr-only">{value}</span><span class="roll" aria-hidden="true">{
+  parts.map((p) =>
+    "d" in p ? (
+      <span class="roll-col">
+        <span class="roll-strip" style={`--d:-${p.d}em;--i:${p.i}`}>
+          <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+        </span>
+      </span>
+    ) : (
+      <span>{p.ch}</span>
+    ),
+  )
+}</span>
