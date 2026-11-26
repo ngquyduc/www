@@ -3,6 +3,7 @@
 // sticky TOC + 40 rem prose (Outcome · Context · What I built · Decisions · In hindsight) → Next.
 import type { MarkdownHeading } from "astro";
 import PhText from "../components/PhText.astro";
+import Plate from "../components/Plate.astro";
 import Tag from "../components/Tag.astro";
 import { type Work, when, workHref } from "../lib/content";
 import Base from "./Base.astro";
@@ -25,7 +26,7 @@ const toc = headings.filter((h) => h.depth === 2);
 
 <Base title={d.title} description={d.lede ?? d.summary} ogType="article">
   <section class="wrap pt-10 md:pt-14">
-    <a href="/work#experience" class="mono text-[13px] text-muted no-underline">← Work · Real-world experience</a>
+    <a href="/work#experience" class="mono text-[13px] text-muted no-underline">← Work · Experience</a>
     <div class="mt-7 flex max-w-[52rem] flex-col gap-4">
       <div class="flex flex-wrap gap-2">
         <Tag variant="filled">Experience</Tag>
@@ -46,6 +47,19 @@ const toc = headings.filter((h) => h.depth === 2);
       }
     </dl>
   </section>
+
+  {
+    d.plate && (
+      <section class="wrap pt-8">
+        <figure class="pl-host flex flex-col gap-2">
+          <Plate kind={d.plate} ratio="16/5" fit="meet" play class="cover-plate" />
+          <figcaption class="mono text-xs text-muted">
+            Fig. 0 · Cover. An illustration of the problem, not <PhText text={d.plateCaption ?? "[what it is not]"} />
+          </figcaption>
+        </figure>
+      </section>
+    )
+  }
 
   <section class="wrap pt-10">
     <div class="flex items-start gap-16">
@@ -72,6 +86,16 @@ const toc = headings.filter((h) => h.depth === 2);
 </Base>
 
 <style>
+  :global(.cover-plate) {
+    border: 1px solid var(--color-line-strong);
+    border-radius: 14px;
+  }
+  @media (width < 47.5rem) {
+    /* 16:5 is too thin on a phone; give the cover more height there. */
+    :global(.cover-plate) {
+      aspect-ratio: 16 / 7 !important;
+    }
+  }
   .toc-link {
     padding: 6px 0 6px 12px;
     box-shadow: inset 1px 0 0 var(--color-line);

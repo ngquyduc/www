@@ -44,6 +44,7 @@ const work = defineCollection({
         // Rev 5 cards (§13.3): the experience-card figure (mono 40) and its label, and the plate kind.
         cardMetric: z.string().optional(),
         cardMetricLabel: z.string().optional(),
+        plateCaption: z.string().optional(),
         plate: z.enum(["tiktok", "kovalee", "dconstruct", "vebits", "gym", "shop", "chat"]).optional(),
         status: z.enum(["published", "in-progress", "upcoming"]),
         hasPage: z.boolean(),
