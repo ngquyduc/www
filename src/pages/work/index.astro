@@ -1,0 +1,90 @@
+---
+import CourseworkTable from "../../components/CourseworkTable.astro";
+import DepthCard from "../../components/DepthCard.astro";
+import ExperienceRow from "../../components/ExperienceRow.astro";
+import FunItem from "../../components/FunItem.astro";
+import Base from "../../layouts/Base.astro";
+import { getWork } from "../../lib/content";
+import { site } from "../../site";
+
+const [exp, depth, course, fun] = await Promise.all([
+  getWork("experience"),
+  getWork("depth"),
+  getWork("coursework"),
+  getWork("fun"),
+]);
+const tiers = [
+  { id: "experience", label: "A · Real-world experience", n: exp.length },
+  { id: "depth", label: "B · Depth projects", n: depth.length },
+  { id: "foundations", label: "C · Foundations and built for fun", n: course.length + fun.length },
+];
+---
+
+<Base title="Work" description="Shipped work first, then depth projects, then coursework and things built for fun.">
+  <section class="wrap flex flex-col gap-5 pt-12 md:pt-[72px]">
+    <p class="kicker text-muted">Work</p>
+    <h1 class="max-w-[46rem] text-3xl font-bold tracking-[-0.025em]">
+      Ordered by strength of evidence: shipped work first, then depth, then the foundations.
+    </h1>
+    <nav aria-label="On this page" class="mono flex flex-wrap gap-2 text-[13px]">
+      {
+        tiers.map((t) => (
+          <a href={`#${t.id}`} class="rounded-full border border-line-strong px-3 py-1.5 no-underline hover:border-ink">
+            {t.label} <span class="text-muted">{t.n}</span>
+          </a>
+        ))
+      }
+    </nav>
+  </section>
+
+  <section id="experience" class="wrap scroll-mt-6 pt-16 md:pt-20" aria-labelledby="h-exp">
+    <div class="flex items-start gap-10 max-md:flex-col max-md:items-stretch">
+      <div class="flex flex-col gap-1.5 md:w-[220px] md:shrink-0">
+        <span class="mono text-[13px] text-accent">A</span>
+        <h2 id="h-exp" class="t2 text-[28px] leading-[1.2] font-semibold tracking-[-0.02em]">Real-world experience</h2>
+        <p class="text-sm text-muted">Paid work, with a team, on production systems. Each one links to a case study once it is written.</p>
+      </div>
+      <div class="min-w-0 flex-[1_1_600px] border-t border-ink">
+        {exp.map((e) => <ExperienceRow item={e} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="depth" class="wrap scroll-mt-6 pt-16 md:pt-24" aria-labelledby="h-depth">
+    <div class="flex items-start gap-10 max-md:flex-col max-md:items-stretch">
+      <div class="flex flex-col gap-1.5 md:w-[220px] md:shrink-0">
+        <span class="mono text-[13px] text-accent">B</span>
+        <h2 id="h-depth" class="t2 text-[28px] leading-[1.2] font-semibold tracking-[-0.02em]">Depth projects</h2>
+        <p class="text-sm text-muted">Systems work I went deep on, most of it for NUS parallel and concurrent programming. Each gets a depth page: architecture, benchmarks with method, findings.</p>
+      </div>
+      <div class="grid min-w-0 flex-[1_1_600px] grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
+        {depth.map((d) => <DepthCard item={d} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="foundations" class="wrap scroll-mt-6 pt-16 md:pt-24" aria-labelledby="h-found">
+    <div class="flex items-start gap-10 max-md:flex-col max-md:items-stretch">
+      <div class="flex flex-col gap-1.5 md:w-[220px] md:shrink-0">
+        <span class="mono text-[13px] text-accent">C</span>
+        <h2 id="h-found" class="t2 text-[28px] leading-[1.2] font-semibold tracking-[-0.02em]">Foundations and built for fun</h2>
+        <p class="text-sm text-muted">Coursework is labelled as coursework and credits the people I built it with. None of it is presented as production work.</p>
+      </div>
+      <div class="flex min-w-0 flex-[1_1_600px] flex-col gap-10">
+        <div>
+          <h3 class="kicker mb-1 text-muted">Coursework</h3>
+          <CourseworkTable items={course} />
+        </div>
+        <div>
+          <h3 class="kicker mb-3 text-muted">Built for fun</h3>
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-x-6 gap-y-1">
+            {fun.map((f) => <FunItem item={f} />)}
+          </div>
+          <p class="mt-4 text-sm text-muted">
+            Older experiments (Music Hub, Modifiles and others) stay on <a href={site.socials.github.href}>GitHub</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

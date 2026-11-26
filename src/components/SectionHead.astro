@@ -1,0 +1,16 @@
+---
+// Numbered section heading on Home: "01 Selected work" with an optional link on the right.
+interface Props {
+  n: string;
+  id: string;
+  title: string;
+  more?: { href: string; label: string };
+}
+const { n, id, title, more } = Astro.props;
+---
+
+<div class="flex items-baseline gap-4 border-b border-line pb-3">
+  <span class="mono text-[13px] text-accent">{n}</span>
+  <h2 id={id} class="text-2xl font-semibold tracking-[-0.02em]">{title}</h2>
+  {more && <a href={more.href} class="ml-auto text-[15px]">{more.label} <span aria-hidden="true">→</span></a>}
+</div>

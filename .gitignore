@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.env
+.env.*
+test-results/
+playwright-report/
+.lighthouseci/
+.DS_Store
+design/prototype/
+design/build_prototype.py
+design/screenshots/
+.claude/
+.venv/

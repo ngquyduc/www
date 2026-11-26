@@ -1,0 +1,16 @@
+{
+  "$comment": "Fill from reproducible runs only (DESIGN.md §2.4). null renders as 'Run benchmarks, then fill in'. Latencies in microseconds.",
+  "unit": "µs",
+  "throughput": { "cpp": null, "go": null },
+  "latency": {
+    "cpp": { "p50": null, "p90": null, "p99": null, "p99.9": null },
+    "go": { "p50": null, "p90": null, "p99": null, "p99.9": null }
+  },
+  "method": {
+    "machine": "[CPU, cores, RAM, OS]",
+    "build": "[compiler + flags; Go version]",
+    "workload": "[order mix, book depth, number of orders]",
+    "measured": "[what one latency sample spans; warm-up; runs]",
+    "reproduce": "[command]"
+  }
+}

@@ -1,0 +1,27 @@
+---
+// Striped placeholder for content Duc still owes (§5.9, §12).
+// A build with PUBLIC_STRICT=1 fails while any placeholder is still rendered.
+interface Props {
+  block?: boolean;
+  class?: string;
+}
+const { block = false, class: cls = "" } = Astro.props;
+const text = Astro.slots.has("default") ? await Astro.slots.render("default") : "";
+if (import.meta.env.PUBLIC_STRICT === "1") {
+  throw new Error(
+    `Placeholder still on ${Astro.url.pathname}: "${text.replace(/<[^>]+>/g, "").trim()}". Fill it in, or build without PUBLIC_STRICT=1.`,
+  );
+}
+---
+
+{
+  block ? (
+    <div class:list={["ph rounded-md p-4", cls]} data-placeholder>
+      <Fragment set:html={text} />
+    </div>
+  ) : (
+    <span class:list={["ph px-1", cls]} data-placeholder>
+      <Fragment set:html={text} />
+    </span>
+  )
+}

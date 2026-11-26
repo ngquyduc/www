@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Design tokens</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#A04A00}a:hover{color:#121417}
+</style>
+</helmet>
+<div style="width:1440px;box-sizing:border-box;padding:72px 80px 96px;background:#F6F6F3;color:#121417;font-family:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;font-size:17px;line-height:1.6;display:flex;flex-direction:column;gap:72px">
+
+  <header style="display:flex;flex-direction:column;gap:16px;max-width:980px">
+    <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#50555E">Phase 1 design · quyduc.vercel.app · Astro + Tailwind v4</p>
+    <h1 style="margin:0;font-size:60px;line-height:1.04;letter-spacing:-0.03em;font-weight:700">Ledger and instrument</h1>
+    <p style="margin:0;font-size:20px;line-height:1.5;color:#50555E">A quiet editorial page (one sans, one mono, hairlines, lots of space) with one dark instrument on it: a live, simulated messaging demo: a phone-style DM screen (“what users see”) beside a dark engineer panel (“what I see”) that reacts to the same taps. The panel stays dark in both themes; the phone skin follows the theme. In light mode it is the only dark object on the page, so the eye lands there first. Everything else gets out of the way of the content.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:12px">
+      <span style="padding:4px 10px;border:1px solid #8A8D93;border-radius:999px">Evidence before adjectives</span>
+      <span style="padding:4px 10px;border:1px solid #8A8D93;border-radius:999px">One loud thing per page</span>
+      <span style="padding:4px 10px;border:1px solid #8A8D93;border-radius:999px">Label the tier</span>
+      <span style="padding:4px 10px;border:1px solid #8A8D93;border-radius:999px">Readable first</span>
+      <span style="padding:4px 10px;border:1px solid #8A8D93;border-radius:999px">Static by default</span>
+    </div>
+  </header>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:baseline;gap:16px;border-bottom:1px solid #DCDCD5;padding-bottom:12px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A04A00">01</span>
+      <h2 style="margin:0;font-size:32px;letter-spacing:-0.02em">Colour</h2>
+      <span style="margin-left:auto;font-size:14px;color:#50555E">Tailwind v4 <code style="font-family:'IBM Plex Mono',monospace">@theme</code> names: <code style="font-family:'IBM Plex Mono',monospace">--color-bg</code> → <code style="font-family:'IBM Plex Mono',monospace">bg-bg</code>, <code style="font-family:'IBM Plex Mono',monospace">text-ink</code>, <code style="font-family:'IBM Plex Mono',monospace">border-line</code></span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:24px">
+      <div style="background:#F6F6F3;border:1px solid #DCDCD5;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px">
+        <p style="margin:0 0 6px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#50555E">LIGHT · :root</p>
+        <sc-for list="{{light}}" as="c" hint-placeholder-count="13">
+          <div style="display:grid;grid-template-columns:44px 170px 90px 1fr;gap:14px;align-items:center;font-size:14px">
+            <span style="width:44px;height:30px;border-radius:6px;border:1px solid #8A8D93;background:{{c.hex}}"></span>
+            <code style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#121417">{{c.name}}</code>
+            <code style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#50555E">{{c.hex}}</code>
+            <span style="color:#50555E">{{c.use}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:#0E1013;border:1px solid #262A31;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;color:#E8E8E3">
+        <p style="margin:0 0 6px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#A3A8B1">DARK · [data-theme="dark"]</p>
+        <sc-for list="{{dark}}" as="c" hint-placeholder-count="13">
+          <div style="display:grid;grid-template-columns:44px 170px 90px 1fr;gap:14px;align-items:center;font-size:14px">
+            <span style="width:44px;height:30px;border-radius:6px;border:1px solid #646A74;background:{{c.hex}}"></span>
+            <code style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#E8E8E3">{{c.name}}</code>
+            <code style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A3A8B1">{{c.hex}}</code>
+            <span style="color:#A3A8B1">{{c.use}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="background:#0B0D10;border-radius:14px;padding:24px;color:#E6E8EB;display:flex;flex-direction:column;gap:14px">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:#98A1AE">INSTRUMENT · same in both themes (hero engineer panel, order-book demo, code blocks, 404 terminal)</p>
+      <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px">
+        <sc-for list="{{term}}" as="c" hint-placeholder-count="8">
+          <div style="display:flex;gap:12px;align-items:center">
+            <span style="flex:0 0 40px;height:40px;border-radius:8px;border:1px solid #3A414D;background:{{c.hex}}"></span>
+            <span style="display:flex;flex-direction:column;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.4"><span>{{c.name}}</span><span style="color:#98A1AE">{{c.hex}} · {{c.use}}</span></span>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin:0;font-size:14px;color:#98A1AE">State is never shown by colour alone: every message status is a word (Sending…, Sent, Delivered, Seen, Not sent), state-machine chips are outlined, filled or labelled, log lanes are named (UI, DB, NET, SYNC), and in the order-book demo BUY and SELL are printed in words.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:16px;font-size:14px">
+      <div style="border:1px solid #DCDCD5;border-radius:8px;padding:16px;background:#FFFFFF"><b>Contrast (WCAG AA)</b><br><span style="color:#50555E">light / dark on bg: ink 17.0 / 15.5 · muted 6.9 / 8.0 · subtle 5.2 / 5.9 · accent 5.6 / 9.4 · accent on accent-soft 4.9 / 7.8 · focus 5.5 / 9.1. Only <code style="font-family:'IBM Plex Mono',monospace">line</code> is decorative; borders that must be seen use <code style="font-family:'IBM Plex Mono',monospace">line-strong</code> (3.1 / 3.5). Subtle text never sits on sunken.</span></div>
+      <div style="border:1px solid #DCDCD5;border-radius:8px;padding:16px;background:#FFFFFF"><b>Instrument contrast</b><br><span style="color:#50555E">On #0B0D10: ink 15.9 · muted 7.5 · err 7.7 · ok 10.9 · amber 10.4. Send button label 15.9; demo Buy label 9.6, Sell 6.7.</span></div>
+      <div style="border:1px solid #DCDCD5;border-radius:8px;padding:16px;background:#FFFFFF"><b>Accent budget</b><br><span style="color:#50555E">Amber marks one or two things per screen: the active nav item, section numbers, one word in the hero, links on hover. It never fills large areas.</span></div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:baseline;gap:16px;border-bottom:1px solid #DCDCD5;padding-bottom:12px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A04A00">02</span>
+      <h2 style="margin:0;font-size:32px;letter-spacing:-0.02em">Type</h2>
+      <span style="margin-left:auto;font-size:14px;color:#50555E">IBM Plex Sans 400/500/600/700 + IBM Plex Mono 400/500/600 · OFL · self-hosted WOFF2, Latin subset</span>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0, 2fr) minmax(0, 1fr);gap:40px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:0">
+        <sc-for list="{{type}}" as="t" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:150px 150px 1fr;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #DCDCD5">
+            <code style="font-family:'IBM Plex Mono',monospace;font-size:13px">{{t.name}}</code>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#50555E">{{t.spec}}</span>
+            <span style="font-family:{{t.family}};font-size:{{t.size}};line-height:1.15;font-weight:{{t.weight}};letter-spacing:{{t.track}};text-transform:{{t.case}}">{{t.sample}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;font-size:15px;color:#50555E">
+        <p style="margin:0"><b style="color:#121417">Why Plex.</b> It was drawn for engineering contexts: a sans with some character and a mono whose figures line up. Numbers matter on this site (prices, latencies, dates), so the mono carries all of them with <code style="font-family:'IBM Plex Mono',monospace">font-feature-settings: "tnum", "zero"</code>.</p>
+        <p style="margin:0"><b style="color:#121417">Rules.</b> Headings are 600–700 with negative tracking. Kickers and labels are mono, uppercase, +0.08em. Body is 17 px / 1.6 with a 40 rem reading measure (about 68 characters). Never more than 2 weights in one block.</p>
+        <p style="margin:0"><b style="color:#121417">Fallbacks.</b> <code style="font-family:'IBM Plex Mono',monospace">ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code> and <code style="font-family:'IBM Plex Mono',monospace">ui-monospace, "SF Mono", Menlo, Consolas, monospace</code>, with <code style="font-family:'IBM Plex Mono',monospace">size-adjust</code> fallback faces to keep CLS near 0.</p>
+        <p style="margin:0"><b style="color:#121417">Mobile.</b> Under 760 px container width: display 38, 3xl 30, 2xl 24. Everything else is unchanged.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:40px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #DCDCD5;padding-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A04A00">03</span><h2 style="margin:0;font-size:24px">Space</h2></div>
+      <p style="margin:0;font-size:14px;color:#50555E">4 px base, which is Tailwind's default spacing scale. Sections are 96 px apart on desktop, 64 px on mobile.</p>
+      <sc-for list="{{space}}" as="s" hint-placeholder-count="10">
+        <div style="display:grid;grid-template-columns:70px 50px 1fr;gap:12px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px">
+          <span>{{s.tw}}</span><span style="color:#50555E">{{s.px}}</span><span style="height:10px;background:#A04A00;border-radius:2px;width:{{s.w}}"></span>
+        </div>
+      </sc-for>
+      <p style="margin:6px 0 0;font-size:14px;color:#50555E">Container 72 rem (1152 px). Gutter 24 px; 16 px under 760 px. Reading column 40 rem.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #DCDCD5;padding-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A04A00">04</span><h2 style="margin:0;font-size:24px">Radius, border, elevation</h2></div>
+      <div style="display:flex;gap:16px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px"><span style="width:72px;height:56px;border:1px solid #8A8D93;border-radius:4px;background:#FFFFFF"></span>sm 4</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px"><span style="width:72px;height:56px;border:1px solid #8A8D93;border-radius:8px;background:#FFFFFF"></span>md 8</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px"><span style="width:72px;height:56px;border:1px solid #8A8D93;border-radius:14px;background:#FFFFFF"></span>lg 14</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px"><span style="width:72px;height:56px;border:1px solid #8A8D93;border-radius:999px;background:#FFFFFF"></span>full</div>
+      </div>
+      <ul style="margin:0;padding-left:18px;font-size:14px;color:#50555E;display:flex;flex-direction:column;gap:6px">
+        <li>sm: tags, inline code, focus ring corners. md: buttons, inputs, figures. lg: the order book, palette, code blocks.</li>
+        <li>Borders are 1 px. <code style="font-family:'IBM Plex Mono',monospace">line</code> for hairlines between rows; <code style="font-family:'IBM Plex Mono',monospace">line-strong</code> for buttons and inputs; dashed 1 px <code style="font-family:'IBM Plex Mono',monospace">accent</code> for placeholders only.</li>
+        <li>No drop shadows on the page. One shadow exists: the palette dialog, <code style="font-family:'IBM Plex Mono',monospace">0 24px 64px rgb(0 0 0 / .28)</code>.</li>
+        <li>Focus ring: 2 px <code style="font-family:'IBM Plex Mono',monospace">focus</code>, 2 px offset. Inside the instrument: 2 px amber.</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #DCDCD5;padding-bottom:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A04A00">05</span><h2 style="margin:0;font-size:24px">Motion</h2></div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:14px">
+        <div style="display:grid;grid-template-columns:120px 1fr;gap:12px"><code style="font-family:'IBM Plex Mono',monospace">fast 120ms</code><span style="color:#50555E">hover colour, button press</span></div>
+        <div style="display:grid;grid-template-columns:120px 1fr;gap:12px"><code style="font-family:'IBM Plex Mono',monospace">base 180ms</code><span style="color:#50555E">palette open/close, row arrow nudge (2 px)</span></div>
+        <div style="display:grid;grid-template-columns:120px 1fr;gap:12px"><code style="font-family:'IBM Plex Mono',monospace">playback ×3</code><span style="color:#50555E">hero demo (simulated ms × 3); long press 450 ms</span></div>
+        <div style="display:grid;grid-template-columns:120px 1fr;gap:12px"><code style="font-family:'IBM Plex Mono',monospace">tick 700ms</code><span style="color:#50555E">order-book demo update interval</span></div>
+        <div style="display:grid;grid-template-columns:120px 1fr;gap:12px"><code style="font-family:'IBM Plex Mono',monospace">ease</code><span style="color:#50555E">cubic-bezier(.2,.7,.2,1) everywhere</span></div>
+      </div>
+      <p style="margin:0;font-size:14px;color:#50555E">The hero demo plays one message on load (under 5 s), then moves only when the visitor acts. No scroll reveals, parallax or page transitions. Under <code style="font-family:'IBM Plex Mono',monospace">prefers-reduced-motion: reduce</code> every transition drops to 0 ms, the hero demo has no autoplay and completes instantly, and the order-book demo starts paused.</p>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px;border-bottom:1px solid #DCDCD5;padding-bottom:12px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A04A00">06</span>
+      <h2 style="margin:0;font-size:32px;letter-spacing:-0.02em">Into Tailwind v4</h2>
+    </div>
+    <pre style="margin:0;background:#0B0D10;color:#E6E8EB;border-radius:14px;padding:24px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;overflow:auto;white-space:pre">/* src/styles/global.css */
+@import "tailwindcss";
+@custom-variant dark (&amp;:where([data-theme=dark], [data-theme=dark] *));
+
+@theme {
+  --color-bg: #F6F6F3;  --color-raised: #FFFFFF;  --color-sunken: #ECECE7;
+  --color-ink: #121417; --color-muted: #50555E;   --color-subtle: #63686F;
+  --color-line: #DCDCD5; --color-line-strong: #8A8D93;
+  --color-accent: #A04A00; --color-accent-soft: #F5E6D3; --color-on-accent: #FFFFFF; --color-focus: #1D5BD6;
+  --color-term-bg: #0B0D10; --color-term-raised: #12151A; --color-term-line: #242932; --color-term-ink: #E6E8EB;
+  --color-term-muted: #98A1AE; --color-term-ok: #3DDC84; --color-term-err: #FF7A7A; --color-term-amber: #F5B041;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --text-base: 1.0625rem; --text-base--line-height: 1.6;   /* 17px */
+  --text-display: 3.75rem; --text-display--line-height: 1.04; /* 60px */
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px;
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --breakpoint-sm: 40rem; --breakpoint-md: 48rem; --breakpoint-lg: 64rem;
+}
+[data-theme="dark"] {
+  --color-bg: #0E1013; --color-raised: #15181D; --color-sunken: #0A0B0D; --color-ink: #E8E8E3;
+  --color-muted: #A3A8B1; --color-subtle: #8A9099; --color-line: #262A31; --color-line-strong: #646A74;
+  --color-accent: #F0A848; --color-accent-soft: #2B2114; --color-on-accent: #1A1203; --color-focus: #8AB4FF;
+}</pre>
+    <p style="margin:0;font-size:14px;color:#50555E">Because dark mode swaps variables, components almost never need <code style="font-family:'IBM Plex Mono',monospace">dark:</code> classes. Utilities read naturally: <code style="font-family:'IBM Plex Mono',monospace">bg-bg text-ink border-line</code>, <code style="font-family:'IBM Plex Mono',monospace">bg-term-bg text-term-ok</code>, <code style="font-family:'IBM Plex Mono',monospace">font-mono text-xs uppercase tracking-[.08em]</code>.</p>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const light = [
+      { name: '--color-bg', hex: '#F6F6F3', use: 'Page background' },
+      { name: '--color-raised', hex: '#FFFFFF', use: 'Palette, inputs, featured rows on hover' },
+      { name: '--color-sunken', hex: '#ECECE7', use: 'Inline code, figure frames, photo slot' },
+      { name: '--color-ink', hex: '#121417', use: 'Body text, primary button fill' },
+      { name: '--color-muted', hex: '#50555E', use: 'Secondary text, ledes, meta' },
+      { name: '--color-subtle', hex: '#63686F', use: 'Tertiary labels (still 4.5:1)' },
+      { name: '--color-line', hex: '#DCDCD5', use: 'Hairlines (decorative)' },
+      { name: '--color-line-strong', hex: '#8A8D93', use: 'Button and input borders (3:1)' },
+      { name: '--color-accent', hex: '#A04A00', use: 'Section numbers, active nav, hover' },
+      { name: '--color-accent-soft', hex: '#F5E6D3', use: 'Tag fill, placeholder stripes' },
+      { name: '--color-on-accent', hex: '#FFFFFF', use: 'Text on accent fill' },
+      { name: '--color-focus', hex: '#1D5BD6', use: 'Focus ring' }
+    ];
+    const dark = [
+      { name: '--color-bg', hex: '#0E1013', use: 'Page background' },
+      { name: '--color-raised', hex: '#15181D', use: 'Palette, inputs, featured rows on hover' },
+      { name: '--color-sunken', hex: '#0A0B0D', use: 'Inline code, figure frames, photo slot' },
+      { name: '--color-ink', hex: '#E8E8E3', use: 'Body text, primary button fill' },
+      { name: '--color-muted', hex: '#A3A8B1', use: 'Secondary text, ledes, meta' },
+      { name: '--color-subtle', hex: '#8A9099', use: 'Tertiary labels (still 4.5:1)' },
+      { name: '--color-line', hex: '#262A31', use: 'Hairlines (decorative)' },
+      { name: '--color-line-strong', hex: '#646A74', use: 'Button and input borders (3:1)' },
+      { name: '--color-accent', hex: '#F0A848', use: 'Section numbers, active nav, hover' },
+      { name: '--color-accent-soft', hex: '#2B2114', use: 'Tag fill, placeholder stripes' },
+      { name: '--color-on-accent', hex: '#1A1203', use: 'Text on accent fill' },
+      { name: '--color-focus', hex: '#8AB4FF', use: 'Focus ring' }
+    ];
+    const term = [
+      { name: 'term-bg', hex: '#0B0D10', use: 'panel' },
+      { name: 'term-raised', hex: '#12151A', use: 'header bar' },
+      { name: 'term-line', hex: '#242932', use: 'rules' },
+      { name: 'term-ink', hex: '#E6E8EB', use: 'numbers' },
+      { name: 'term-muted', hex: '#98A1AE', use: 'labels' },
+      { name: 'term-ok', hex: '#3DDC84', use: 'acked, read, bids' },
+      { name: 'term-err', hex: '#FF7A7A', use: 'failed, asks' },
+      { name: 'term-amber', hex: '#F5B041', use: 'in flight, SIMULATED' }
+    ];
+    const sans = "'IBM Plex Sans', sans-serif";
+    const mono = "'IBM Plex Mono', monospace";
+    const type = [
+      { name: 'text-display', spec: '60/1.04 · 700 · −3%', family: sans, size: '60px', weight: 700, track: '-0.03em', case: 'none', sample: 'Systems-minded' },
+      { name: 'text-3xl', spec: '44/1.1 · 700 · −2.5%', family: sans, size: '44px', weight: 700, track: '-0.025em', case: 'none', sample: 'Exchange matching engine' },
+      { name: 'text-2xl', spec: '32/1.2 · 600 · −2%', family: sans, size: '32px', weight: 600, track: '-0.02em', case: 'none', sample: 'Selected work' },
+      { name: 'text-xl', spec: '24/1.3 · 600 · −1%', family: sans, size: '24px', weight: 600, track: '-0.01em', case: 'none', sample: 'dConstruct Robotics' },
+      { name: 'text-lg', spec: '20/1.5 · 400', family: sans, size: '20px', weight: 400, track: '0', case: 'none', sample: 'Ledes and short intros' },
+      { name: 'text-base', spec: '17/1.6 · 400', family: sans, size: '17px', weight: 400, track: '0', case: 'none', sample: 'Body copy, 40 rem measure' },
+      { name: 'text-sm', spec: '14/1.5 · 400', family: sans, size: '14px', weight: 400, track: '0', case: 'none', sample: 'Meta, card body, nav' },
+      { name: 'mono-sm', spec: 'Mono 13/1.4 · 500 · tnum', family: mono, size: '13px', weight: 500, track: '0', case: 'none', sample: '100.02  42  −20% latency' },
+      { name: 'mono-xs', spec: 'Mono 12 · 500 · +8% · caps', family: mono, size: '12px', weight: 500, track: '0.08em', case: 'uppercase', sample: 'Experience · 2024' }
+    ];
+    const sp = [[1,4],[2,8],[3,12],[4,16],[6,24],[8,32],[12,48],[16,64],[24,96]];
+    const space = sp.map(([k, px]) => ({ tw: 'p-' + k, px: px + 'px', w: (px * 3) + 'px' }));
+    return { light, dark, term, type, space };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+---
+// Experience case study (§9): back link → tags → sentence h1 → lede → facts →
+// sticky TOC + 40 rem prose (Outcome · Context · What I built · Decisions · In hindsight) → Next.
+import type { MarkdownHeading } from "astro";
+import PhText from "../components/PhText.astro";
+import Tag from "../components/Tag.astro";
+import { type Work, when, workHref } from "../lib/content";
+import Base from "./Base.astro";
+
+interface Props {
+  entry: Work;
+  headings: MarkdownHeading[];
+  next?: Work;
+}
+const { entry, headings, next } = Astro.props;
+const d = entry.data;
+const facts: [string, string, boolean?][] = [
+  ["Role", d.role ?? ""],
+  ["When", [when(d.start, d.end), d.location].filter(Boolean).join(" · ")],
+  ...(d.team ? ([["Team", d.team]] as [string, string][]) : []),
+  ["Stack", d.stack.join(" · "), true],
+];
+const toc = headings.filter((h) => h.depth === 2);
+---
+
+<Base title={d.title} description={d.lede ?? d.summary} ogType="article">
+  <section class="wrap pt-10 md:pt-14">
+    <a href="/work#experience" class="mono text-[13px] text-muted no-underline">← Work · Real-world experience</a>
+    <div class="mt-7 flex max-w-[52rem] flex-col gap-4">
+      <div class="flex flex-wrap gap-2">
+        <Tag variant="filled">Experience</Tag>
+        <Tag>Case study</Tag>
+        {d.status !== "published" && <Tag>Write-up in progress</Tag>}
+      </div>
+      <h1 class="text-3xl font-bold tracking-[-0.025em]">{d.headline ?? d.title}</h1>
+      {d.lede && <p class="text-lg text-muted">{d.lede}</p>}
+    </div>
+    <dl class="mt-9 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-x-8 gap-y-4 border-t border-b border-t-ink border-b-line py-5">
+      {
+        facts.map(([k, v, mono]) => (
+          <div>
+            <dt class="kicker !text-[11px] text-subtle">{k}</dt>
+            <dd class:list={["mt-1", mono ? "mono text-[13px]" : "text-[15px]"]}><PhText text={v} /></dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="wrap pt-10">
+    <div class="flex items-start gap-16">
+      <nav aria-label="Sections" class="sticky top-6 hidden w-[200px] shrink-0 flex-col gap-0.5 text-sm md:flex">
+        <span class="kicker mb-2 !text-[11px] text-subtle">On this page</span>
+        {toc.map((h) => <a href={`#${h.slug}`} class="toc-link">{h.text}</a>)}
+      </nav>
+      <article class="prose numbered min-w-0 max-w-prose flex-[1_1_640px]">
+        <slot />
+        {
+          next && (
+            <a href={workHref(next)} class="row-link mt-14 flex items-center justify-between gap-4 border-t border-b border-t-ink border-b-line py-5">
+              <span>
+                <span class="kicker block !text-[11px] text-subtle">Next case study</span>
+                <span class="text-lg font-semibold">{next.data.title}</span>
+              </span>
+              <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          )
+        }
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .toc-link {
+    padding: 6px 0 6px 12px;
+    box-shadow: inset 1px 0 0 var(--color-line);
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+  .toc-link:hover {
+    box-shadow: inset 2px 0 0 var(--color-accent);
+  }
+</style>

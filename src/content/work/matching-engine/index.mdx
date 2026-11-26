@@ -1,0 +1,61 @@
+---
+title: Exchange matching engine
+tier: depth
+order: 1
+start: "2024"
+summary: "A limit order book with price-time priority that serves many concurrent clients, built twice for CS3211: in C++ with per-instrument locks, and in Go with channels and no shared state."
+stack: [C++, Go]
+links:
+  - { label: "Code (C++)", href: "https://github.com/ngquyduc/matching-engine-cpp" }
+  - { label: "Go version: private repo" }
+context: coursework
+coursework: { module: "CS3211 Parallel and Concurrent Programming", coAuthors: ["Nguyen Van Binh (C++)", "Tran Nhan Duc Anh (Go)"] }
+demo: orderbook
+featured: 3
+featuredMeta: C++ · Go (private) · CS3211 coursework
+featuredSummary: A limit order book with price-time priority, built in C++ with locks and in Go with channels. Benchmarks in progress.
+featuredMetric: "[Benchmarks: TBD]"
+status: in-progress
+hasPage: true
+team: Nguyen Van Binh (C++), Tran Nhan Duc Anh (Go)
+headline: Exchange matching engine, in C++ and Go
+lede: "A limit order book that matches buy and sell orders by price, then time, for many clients at once. Built twice for NUS CS3211: in C++ with Nguyen Van Binh, and in Go with Tran Nhan Duc Anh (private repo)."
+---
+
+## Problem
+
+Many clients send buy, sell and cancel orders at the same time, for many instruments. The engine has to match each order against the best opposite price first, and the earliest order at that price, without a crossed book, a lost fill, or a data race. The assignment was to do that concurrently, so orders for different instruments never wait on each other.
+
+## Architecture
+
+<Arch />
+
+In C++, each client connection gets its own thread. An order first looks up its instrument's book in a shared map, takes that book's lock, and only then releases the map's lock, so two threads working on different instruments run in parallel. Each book keeps its buy and sell orders in two priority queues ordered by price, then timestamp. A second map, from order id to instrument and side, lets a cancel find the right book.
+
+The Go version takes the opposite approach: no goroutine shares data. One goroutine per client sends orders to a distributor, which forwards each one to a master goroutine for its instrument; the master hands orders to a buyer and a seller worker over channels, and each worker owns its own queue. A client waits for a done signal before its next order, so orders from one client stay in sequence.
+
+In C++ we checked the locking with ThreadSanitizer and the memory handling with AddressSanitizer, and generated test cases with a Python script: from one client up to 40 clients across up to 10 instruments, plus separate runs of 100,000 transactions with 10 and 20 clients. In Go we compiled with the race detector and ran the same kind of generated tests with 1 to 40 clients.
+
+<TryIt />
+
+## Benchmarks
+
+<p class="text-muted">Every number on this page comes from a run you can reproduce. Until the runs exist, the slots stay empty on purpose.</p>
+
+<Bench />
+
+<Callout kind="Caveat">
+  <Placeholder>[Limits of these numbers: one machine, a synthetic order mix, what the latency sample does and does not include.]</Placeholder>
+</Callout>
+
+## Findings
+
+<ol>
+  <li>Per-instrument locks let different instruments proceed in parallel, but every thread still passes through the two shared map locks. <Placeholder>[How much that costs, from the benchmark table above.]</Placeholder></li>
+  <li>A cancel rebuilds one whole side of the book, because a priority queue cannot remove an order from the middle. That makes each cancel linear in the size of that side. <Placeholder>[Measured cost of a cancel on a deep book.]</Placeholder></li>
+  <li><Placeholder>[C++ locks vs Go channels: what the benchmarks showed.]</Placeholder></li>
+</ol>
+
+## Next
+
+I am hardening the C++ version now: sanitizer runs in CI, then benchmarks of orders per second and p50 and p99 latency, before and after, with a write-up of what changed.

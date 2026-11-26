@@ -1,0 +1,78 @@
+---
+title: TikTok
+tier: experience
+order: 1
+org: TikTok
+role: iOS Software Engineer
+start: Jul 2025
+location: Singapore
+team: Instant messaging
+summary: "Instant-messaging SDK. TikTok is the main client; TikTok Shop and Lemon8 also build on it. Started on iOS; the team now works more and more cross-platform."
+stack: [Objective-C, Swift, iOS, SQLite, WebSocket]
+metrics:
+  - { value: "−75%", label: "failed message sends", source: resume }
+  - { value: "−78%", label: "processing failures", source: resume }
+context: employment
+featured: 1
+featuredMeta: iOS Software Engineer · Jul 2025–now
+featuredSummary: Works on the instant-messaging SDK behind TikTok chat, on iOS and increasingly cross-platform.
+featuredMetric: "−75% failed sends"
+status: published
+hasPage: true
+headline: "TikTok: keeping direct messages reliable on iOS"
+lede: "iOS software engineer on the messaging SDK that TikTok's chat is built on, and that TikTok Shop and Lemon8 also use. Started on iOS; the team now works more and more cross-platform."
+---
+
+{/* Keep this page at the level of public facts and Duc's own role (DESIGN.md §12):
+    no internal names, tools, versions, absolute metrics, roadmap or unreleased features.
+    Percent changes only where they are already on the public résumé.
+    Source: Duc's TikTok work recap (Nov 2026). Decisions and In hindsight are drafts
+    written from that recap; Duc to review before launch. */}
+
+## Outcome
+
+<Outcomes>
+  <Outcome value="−75%" label="failed message sends, after automatic resend for client network errors" />
+  <Outcome value="−78%" label="failures processing real-time messages, after buffering out-of-order pushes" />
+  <Outcome value="−50%" label="redundant re-fetches from the server, from the same buffer" />
+</Outcomes>
+
+<p class="mono text-xs text-subtle">Percent changes as on my résumé. Raw rates stay internal.</p>
+
+## Context
+
+Direct messages in TikTok run on an in-house instant-messaging SDK that handles sending and receiving, sync, local storage, unread counts and the public APIs the chat screens are built on. TikTok Shop and Lemon8 build on the same SDK. I work on its iOS side in Objective-C and Swift, as an iOS software engineer on the instant messaging team since July 2025.
+
+Messaging looks simple from the outside: you type, it arrives. Underneath, a phone drops between networks, a real-time connection's credentials expire, pushes arrive out of order, and people switch accounts. Most of my work is making those cases invisible to the person sending the message, and making the SDK easier for other teams to build on.
+
+## What I built
+
+**Automatic resend for failed sends.** When a message fails because of a client-side network error, the client retries it without the user having to tap anything. Failed sends fell by 75%.
+
+**A fallback when the real-time connection's credentials expire**, so a send that would have failed goes through another path. Failures of that kind fell by 24%.
+
+**A reorder buffer for out-of-order pushes.** Real-time messages that arrive out of sequence wait briefly and are put back in order, instead of each gap triggering a fresh fetch from the server. Processing failures fell by 78%, re-fetches halved, and the server team could ship a concurrency change that this had been blocking.
+
+**Privacy protection during account switching.** I added user-ID validation to all HTTP and WebSocket message traffic, and built the first monitoring to detect sessions bound to the wrong user.
+
+**A cleaner public API for the SDK.** I consolidated about 40 scattered conversation APIs into one protocol-oriented entry point, made the query API type-safe, and removed most of a legacy wrapper layer. Each step shipped behind an A/B test.
+
+**Performance work on change notifications.** I profiled how the SDK tells the UI that conversations and messages changed, using Instruments and signposts, and designed a filtered event system so screens only hear about the changes they care about.
+
+**AI-agent testing for iOS.** Agents drive the app on a Mac or a cloud phone to check a merge request end to end, with screenshots and video. I shared the workflow with the team as reusable skills and guides.
+
+Around this: tech reviews, design docs, on-call for the SDK, and running standups and sprint planning.
+
+## Decisions
+
+<Callout kind="Decision" title="Retry only what the client knows never arrived">
+  Automatic resend covers client-side network errors and nothing else. If the server rejected a message, sending it again would at best fail again and at worst post it twice, so those still surface to the user. Narrowing the scope kept the change safe to ship and easy to reason about.
+</Callout>
+
+<Callout kind="Decision" title="Wait a moment before fetching">
+  When a real-time push arrives with a gap before it, the old behaviour was to fetch from the server straight away. The buffer waits a short time for the missing message first, because most gaps fill themselves. The trade-off is a few milliseconds of added latency in the worst case, in exchange for far fewer failures and server round trips.
+</Callout>
+
+## In hindsight
+
+The changes that went smoothly were the ones where the failure already showed up in data before I touched any code, and where the change shipped behind an experiment. For the next reliability problem I'd start by making it measurable, and I'd split large API changes into phases from the beginning rather than discovering the phases along the way.

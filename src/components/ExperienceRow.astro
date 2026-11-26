@@ -1,0 +1,47 @@
+---
+// Experience row, Work tier A (§5.6).
+import type { Work } from "../lib/content";
+import { when, workHref } from "../lib/content";
+import PhText from "./PhText.astro";
+
+interface Props {
+  item: Work;
+}
+const { item } = Astro.props;
+const d = item.data;
+---
+
+<article class="flex flex-wrap gap-x-8 gap-y-2 border-b border-line py-7">
+  <p class="mono shrink-0 text-[13px] text-muted md:w-[150px]"><PhText text={when(d.start, d.end)} /></p>
+  <div class="flex min-w-0 flex-[1_1_380px] flex-col gap-2.5">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1.5">
+      <h3 class="text-xl font-semibold tracking-[-0.01em]">{d.org ?? d.title}</h3>
+      <span class="text-[15px] text-muted">{d.role}</span>
+    </div>
+    <p class="max-w-prose text-muted">{d.summary}</p>
+    {
+      d.metrics && (
+        <ul class="flex flex-wrap gap-2" aria-label="Results">
+          {d.metrics.map((m) => (
+            <li class="mono rounded-sm border border-line-strong px-2 py-0.5 text-[13px] font-medium">
+              <PhText text={m.label ? `${m.value} ${m.label}` : m.value} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <p class="mono text-xs text-subtle"><PhText text={d.stack.join(" · ")} /></p>
+  </div>
+  <div class="flex shrink-0 items-start md:w-[160px] md:justify-end">
+    {
+      d.hasPage ? (
+        <a class="row-link inline-flex items-center gap-1.5 text-[15px] font-medium" href={workHref(item)}>
+          Case study <span class="arrow" aria-hidden="true">→</span>
+          <span class="sr-only">: {d.org ?? d.title}</span>
+        </a>
+      ) : (
+        <span class="mono text-xs text-subtle">No case study</span>
+      )
+    }
+  </div>
+</article>

@@ -1,0 +1,105 @@
+---
+import EmptyState from "../../components/EmptyState.astro";
+import Base from "../../layouts/Base.astro";
+import { getPosts, isoDate, readingMinutes } from "../../lib/content";
+
+const posts = await getPosts();
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+const years = new Map<number, typeof posts>();
+for (const p of posts) {
+  const y = p.data.date.getUTCFullYear();
+  years.set(y, [...(years.get(y) ?? []), p]);
+}
+---
+
+<Base title="Writing" description="Notes from building systems: what I measured, what broke, and what I'd do differently.">
+  <section class="wrap flex flex-col gap-4 pt-12 md:pt-[72px]">
+    <p class="kicker text-muted">Writing</p>
+    <h1 class="text-3xl font-bold tracking-[-0.025em]">Notes from building systems</h1>
+    <p class="max-w-[38rem] text-lg text-muted">
+      What I measured, what broke, and what I'd do differently. <a href="/rss.xml" class="mono text-sm">RSS</a>
+    </p>
+    {
+      tags.length > 0 && (
+        <nav aria-label="Filter by tag" class="mt-2 flex flex-wrap gap-2" data-tags>
+          {["All", ...tags].map((t) => (
+            <a
+              href={t === "All" ? "/writing" : `/writing?tag=${encodeURIComponent(t)}`}
+              data-tag={t === "All" ? "" : t}
+              class="tagf mono inline-flex min-h-9 items-center rounded-full border border-line-strong px-3 text-[13px] no-underline"
+              aria-current={t === "All" ? "true" : undefined}
+            >
+              {t}
+            </a>
+          ))}
+        </nav>
+      )
+    }
+  </section>
+
+  <section class="wrap pt-10">
+    {
+      posts.length === 0 ? (
+        <EmptyState title="Nothing published yet.">
+          The first post is about the matching engine. Until then, the <a href="/work">work</a> pages have the details.
+        </EmptyState>
+      ) : (
+        <>
+          {[...years].map(([year, list]) => (
+            <div class="flex items-start gap-10 pt-6 max-md:flex-col max-md:items-stretch max-md:gap-2" data-year>
+              <h2 class="mono shrink-0 pt-[18px] text-sm font-medium text-muted md:w-[120px]">{year}</h2>
+              <div class="min-w-0 flex-[1_1_600px] border-t border-ink">
+                {list.map((p) => (
+                  <a class="row-link flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-line py-[18px]" href={`/writing/${p.id}`} data-post-tags={p.data.tags.join(" ")}>
+                    <time class="w-16 shrink-0 text-[13px] text-muted" datetime={isoDate(p.data.date)}>{isoDate(p.data.date).slice(5)}</time>
+                    <span class="flex min-w-0 flex-[1_1_380px] flex-col gap-1">
+                      <span class="text-xl font-semibold tracking-[-0.01em]">{p.data.title}</span>
+                      <span class="text-[15px] text-muted">{p.data.summary}</span>
+                    </span>
+                    <span class="mono shrink-0 text-[13px] text-muted">{p.data.tags[0]} · {readingMinutes(p.body)} min</span>
+                    <span class="arrow max-md:hidden" aria-hidden="true">→</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div hidden data-empty-tag>
+            <EmptyState title="No posts with this tag yet.">Try another tag, or see <a href="/writing">all posts</a>.</EmptyState>
+          </div>
+        </>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .tagf[aria-current="true"] {
+    background: var(--color-ink);
+    color: var(--color-bg);
+    border-color: var(--color-ink);
+  }
+</style>
+
+<script>
+  // Tiny in-place tag filter for ?tag= links (§11 budget: < 0.5 KB).
+  const tag = new URLSearchParams(location.search).get("tag");
+  if (tag) {
+    for (const a of document.querySelectorAll<HTMLElement>("[data-tag]")) {
+      if (a.dataset.tag === tag) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
+    }
+    let any = false;
+    for (const y of document.querySelectorAll<HTMLElement>("[data-year]")) {
+      let n = 0;
+      for (const p of y.querySelectorAll<HTMLElement>("[data-post-tags]")) {
+        const on = (p.dataset.postTags ?? "").split(" ").includes(tag);
+        p.hidden = !on;
+        n += +on;
+      }
+      y.hidden = !n;
+      any ||= !!n;
+    }
+    const empty = document.querySelector<HTMLElement>("[data-empty-tag]");
+    if (empty) empty.hidden = any;
+  }
+</script>

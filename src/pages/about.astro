@@ -1,0 +1,117 @@
+---
+import { readFileSync } from "node:fs";
+import { Image } from "astro:assets";
+import PhText from "../components/PhText.astro";
+import Base from "../layouts/Base.astro";
+import { getWork, when } from "../lib/content";
+import { site } from "../site";
+import photo from "../assets/duc.jpg";
+
+const jobs = await getWork("experience");
+// Size and date of the résumé shown under the download button; placeholders until the real PDF is in public/.
+const pdf = readFileSync("public/resume.pdf");
+const pdfIsPlaceholder = pdf.includes("PLACEHOLDER RESUME");
+const pdfKb = Math.round(pdf.length / 1024);
+// One-line résumé summaries; numbers are the résumé's own (§2.4).
+const lines: Record<string, string> = {
+  tiktok: "Instant-messaging SDK (TikTok, also used by TikTok Shop and Lemon8). iOS, increasingly cross-platform.",
+  kovalee: "About two iOS apps a month (SwiftUI, Fastlane). Analytics, in-app-purchase and ad SDKs used by about 20 apps.",
+  dconstruct: "SolidJS operator web app for a LiDAR surveillance system; training time halved. People detection and tracking, sensor calibration, some C++ endpoints.",
+  vebits: "Django geospatial queries, 300 ms to 200 ms. MongoDB replication and sharding for 500,000 reports a day.",
+};
+---
+
+<Base title="About" description="Duc Nguyen: iOS software engineer at TikTok in Singapore. Bio, experience, education and résumé.">
+  <section class="wrap pt-12 md:pt-[72px]">
+    <div class="flex items-start gap-16 max-md:flex-col max-md:items-stretch max-md:gap-10">
+      <aside class="flex shrink-0 flex-col gap-4 md:sticky md:top-6 md:w-[260px]" aria-label="Profile">
+        <Image
+          src={photo}
+          alt="Illustrated portrait of Duc in glasses, a scarf and a black puffer jacket on a Paris street, the Eiffel Tower behind him"
+          width={160}
+          height={160}
+          densities={[1, 2]}
+          loading="eager"
+          class="size-40 rounded-lg border border-line object-cover"
+        />
+        <div>
+          <p class="text-lg font-semibold">{site.fullName}</p>
+          <p class="text-[15px] text-muted">iOS software engineer at TikTok · {site.location}</p>
+        </div>
+        <a class="btn btn-primary" href={site.resumePath} download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>Download résumé (PDF)
+        </a>
+        <p class="mono text-xs text-subtle">
+          resume.pdf · {pdfIsPlaceholder ? <PhText text="[real résumé PDF]" /> : <>{pdfKb} KB · updated {site.resumeUpdated}</>}
+        </p>
+        <nav aria-label="Elsewhere" class="flex flex-wrap gap-x-4 gap-y-1.5 border-t border-line pt-3 text-[15px]">
+          <a href={site.socials.github.href} rel="me">GitHub</a>
+          <a href={site.socials.linkedin.href} rel="me">LinkedIn</a>
+          <a href={`mailto:${site.email}`}>Email</a>
+        </nav>
+      </aside>
+
+      <div class="flex min-w-0 flex-[1_1_600px] flex-col gap-14">
+        <div class="flex max-w-prose flex-col gap-4">
+          <p class="kicker text-muted">About</p>
+          <h1 class="text-3xl font-bold tracking-[-0.025em]">I like the parts of software where the numbers matter.</h1>
+          <p>
+            I'm Duc, an iOS software engineer at TikTok in Singapore. I work on the instant-messaging SDK that TikTok's
+            chat is built on, and that TikTok Shop and Lemon8 also use. I started on iOS, and the team is now doing more and
+            more cross-platform work.
+          </p>
+          <p>
+            Before TikTok I was an iOS developer intern at Kovalee, shipping about two apps a month and maintaining their
+            analytics and in-app-purchase SDKs. Before that I built the SolidJS operator app for a LiDAR
+            surveillance system at dConstruct Robotics, and made a road-inspection app's queries faster at Vebits. I studied Computer
+            Science at NUS.
+          </p>
+          <p>
+            At NUS I went deep on parallel and concurrent systems: an exchange matching engine in C++ and Go and an async TCP
+            server in Rust for CS3211, and MPI, CUDA and OpenMP projects for CS3210. I'm now hardening the C++ engine on my own.
+          </p>
+        </div>
+
+        <section aria-labelledby="exp-h">
+          <h2 id="exp-h" class="t2 mb-1 text-[28px] font-semibold tracking-[-0.02em]">Experience</h2>
+          <div class="border-t border-ink">
+            {
+              jobs.map((j) => (
+                <div class="flex flex-wrap gap-x-8 gap-y-1 border-b border-line py-[18px]">
+                  <span class="mono shrink-0 text-[13px] text-muted md:w-[160px]"><PhText text={when(j.data.start, j.data.end)} /></span>
+                  <span class="min-w-0 flex-[1_1_360px]">
+                    <b class="font-semibold">{j.data.role}</b>, {j.data.org}
+                    <br />
+                    <span class="text-[15px] text-muted">{lines[j.id] ?? j.data.summary}</span>
+                  </span>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <section aria-labelledby="edu-h">
+          <h2 id="edu-h" class="t2 mb-1 text-[28px] font-semibold tracking-[-0.02em]">Education</h2>
+          <div class="border-t border-ink">
+            <div class="flex flex-wrap gap-x-8 gap-y-1 border-b border-line py-[18px]">
+              <span class="mono shrink-0 text-[13px] text-muted md:w-[160px]">Aug 2021 – May 2025</span>
+              <span class="min-w-0 flex-[1_1_360px]"><b class="font-semibold">National University of Singapore</b><br /><span class="text-[15px] text-muted">Bachelor of Computing (Hons) in Computer Science. Focus areas: software engineering and database systems.</span></span>
+            </div>
+            <div class="flex flex-wrap gap-x-8 gap-y-1 border-b border-line py-[18px]">
+              <span class="mono shrink-0 text-[13px] text-muted md:w-[160px]">2024</span>
+              <span class="min-w-0 flex-[1_1_360px]"><b class="font-semibold">NUS Overseas Colleges, Paris</b><br /><span class="text-[15px] text-muted">Entrepreneurship programme at Université PSL.</span></span>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="tools-h">
+          <h2 id="tools-h" class="t2 mb-3 text-[28px] font-semibold tracking-[-0.02em]">Tools I've worked with</h2>
+          <dl class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-x-8 gap-y-4">
+            <div><dt class="kicker !text-[11px] text-subtle">Systems and backend</dt><dd class="mono mt-1.5 text-[13px]">C++17 · Go · Rust (Tokio) · SQLite · MongoDB · Redis · Kitex RPC · MPI · CUDA</dd></div>
+            <div><dt class="kicker !text-[11px] text-subtle">Apps and frontend</dt><dd class="mono mt-1.5 text-[13px]">Objective-C · Swift · SwiftUI · Fastlane · SolidJS · Angular · React Native · TailwindCSS</dd></div>
+          </dl>
+        </section>
+      </div>
+    </div>
+  </section>
+</Base>

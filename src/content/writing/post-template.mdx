@@ -1,0 +1,42 @@
+---
+title: "[Post title, sentence case, under 70 characters]"
+date: 2026-11-22
+summary: "[One-sentence summary]"
+tags: [systems, c++]
+draft: true
+---
+
+{/* A draft that shows every post component. Drafts render in `pnpm dev` only and never ship. */}
+
+<p class="text-lg text-muted"><Placeholder>[Lede: the one thing the reader will learn, in two sentences.]</Placeholder></p>
+
+Body text is 17 px on a 40 rem column, about 68 characters a line. Links are [underlined in body copy](/work). Inline code like `std::deque<Order>` sits on the sunken colour.
+
+## Section heading
+
+The text in this template is sample content. Code blocks use the instrument palette in both themes, so code always looks like the order book.
+
+```cpp title="src/book/level.hpp"
+// Sample content. Replace with code from the post.
+struct Level {
+  int64_t price;            // integer ticks, never floats
+  std::deque<Order> queue;  // FIFO gives time priority
+};
+
+auto label = "best ask";
+constexpr int kDepth = 5;
+```
+
+A callout for an aside the reader can skip:
+
+<Callout kind="Note">Callouts come in three kinds: **Note** (aside), **Decision** (the trade-off you made) and **Caveat** (limits of a number or method).</Callout>
+
+> A quote, used sparingly, with its source on the next line.
+
+<Figure n={1} wide label="Figure · image or SVG diagram · max 48 rem wide · alt text required">Captions are one sentence, 14 px, muted.</Figure>
+
+## Footnotes and the end of a post
+
+Footnotes use superscript numbers[^1] and collect at the bottom.
+
+[^1]: Footnote text.

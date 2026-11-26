@@ -1,0 +1,52 @@
+---
+title: Vebits AI
+tier: experience
+order: 4
+org: Vebits AI
+role: Software Engineer Intern
+start: May 2023
+end: Jul 2023
+location: Singapore
+summary: Made a high-traffic road-inspection web app faster with geospatial query work in Django, and scaled its MongoDB with replication and sharding.
+stack: [Django, MongoDB]
+metrics:
+  - { value: "−33%", label: "processing time", source: resume }
+  - { value: "500k", label: "reports / day", source: resume }
+context: internship
+status: published
+hasPage: true
+headline: "Vebits AI: faster queries for a road-inspection web app"
+lede: "A summer internship on the backend of a high-traffic road-inspection app used for urban infrastructure management."
+---
+
+## Outcome
+
+<Outcomes>
+  <Outcome value="−33%" label="data processing time, from 300 ms to 200 ms" />
+  <Outcome value="500k" label="inspection reports a day, handled after replication and sharding" />
+  <Outcome value="<200 ms" label="average query response time at that load" />
+</Outcomes>
+
+<p class="mono text-xs text-subtle">Figures as on my résumé.</p>
+
+## Context
+
+Vebits AI runs a road-inspection web app that city infrastructure teams rely on. Reports come in all day, and the app has to keep querying them quickly as the volume grows.
+
+## What I built
+
+**Geospatial query enhancements in Django** that brought data processing down from 300 ms to 200 ms.
+
+**Replication and sharding in MongoDB**, so the system handles 500,000 inspection reports a day while average query response stays under 200 ms.
+
+{/* Decisions and In hindsight are drafts written from the résumé; Duc to review before launch. */}
+
+## Decisions
+
+<Callout kind="Decision" title="Fix the queries before adding machines">
+  The app was slow on geospatial queries, so I started there: better geospatial queries cut processing from 300 ms to 200 ms on the same hardware. Replication and sharding came next, for the growth that query tuning alone could not absorb. Doing it in that order meant the cluster was scaling queries that were already efficient.
+</Callout>
+
+## In hindsight
+
+I'd set up slow-query monitoring before optimizing anything. I found the slow geospatial queries by profiling by hand, and a dashboard would have shown them sooner and kept watching once I'd left.

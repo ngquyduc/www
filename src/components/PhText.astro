@@ -1,0 +1,11 @@
+---
+// Renders a string, turning every "[bracketed]" segment into an inline Placeholder.
+// Content files mark unknown facts this way, e.g. "[start] – now" (§2.4).
+import Placeholder from "./Placeholder.astro";
+interface Props {
+  text: string;
+}
+const parts = Astro.props.text.split(/(\[[^\]]+\])/).filter(Boolean);
+---
+
+{parts.map((p) => (/^\[.*\]$/.test(p) ? <Placeholder>{p}</Placeholder> : p))}
