@@ -8,7 +8,7 @@ start: Jan 2024
 end: Jun 2024
 location: Singapore
 team: Small startup, no separate teams
-summary: Built the operator web app for a LiDAR surveillance system in SolidJS, plus some of the C++ endpoints behind it and sensor calibration. New operators now learn it in one day instead of two.
+summary: Built the operator web app for a LiDAR surveillance system in SolidJS, and worked on detecting and tracking people in the point clouds, sensor calibration and some of the C++ endpoints. New operators now learn it in one day instead of two.
 stack: [SolidJS, TailwindCSS, C++17, SQLite 3]
 metrics:
   - { value: "−50%", label: "training time", source: resume }
@@ -20,11 +20,11 @@ featuredMetric: "−50% training time"
 status: published
 hasPage: true
 headline: "dConstruct Robotics: making a point-cloud surveillance system easier to learn"
-lede: "Six months as a software engineer intern on a LiDAR surveillance system: mostly the web app operators use to watch and review what the sensors see, plus some of the C++ endpoints and sensor calibration behind it."
+lede: "Six months as a software engineer intern on a LiDAR surveillance system: the web app operators use to watch and review what the sensors see, and the detection and tracking of people behind it."
 ---
 
-{/* Duc's part: the SolidJS app (most of his time), some of the C++ endpoints, and sensor
-    calibration. He did not build the whole streaming pipeline: do not describe it as his
+{/* Duc's part: the SolidJS app, detection and tracking of people, sensor calibration and
+    some of the C++ endpoints. He did not build the whole streaming pipeline: do not describe it as his
     (DESIGN.md §2, evidence before adjectives). */}
 
 ## Outcome
@@ -42,11 +42,13 @@ dConstruct builds a surveillance system on LiDAR. Each sensor streams a point cl
 
 <DconstructFlow />
 
-It is a small startup, so there were no separate teams. I spent most of my time on the web app, the part operators actually touch, and also worked on some of the C++ endpoints behind it and on sensor calibration. Before the rebuild, training a new operator took two days.
+It is a small startup, so there were no separate teams. I worked on the web app, the part operators actually touch, and on the server side behind it: detecting and tracking people, sensor calibration and some of the C++ endpoints. Before the rebuild, training a new operator took two days.
 
 ## What I built
 
 **The operator web app in SolidJS and TailwindCSS**, responsive across the screens operators actually use, on top of the backend's endpoints for connecting sensors, the live view and playback. After the rebuild, training a new operator takes one day instead of two.
+
+**Detecting and tracking people.** In every frame the server finds the people in the point cloud and gives each one a position on the site map. A tracker then follows each person from frame to frame under one ID, and only trusts a track once it has been seen for a few frames, so a stray cluster of points does not count as a person. Those tracks are what the zone counts are built on: how many people walked through an area, and how long they stayed.
 
 **Some of the C++ endpoints behind the app**, the server side the web app calls to connect sensors and fetch live and recorded data.
 
@@ -64,4 +66,4 @@ It is a small startup, so there were no separate teams. I spent most of my time 
 
 ## In hindsight
 
-I worked on pieces of the pipeline, the app, some endpoints and calibration, but never followed one frame all the way from sensor to screen. The 2-second delay operators lived with was decided somewhere along that path, and the UI could only work around it. Next time I'd trace the whole path early on, even through code I don't own.
+I worked on several pieces of the pipeline, from detection and tracking to the app, but never timed one frame all the way from sensor to screen. The 2-second delay operators lived with was decided somewhere along that path, and the UI could only work around it. Next time I'd trace the whole path early on, even through code I don't own.
