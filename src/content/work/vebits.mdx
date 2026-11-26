@@ -7,50 +7,47 @@ role: Software Engineer Intern
 start: May 2023
 end: Jul 2023
 location: Singapore
-summary: Made a high-traffic road-inspection web app faster with geospatial query work in Django, and scaled its MongoDB with replication and sharding.
-stack: [Django, MongoDB]
+summary: Made the Django geospatial queries of a road-inspection system faster, 300 ms to 200 ms. The system turns driver and rider dashcam footage from across Singapore into images for defect detection, about 500k on a typical day.
+stack: [Angular, Django, MongoDB]
 metrics:
-  - { value: "−33%", label: "processing time", source: resume }
-  - { value: "500k", label: "reports / day", source: resume }
+  - { value: "−33%", label: "geo-query time", source: resume }
 context: internship
-featuredSummary: "Faster geospatial queries for a road-inspection app, and MongoDB replication and sharding for 500,000 reports a day."
+featuredSummary: "Faster Django geospatial queries for a road-inspection system built on driver and rider dashcam footage."
 cardMetric: "−33%"
-cardMetricLabel: "processing time, 300 ms to 200 ms"
+cardMetricLabel: "geo-query time, 300 ms to 200 ms"
 plate: vebits
 # Fig. 0 caption, after "An illustration of the problem, not " (§13.4).
-plateCaption: "real map data: inspection reports along a road, found with geospatial queries."
+plateCaption: "real map data: road defects pinned along a route, looked up with geospatial queries."
 status: published
 hasPage: true
 headline: "Vebits AI: faster queries for a road-inspection web app"
-lede: "A summer internship on the backend of a high-traffic road-inspection app used for urban infrastructure management."
+lede: "A summer internship making the geospatial queries of a road-inspection system faster, in its Django backend."
 ---
 
 ## Outcome
 
 <Outcomes>
-  <Outcome value="−33%" label="data processing time, from 300 ms to 200 ms" />
-  <Outcome value="500k" label="inspection reports a day, handled after replication and sharding" />
-  <Outcome value="<200 ms" label="average query response time at that load" />
+  <Outcome value="−33%" label="geo-query time, from 300 ms to 200 ms" />
 </Outcomes>
 
-<p class="mono text-xs text-subtle">Figures as on my résumé.</p>
+<p class="mono text-xs text-subtle">Figure as on my résumé.</p>
 
 ## Context
 
-Vebits AI runs a road-inspection web app that city infrastructure teams rely on. Reports come in all day, and the app has to keep querying them quickly as the volume grows.
+Drivers and riders around Singapore send their dashcam footage to Vebits. The system splits those videos, and the feeds from route cameras, into images, and a defect-detection model looks for road defects in them: about 500k images on a typical day. The defects end up on a map in an Angular web app with a Django backend and MongoDB, used for urban infrastructure management.
 
-## What I built
+I didn't build that system. I joined it for a summer, on the backend.
 
-**Geospatial query enhancements in Django** that brought data processing down from 300 ms to 200 ms.
+## What I did
 
-**Replication and sharding in MongoDB**, so the system handles 500,000 inspection reports a day while average query response stays under 200 ms.
+**Geospatial query enhancements in Django**, which brought data processing for those queries down from 300 ms to 200 ms.
 
 {/* Decisions and In hindsight are drafts written from the résumé; Duc to review before launch. */}
 
 ## Decisions
 
-<Callout kind="Decision" title="Fix the queries before adding machines">
-  The app was slow on geospatial queries, so I started there: better geospatial queries cut processing from 300 ms to 200 ms on the same hardware. Replication and sharding came next, for the growth that query tuning alone could not absorb. Doing it in that order meant the cluster was scaling queries that were already efficient.
+<Callout kind="Decision" title="Measure the slow queries before changing them">
+  I timed the geospatial queries first, changed them, then timed them again the same way. That before-and-after is where the 300 ms to 200 ms comes from, and it kept the work on the queries that were actually slow.
 </Callout>
 
 ## In hindsight
