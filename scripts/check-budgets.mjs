@@ -22,6 +22,8 @@ const PIECES = [
   },
   { name: "Theme toggle, copy, toast (Base module)", limit: 1.5 * KB, files: [/^Base\.astro/, /^preload-helper/] },
   { name: "Command palette", limit: 3 * KB, files: [/^palette\.client/] },
+  // Astro inlines this small module into every page.
+  { name: "First-view motion observer (inline)", limit: 0.6 * KB, page: "index.html", inline: /io-wait/ },
   {
     name: "Hero demo",
     limit: 9 * KB,
