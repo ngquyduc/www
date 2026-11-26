@@ -491,6 +491,7 @@
 /* Rolling digits for the ledger and card metrics (§7.5 roller, `roll-in`). */
 .roll {
   display: inline-flex;
+  white-space: pre;
 }
 .roll-col {
   display: inline-block;

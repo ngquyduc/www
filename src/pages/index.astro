@@ -163,4 +163,10 @@ const building = await showBuilding();
       font-size: 32px;
     }
   }
+  /* The Mobile board has no texture: at phone width it would sit behind the lede (§13.2). */
+  @media (width < 47.5rem) {
+    .hero-dots {
+      display: none;
+    }
+  }
 </style>
