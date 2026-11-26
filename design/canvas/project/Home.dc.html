@@ -31,7 +31,22 @@ body{margin:0}
 .live-dot::after{content:'';position:absolute;inset:0;border-radius:50%;background:#D92D20;animation:live-ping 1.6s cubic-bezier(0,0,.2,1) infinite}
 @keyframes live-ping{75%,100%{transform:scale(2.6);opacity:0}}
 @media (prefers-reduced-motion: reduce){.live-dot::after{animation:none;opacity:0}}
-@container (max-width:760px){.wrap{padding:0 16px}.hdr-nav{order:3;flex-basis:100%;justify-content:flex-start!important}.hide-sm{display:none!important}.d1{font-size:38px!important}.t3{font-size:30px!important}.t2{font-size:24px!important}.col-sm{flex-direction:column!important;align-items:stretch!important}.side{display:none!important}.sec{padding-top:64px!important}}
+.dots{background-image:radial-gradient(var(--line-strong) .8px,transparent .9px);background-size:12px 12px}
+.hero-dots{position:absolute;inset:0 0 auto 0;height:560px;opacity:.55;-webkit-mask-image:radial-gradient(ellipse 60% 70% at 75% 30%,#000 20%,transparent 70%);mask-image:radial-gradient(ellipse 60% 70% at 75% 30%,#000 20%,transparent 70%);pointer-events:none}
+.ships{position:relative;color:var(--accent);white-space:nowrap}
+.swoosh{position:absolute;left:-2%;bottom:-0.12em;width:104%;height:.24em;overflow:visible}
+.swoosh path{stroke-dasharray:1;stroke-dashoffset:0;animation:sw 700ms 300ms cubic-bezier(.2,.7,.2,1) both}
+@keyframes sw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.mark{color:var(--ink);box-shadow:inset 0 -0.38em 0 var(--accent-soft)}
+.ledger-cell+.ledger-cell{padding-left:20px!important;border-left:1px solid var(--line)}
+.shead{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;padding-bottom:14px;position:relative}
+.shead::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform-origin:left;animation:rule 600ms cubic-bezier(.2,.7,.2,1) both}
+@keyframes rule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.shead-n{font-size:14px;color:var(--accent)}
+.shead-t{margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.025em;font-weight:650}
+.shead-more{margin-left:auto;font-size:15px}
+@media (prefers-reduced-motion: reduce){.swoosh path,.shead::after{animation:none}}
+@container (max-width:760px){.grid2{grid-template-columns:minmax(0, 1fr)!important}.ledger{grid-template-columns:repeat(2, minmax(0, 1fr))!important}.ledger-cell:nth-child(odd){padding-left:0!important;border-left:0!important}.ledger-cell:nth-child(n+3){border-top:1px solid var(--line)}.ledger-cell dd{font-size:28px!important}.shead-t{font-size:30px!important}.wrap{padding:0 16px}.hdr-nav{order:3;flex-basis:100%;justify-content:flex-start!important}.hide-sm{display:none!important}.d1{font-size:44px!important}.t3{font-size:32px!important}.t2{font-size:24px!important}.col-sm{flex-direction:column!important;align-items:stretch!important}.side{display:none!important}.sec{padding-top:64px!important}}
 </style>
 </helmet>
 <div class="pg {{th}}" style="min-height:100%">
@@ -56,17 +71,26 @@ body{margin:0}
   </header>
 
   <main id="main">
-    <section class="wrap sec" style="padding-top:72px">
-      <div style="display:flex;flex-direction:column;gap:48px">
-        <div style="max-width:46rem;display:flex;flex-direction:column;gap:24px;padding-top:12px">
-          <p class="mono" style="margin:0;display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#2F9E5B"></span>Singapore · Software engineer</p>
-          <h1 class="d1" style="margin:0;font-size:60px;line-height:1.04;letter-spacing:-0.03em;font-weight:700">Systems-minded engineer who <span style="color:var(--accent)">ships</span>.</h1>
-          <p style="margin:0;font-size:20px;line-height:1.5;color:var(--muted);max-width:34rem">I'm Duc, a mobile software engineer at TikTok, working on the instant-messaging SDK: on iOS, and more and more cross-platform. Before that I shipped at Kovalee, dConstruct Robotics and Vebits.</p>
+    <section class="wrap sec hero" style="position:relative;padding-top:80px">
+      <div class="dots hero-dots" aria-hidden="true"></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:48px">
+        <div style="max-width:52rem;display:flex;flex-direction:column;gap:24px;padding-top:12px">
+          <p class="mono" style="margin:0;display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:#2F9E5B"></span>Singapore · iOS software engineer</p>
+          <h1 class="d1" style="margin:0;font-size:76px;line-height:1;letter-spacing:-0.035em;font-weight:700">Systems-minded engineer who <span class="ships">ships<svg class="swoosh" viewBox="0 0 200 18" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 13 C50 4 120 3 197 9" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"></path></svg></span>.</h1>
+          <p style="margin:0;font-size:20px;line-height:1.5;color:var(--muted);max-width:36rem">I'm Duc. I work on the <span class="mark">instant-messaging SDK</span> behind TikTok chat: on iOS, and more and more cross-platform. Before that I shipped at Kovalee, dConstruct Robotics and Vebits.</p>
           <div style="display:flex;flex-wrap:wrap;gap:12px">
             <a href="#" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:600;font-size:15px">See my work <span aria-hidden="true">→</span></a>
             <a href="#" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;border:1px solid var(--line-strong);color:var(--ink);text-decoration:none;font-weight:500;font-size:15px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>Résumé (PDF)</a>
           </div>
         </div>
+        <dl class="ledger" aria-label="At a glance" style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));margin:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)">
+          <sc-for list="{{ledger}}" as="g" hint-placeholder-count="4">
+            <div class="ledger-cell" style="display:flex;flex-direction:column;gap:6px;padding:18px 20px 18px 0">
+              <dt class="mono" style="order:2;font-size:12px;line-height:1.4;color:var(--muted)">{{g.label}}</dt>
+              <dd class="mono" style="order:1;margin:0;font-size:34px;line-height:1;font-weight:600;letter-spacing:-0.02em;color:{{g.color}}">{{g.value}}</dd>
+            </div>
+          </sc-for>
+        </dl>
         <div style="display:flex;flex-direction:column;gap:16px">
           <div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;border-top:1px solid var(--ink);padding-top:14px">
             <span class="live"><span class="live-dot" aria-hidden="true"></span>Live · try it</span>
@@ -78,47 +102,23 @@ body{margin:0}
       </div>
     </section>
 
-    <section class="wrap sec" style="padding-top:96px" aria-labelledby="sel">
-      <div style="display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px">
-        <span class="mono" style="font-size:13px;color:var(--accent)">01</span>
-        <h2 id="sel" class="t2" style="margin:0;font-size:32px;letter-spacing:-0.02em">Selected work</h2>
-        <a href="#" style="margin-left:auto;font-size:15px">All work →</a>
+    <section class="wrap sec" style="padding-top:112px" aria-labelledby="exp">
+      <div class="shead"><span class="mono shead-n">01</span><h2 id="exp" class="t2 shead-t">Experience</h2><a href="#" class="shead-more">All experience →</a></div>
+      <div class="grid2" style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:24px;margin-top:28px">
+        <sc-for list="{{jobs}}" as="j" hint-placeholder-count="4">
+          <dc-import name="ExpCard" kind="{{j.kind}}" org="{{j.org}}" role="{{j.role}}" when="{{j.when}}" line="{{j.line}}" metric="{{j.metric}}" metric-label="{{j.metricLabel}}" stack="{{j.stack}}" hint-size="100%,620px"></dc-import>
+        </sc-for>
       </div>
-      <sc-for list="{{featured}}" as="f" hint-placeholder-count="4">
-        <a class="row-link" href="#" style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;padding:24px 0;border-bottom:1px solid var(--line);color:var(--ink)">
-          <span class="mono hide-sm" style="flex:0 0 32px;font-size:13px;color:var(--subtle)">{{f.n}}</span>
-          <span style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:4px">
-            <span style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline"><span style="font-size:24px;font-weight:600;letter-spacing:-0.01em">{{f.title}}</span><span class="mono" style="font-size:12px;color:var(--muted)">{{f.meta}}</span></span>
-            <span style="font-size:16px;color:var(--muted);max-width:40rem">{{f.desc}}</span>
-          </span>
-          <span style="flex:0 0 auto;display:flex;gap:8px;align-items:center">
-            <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--accent-soft);color:var(--ink)">{{f.tier}}</span>
-          </span>
-          <span class="mono" style="flex:0 0 150px;font-size:15px;font-weight:500;text-align:right;color:var(--ink)"><span class="{{f.phClass}}" style="padding:2px 6px">{{f.metric}}</span></span>
-          <span class="arrow hide-sm" aria-hidden="true" style="flex:0 0 20px;color:var(--muted)">→</span>
-        </a>
-      </sc-for>
     </section>
 
-    <section class="wrap sec" style="padding-top:96px" aria-labelledby="wr">
-      <div style="display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px">
-        <span class="mono" style="font-size:13px;color:var(--accent)">02</span>
-        <h2 id="wr" class="t2" style="margin:0;font-size:32px;letter-spacing:-0.02em">Latest writing</h2>
-        <a href="#" style="margin-left:auto;font-size:15px">All posts →</a>
-      </div>
-      <sc-for list="{{posts}}" as="p" hint-placeholder-count="3">
-        <a class="row-link" href="#" style="display:flex;flex-wrap:wrap;gap:4px 24px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);color:var(--ink)">
-          <span class="mono" style="flex:0 0 110px;font-size:13px;color:var(--muted)">{{p.date}}</span>
-          <span style="flex:1 1 360px;min-width:0;font-size:19px;font-weight:500"><span class="ph" style="padding:1px 6px">{{p.title}}</span></span>
-          <span class="mono" style="flex:0 0 auto;font-size:13px;color:var(--muted)">{{p.read}}</span>
-        </a>
-      </sc-for>
-      <p class="mono" style="margin:12px 0 0;font-size:12px;color:var(--subtle)">Placeholder rows. This section shows the 3 newest published posts and is hidden entirely while there are none.</p>
+    <section class="wrap sec" style="padding-top:112px" aria-labelledby="next">
+      <div class="shead"><span class="mono shead-n">02</span><h2 id="next" class="t2 shead-t">Building next</h2></div>
+      <div style="margin-top:28px"><dc-import name="NextCard" hint-size="100%,420px"></dc-import></div>
     </section>
 
-    <section class="wrap sec" style="padding-top:96px">
-      <div style="border-top:1px solid var(--ink);padding-top:28px;display:flex;flex-wrap:wrap;gap:16px 40px;align-items:baseline">
-        <p class="t2" style="margin:0;flex:1 1 420px;font-size:32px;line-height:1.2;letter-spacing:-0.02em;font-weight:600">Want to talk mobile, SDKs or systems? <span style="color:var(--muted)">Email me.</span></p>
+    <section class="wrap sec" style="padding-top:128px">
+      <div style="border-top:1px solid var(--ink);padding-top:36px;display:flex;flex-wrap:wrap;gap:20px 40px;align-items:flex-end">
+        <p class="t3" style="margin:0;flex:1 1 520px;font-size:48px;line-height:1.08;letter-spacing:-0.03em;font-weight:700">Want to talk mobile, SDKs or systems? <span style="color:var(--accent)">Email me.</span></p>
         <div style="display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;font-size:16px">
           <a class="mono" href="#" style="font-size:16px">{site.email}</a>
           <button type="button" class="mono" style="min-height:36px;padding:0 10px;border:1px solid var(--line-strong);border-radius:6px;background:transparent;color:var(--ink);font-size:12px;cursor:pointer">Copy</button>
@@ -137,27 +137,28 @@ body{margin:0}
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":3100}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":4100}}'>
 class Component extends DCLogic {
   renderVals() {
     const s = this.state || {};
     const t = s.t || this.props.theme || 'light';
-    const featured = [
-      { n: '01', title: 'TikTok', meta: 'Mobile Software Engineer · [start]–now', desc: 'Works on the instant-messaging SDK behind TikTok chat, on iOS and increasingly cross-platform.', tier: 'Experience', metric: '[impact metric]', phClass: 'ph' },
-      { n: '02', title: 'dConstruct Robotics', meta: 'Software Engineer Intern · Jan–Jun 2024', desc: 'C++17 and SQLite endpoints for sensor connections, live view and playback in a point-cloud surveillance system, plus the SolidJS UI on top.', tier: 'Experience', metric: '−20% latency', phClass: '' },
-      { n: '03', title: 'Exchange matching engine', meta: 'C++ · Go port (private) · side project', desc: 'A limit order book with price-time priority, written twice to compare the languages. Write-up and benchmarks in progress.', tier: 'Depth', metric: 'Benchmarks: TBD', phClass: 'ph' },
-      { n: '04', title: 'Kovalee', meta: 'iOS Developer Intern · Aug 2024–[end]', desc: 'Shipped about two iOS apps a month with SwiftUI and Fastlane, and maintained the SDKs for analytics and in-app purchases.', tier: 'Experience', metric: '2 apps / month', phClass: '' }
+    const jobs = [
+      { kind: 'tiktok', org: 'TikTok', role: 'iOS Software Engineer', when: 'Jul 2025 – now', line: 'The instant-messaging SDK behind TikTok chat, also used by TikTok Shop and Lemon8. iOS first, more and more cross-platform.', metric: '−75%', metricLabel: 'failed message sends, after automatic resend on network errors', stack: 'Objective-C · Swift · SQLite · WebSocket' },
+      { kind: 'kovalee', org: 'Kovalee', role: 'iOS Developer Intern', when: 'Aug 2024 – Jan 2025', line: 'Shipped iOS apps in education and health on a monthly cadence, and kept up the SDKs about 20 apps share.', metric: '2 / mo', metricLabel: 'iOS apps shipped, with SwiftUI kits and Fastlane', stack: 'Swift · SwiftUI · Fastlane' },
+      { kind: 'dconstruct', org: 'dConstruct Robotics', role: 'Software Engineer Intern', when: 'Jan – Jun 2024', line: 'The operator web app for a LiDAR surveillance system, plus detecting and tracking people in the point clouds.', metric: '−50%', metricLabel: 'training time for new operators: 2 days to 1', stack: 'SolidJS · TailwindCSS · C++17 · SQLite' },
+      { kind: 'vebits', org: 'Vebits AI', role: 'Software Engineer Intern', when: 'May – Jul 2023', line: 'Faster geospatial queries for a road-inspection app, and MongoDB replication and sharding for 500,000 reports a day.', metric: '−33%', metricLabel: 'processing time, 300 ms to 200 ms', stack: 'Django · MongoDB' }
     ];
-    const posts = [
-      { date: 'YYYY-MM-DD', title: '[Post title: e.g. one order book, two languages]', read: '— min' },
-      { date: 'YYYY-MM-DD', title: '[Post title]', read: '— min' },
-      { date: 'YYYY-MM-DD', title: '[Post title]', read: '— min' }
+    const ledger = [
+      { value: 'iOS', label: 'now: messaging SDK at TikTok', color: 'var(--accent)' },
+      { value: '−75%', label: 'failed message sends at TikTok', color: 'var(--ink)' },
+      { value: '2 / mo', label: 'iOS apps shipped at Kovalee', color: 'var(--ink)' },
+      { value: '500k', label: 'reports a day handled at Vebits', color: 'var(--ink)' }
     ];
     return {
       t, th: t === 'dark' ? 'th-dark' : 'th-light', isDark: t === 'dark', isLight: t !== 'dark',
       toggleLabel: t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
       toggle: () => this.setState({ t: t === 'dark' ? 'light' : 'dark' }),
-      featured, posts
+      jobs, ledger
     };
   }
 }

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Building next card</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.nx-ph{background:repeating-linear-gradient(135deg,var(--accent-soft,#F5E6D3) 0 6px,transparent 6px 12px);outline:1px dashed var(--accent,#A04A00);outline-offset:-1px;padding:0 4px}
+</style>
+</helmet>
+<article class="card" aria-labelledby="nx-h" style="display:flex;flex-wrap:wrap;box-sizing:border-box;border:1px dashed var(--line-strong,#8A8D93);border-radius:14px;overflow:hidden;background:var(--bg,#F6F6F3);color:var(--ink,#121417);font-family:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif">
+  <div style="flex:1 1 380px;min-width:0;border-right:1px dashed var(--line,#DCDCD5);background:var(--sunken,#ECECE7);display:flex;align-items:center"><div style="width:100%"><dc-import name="Plate" kind="next" ratio="16/10" radius="0" hint-size="100%,300px"></dc-import></div></div>
+  <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:14px;padding:24px 26px">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+      <span style="display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--accent,#A04A00);border:1px solid var(--mark-x,#F5B041);border-radius:4px;padding:2px 8px"><span aria-hidden="true" style="width:6px;height:6px;border-radius:50%;background:var(--mark-x,#F5B041)"></span>IN PROGRESS</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted,#50555E)">Side project · started <span class="nx-ph">[Month YYYY]</span></span>
+    </div>
+    <h3 id="nx-h" style="margin:0;font-size:28px;line-height:1.15;letter-spacing:-0.02em;font-weight:650"><span class="nx-ph">[Project name]</span>: a messaging backend</h3>
+    <p style="margin:0;color:var(--muted,#50555E)">I spend my days on the client side of chat. This is the other half: <span class="nx-ph">[one sentence on what it does and why, in Duc's words]</span></p>
+    <ul aria-label="Milestones" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:13px">
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+        <li style="display:flex;gap:10px;align-items:baseline"><span aria-hidden="true" style="flex:0 0 14px;color:{{s.c}}">{{s.mark}}</span><span style="color:{{s.fg}}">{{s.text}}</span><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">{{s.sr}}</span></li>
+      </sc-for>
+    </ul>
+    <p style="margin:auto 0 0;padding-top:12px;border-top:1px dashed var(--line,#DCDCD5);font-size:14px;color:var(--muted,#50555E)">No results yet. Numbers go here once there are numbers, measured and with the method.</p>
+    <a href="#" style="align-self:flex-start;font-size:15px;font-weight:500;color:var(--ink,#121417)">Follow along on GitHub <span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1100,"height":420}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const done = (t) => ({ mark: '✓', c: '#2F9E5B', fg: 'var(--ink,#121417)', text: t, sr: '(done)' });
+    const todo = (t) => ({ mark: '○', c: 'var(--line-strong,#8A8D93)', fg: 'var(--muted,#50555E)', text: t, sr: '(next)' });
+    return { steps: [done('[milestone done]'), done('[milestone done]'), todo('[next milestone]'), todo('[later milestone]')] };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # quyduc.vercel.app: Phase 1 design spec
 
-**Status:** ready to build (rev 4, 2026-11-22) · **Owner:** Duc · **Build:** Astro + Tailwind v4 (pnpm), `redesign` branch, Vercel
+**Status:** ready to build (rev 5, 2026-11-27; rev 4 is built) · **Owner:** Duc · **Build:** Astro + Tailwind v4 (pnpm), `redesign` branch, Vercel
 **Design canvas (private artifact):** https://claude.ai/artifact/QhWE7j5PMhmw7cLqKSoqdS
 **Canvas source:** `design/canvas/project/*.dc.html`. The hero demo (`DmDemo.dc.html`, states in `DmStates.dc.html`), order-book demo (`OrderBook.dc.html`) and palette (`Palette.dc.html`) are working references whose logic ports directly to TypeScript.
 
@@ -9,6 +9,8 @@
 **Rev 3 changes.** At Duc's request, the abstract message trace became a two-pane **"What users see vs what I see"** demo: a generic phone-style DM screen that follows the light or dark theme, beside the engineer panel that reacts live to the same taps (send state machine, local DB writes, outbox, retry with backoff, pin sync). Long press pins a message. The demo is DM-app *style* only: no brand, logo, names or employer specifics.
 
 **Rev 4 changes.** All content that came from reference screenshots is gone. The thread is now an invented, PG conversation with "Remy" about a cat that pushed to main. The demo gained message types: text with reply-quote and reactions, invented stickers, photo, 3-photo album, voice, shared video, link preview, system lines. Each type has its own pipeline in the engineer pane.
+
+**Rev 5 changes (character pass).** The school projects are hidden, so the restrained ledger now frames too little content and reads as plain. Rev 5 adds character without new claims: abstract illustration **plates** for each job (no logos or brand assets), Experience as illustrated **cards** with a big metric, a **ledger strip** of résumé numbers under the pitch, a truthful **Building next** card for the messaging-backend side project (placeholders, no results), a bigger type scale, a dot-grid texture, the accent used as ink, three small motions, case-study **covers**, and an About page with **Now**, a two-city timeline and **Uses**. Full spec and the exact build list: §13.
 
 > `design/prototype/`, `design/build_prototype.py` and `design/screenshots/` are an **earlier exploration and are superseded**.
 
@@ -23,7 +25,7 @@ Positioning: **a systems-minded engineer who ships.** The proof today is the mes
   - Left: a phone-style DM screen. Type and send, or press and hold a bubble to pin it. Its skin follows the theme.
   - Right: the dark engineer panel, the same in both themes, which reacts live to those actions. It shows the send state machine (composing → local insert → sending → sent → delivered → seen), DB writes, an ordered outbox, retries with backoff, dedupe by client message id, and pin sync.
   - It shows the kind of problems Duc works on (the gap between a calm UI and what happens underneath) without exposing anything about any employer's systems.
-- **Avoided on purpose:** gradients, glassmorphism, emoji or icon-font feature grids, boxed card grids for everything, scroll-reveal animation, 3D, purple, and anything that implies a trading background.
+- **Avoided on purpose:** gradients, glassmorphism, emoji or icon-font feature grids, boxed card grids for everything (rev 5 uses cards only for the four jobs and the fun projects, §13), scroll-reveal animation (rev 5's section rules and rolling figures animate in place; content is never hidden), 3D, purple, and anything that implies a trading background.
 
 ## 2. Principles and honesty rules
 
@@ -110,7 +112,9 @@ Engineer log lane colours: UI `#E6E8EB`, DB `#8AB4FF` (9.3:1 on term-bg), NET `t
 
 | Token | Size / line-height | Weight · tracking | Use |
 |---|---|---|---|
-| `text-display` | 60 / 1.04 | 700 · −0.03em | Home h1 only |
+| `text-display` | 76 / 1.0 (rev 5; was 60) | 700 · −0.035em | Home h1 only |
+| `text-section` | 40 / 1.1 (rev 5) | 650 · −0.025em | Section h2 with the `01` numeral (replaces `text-2xl` for section heads) |
+| `text-metric` | 40–44 / 1.0 mono (rev 5) | 600 · −0.02em | Card metrics, ledger figures (34) |
 | `text-3xl` | 44 / 1.1 | 700 · −0.025em | Page h1 |
 | `text-2xl` | 32 / 1.2 (28 side-headed) | 600 · −0.02em | Section h2 |
 | `text-xl` | 24 / 1.3 | 600 · −0.01em | Row titles, h3 |
@@ -120,7 +124,7 @@ Engineer log lane colours: UI `#E6E8EB`, DB `#8AB4FF` (9.3:1 on term-bg), NET `t
 | `mono-sm` | 13 / 1.4 | 500 | Numbers, dates, stack lines |
 | `mono-xs` | 12 (11 in tags and state chips, 10 in record labels) | 500 · +0.08em · UPPERCASE | Kickers, labels |
 
-Under 760 px container width: display → 38, 3xl → 30, 2xl → 24. Reading measure is 40 rem.
+Under 760 px container width: display → 44 (rev 5; was 38), section → 30, 3xl → 30, 2xl → 24, ledger figures → 28. Reading measure is 40 rem.
 
 ### 4.3 Space, layout, radius, border, elevation
 
@@ -663,3 +667,67 @@ These are placeholders, not design questions:
 - Matching-engine benchmarks, method and architecture diagram.
 - Case-study prose for dConstruct, Kovalee and Vebits.
 - Photo, résumé PDF, first blog post, one line for the Rust TCP server.
+
+---
+
+## 13. Rev 5: character pass
+
+Boards: **Character kit** (`Character.dc.html`), the components **Plate**, **ExpCard** and **NextCard**, and the updated **Home**, **HomeDark**, **Work**, **CaseStudy**, **About** and **Mobile** boards. The matching-engine page and order-book boards stay on the canvas, labelled hidden.
+
+### 13.1 Guardrails (unchanged from §2, restated for the new parts)
+- Plates are **illustrations of the kind of problem**, never data. No company logo, wordmark, colour or product UI. TikTok's plate shows generic bubbles and a retry loop, not TikTok's chat. Each plate carries an "illustration" or "sketch" label where it could be mistaken for data.
+- Every figure on a card or in the ledger already appears on the résumé or in the case study (§2.4): −75% failed sends, 2 apps/month, −50% training time, −33% processing time (300 → 200 ms), 500k reports/day.
+- **Building next** shows no results, no dates that aren't Duc's, and no architecture he hasn't built. Its plate is labelled "PLANNED" and "sketch, not a built system". Every field Duc hasn't written yet is a placeholder (§12).
+
+### 13.2 Tokens
+- **Type:** see §4.2 (`text-display` 76, `text-section` 40, `text-metric`).
+- **Dot grid** (`.dots`): `radial-gradient(line-strong .8px, transparent .9px)` on a 12 px grid. Plates use `line-strong` at 60%, 1 px. Uses: plate backgrounds, behind the Home and Work heros (masked to a soft ellipse, top right, 55% opacity), and behind the About **Now** card (in `line`). Never behind running text.
+- **Accent as ink:** one accent word per page heading ("ships", "Side projects", "Email me."), the **marker** under one key phrase in the Home lede (`box-shadow: inset 0 -0.38em 0 accent-soft`), plate strokes, section numerals.
+- **Motion** (all off under `prefers-reduced-motion`; nothing is ever hidden waiting for an animation):
+
+| Name | Spec | Where |
+|---|---|---|
+| `swoosh` | 700 ms, 300 ms delay, `ease`; SVG path under "ships" draws in with `pathLength=1` dash offset | Home h1, on load, once |
+| `rule` | 600 ms `ease`; section-head ink rule `scaleX(0 → 1)` from the left | Every `.shead`, first time it enters the viewport (one shared IntersectionObserver; until JS runs, the rule is simply drawn) |
+| `plate-draw` | 900 ms `ease`; the plate's `.pd` accent paths draw in, `.pl-pop` labels rise 4 px (500 ms, 300 ms delay) | Card hover and `:focus-within`; cover plates once on first view |
+| `roll-in` | §7.5 roller, 320 ms, 60 ms stagger per figure | Ledger strip and card metrics, once on first view |
+| `route` | 1400 ms `ease`; the About timeline path draws in | About, first view |
+| `card-lift` | 180 ms; `translateY(-2px)`, border → ink, soft shadow; arrow nudges 3 px, "Case study" turns accent | ExpCard hover |
+
+### 13.3 Components
+- **Plate** (`Plate.astro`, art in `src/components/plates/*.svg.astro`). Props: `kind` (`tiktok`, `kovalee`, `dconstruct`, `vebits`, `next`, `gym`, `shop`, `chat`), `ratio` (16/9 cards, 16/10 Next card, 16/5 covers), `fit` (`slice` for cards, `meet` for covers, where the dot grid fills the extra width), `play` (draw once on first view). The SVG is 320×180, `aria-hidden`, and drawn only in theme tokens, so dark mode needs no second asset. Keep everything inside y 22–158 so covers never clip. The dConstruct point cloud is generated at build time from a fixed seed (no runtime JS).
+- **ExpCard** (Home and /work #experience). The whole card is one link to the case study. Plate on top (16:9, bottom hairline), then org (24/650) · role (15, muted) · dates (mono 12, right), the one-line summary, a dashed rule, then the **metric** (mono 40) beside its label (14, muted, ≤ 14 rem), then the stack line (mono 12, subtle) and "Case study →". Border `line-strong`, radius 14, `raised`. Grid: 2 columns, 24 px gap; 1 column under 760 px. Content comes from the work collection: `featuredMetric` is split into value and label (new fields `cardMetric` and `cardMetricLabel`; the label may be longer than the old row label).
+- **NextCard** (Home §02 and /work #next). One `article`, dashed `line-strong` border, `bg`. Left: Plate `next` at 16:10 on `sunken`, vertically centred. Right: an **IN PROGRESS** chip (amber `mark-x` border and dot, accent text), "Side project · started [Month YYYY]", h3 "[Project name]: a messaging backend", one paragraph ("I spend my days on the client side of chat. This is the other half: [one sentence]"), a milestone list (✓ done in `#2F9E5B`, ○ next in `line-strong`, each with a visually hidden "(done)" or "(next)"), the line "No results yet. Numbers go here once there are numbers, measured and with the method.", and "Follow along on GitHub ↗". Data comes from a new `src/content/building.yaml` (name, sentence, started, repo, milestones[{text, done}]). The card is hidden until `name` is filled in.
+- **Ledger strip** (Home, under the pitch). A `dl` of 4 cells in one row (2×2 under 760 px), ink top rule and `line` bottom rule, cells divided by `line`. Each cell: figure (mono 34/600) above label (mono 12, muted). The first cell is the word **iOS** in accent ("now: messaging SDK at TikTok"); then −75%, 2 / mo, 500k with their sources in the labels.
+- **Section head** (`.shead`): `01` numeral (mono 14, accent) · h2 (`text-section`) · optional "more" link on the right · ink rule below (`rule` motion).
+- **Fun tile** (/work #fun): a 16:9 glyph plate in a `line` frame (radius 12), title (20/600) + ↗, one line, stack line. The whole tile links to GitHub. Hover: title and ↗ turn accent, ↗ moves 2 px up-right.
+
+### 13.4 Pages
+- **Home:** header · hero (dot texture; kicker "Singapore · iOS software engineer"; h1 at display 76 with the accent "ships" and its swoosh; the lede with one marker phrase; buttons) · **ledger strip** · Live demo (unchanged) · **01 Experience** (4 ExpCards, 2×2) · **02 Building next** (NextCard) · Latest writing (still hidden while there are no posts; it would become 03) · contact block at 48/700 with the accent "Email me." · footer. Section spacing: 112 px between sections (128 before contact), 64 px under 760 px.
+- **/work:** hero (kicker "Work", h1 "Shipped work first. Side projects after." with the accent on "Side projects", one paragraph) · **01 Experience** (the same 4 ExpCards) · **02 Building next** (NextCard) · **03 Built for fun** (3 fun tiles: Gymaite, Caroubuy, Messenger clone; 3 columns, 1 under 760 px). The depth and coursework tiers stay in the code for later and render nothing while they're empty.
+- **Case study:** add a **cover** between the meta grid and the body: Plate in the job's kind at 16:5 with `fit=meet` and `play`, in a `line-strong` frame (radius 14), with the caption "Fig. 0 · Cover. An illustration of the problem, not [sensor data | real traffic | …]". The existing Fig. 1 stays.
+- **About:** sidebar unchanged. Main column, after the bio: **Now** (dot-grid card, "updated [Month YYYY]", rows Working on · Building · Learning · Reading, accent mono labels), then **Two cities so far** (an SVG timeline: Singapore and Paris lanes; stops NUS 2021, Vebits 2023, dConstruct 2024, Kovalee Aug 2024 in Paris, TikTok Jul 2025, "now"; accent route with the `route` motion; full `aria-label` sentence), then Experience and Education as before, then **Uses** (the old "Tools I've shipped with" plus a **Desk** row: [laptop] · [editor and terminal] · [keyboard]). The bio's third paragraph gets a personal line (placeholder).
+
+### 13.5 Budgets (§11)
+- New JS: one IntersectionObserver module for `rule`, `roll-in`, `route` and cover `play` (target **≤ 0.6 KB gzip**). Everything else is CSS. Home stays under its 15 KB total.
+- Plates are inline SVG at build time. Target **≤ 3 KB gzip per plate**; the dConstruct cloud is the largest (≈190 circles), and ≤ 4 KB is fine for it.
+- No new fonts, images or third-party code.
+
+### 13.6 Build list for the implementation session (in order)
+1. **Tokens:** add `text-section`, `text-metric` and the new `text-display` values; the `.dots` utility; `.mark`; the motion keyframes and a reduced-motion block (§13.2).
+2. **Plate** component with all 8 kinds, ported from `Plate.dc.html` (same coordinates). Build-time seeded point cloud.
+3. **Section head** (`SectionHead.astro`): 40 px title and the animated rule. Use it everywhere a numbered section head exists.
+4. **Hero:** 76 px display, swoosh, marker phrase, dot texture, kicker "Singapore · iOS software engineer". Then the **ledger strip** with the 4 figures.
+5. **ExpCard**, replacing `FeaturedRow` on Home and `ExperienceRow` on /work. Add `cardMetric` and `cardMetricLabel` to the work schema and fill them in for the 4 jobs from the board text.
+6. **NextCard** with `src/content/building.yaml`, hidden until `name` is set. Add it to Home (02) and /work (02).
+7. **/work:** new hero copy and **Built for fun** tiles with the `gym`, `shop` and `chat` plates (fill the Gymaite and Caroubuy one-liners when Duc supplies them; until then show the stack only, no placeholder text in production).
+8. **Case-study covers** for all four jobs (kinds as above; captions per §13.4).
+9. **About:** Now card, the two-city timeline, Uses with the Desk row. Hide any Now row, Desk item or personal line whose content is still a placeholder.
+10. **Motion module** (the one IntersectionObserver) for the rule, roll-in, route and cover play. Check reduced motion and no-JS: everything should be fully drawn.
+11. **Tests:** axe (light, dark, desktop, mobile) on Home, /work, About and one case study; Lighthouse 100s; budgets; a Playwright check that every plate is `aria-hidden`, that ExpCards are single links with the org name in their accessible name, and that nothing overflows at 375 px.
+
+### 13.7 Content Duc still needs to supply (rev 5 additions to §12)
+- **Building next:** project name, one sentence on what it does and why, start month, repo link (if public), 2–4 milestones with done or next.
+- **Built for fun:** one line each for Gymaite and Caroubuy.
+- **About → Now:** Learning, Reading, and the month it was last updated. **Uses → Desk:** laptop, editor and terminal, keyboard. One personal line for the bio.
+- **Confirm:** Kovalee in Paris (the timeline draws a Paris stop from the content file).

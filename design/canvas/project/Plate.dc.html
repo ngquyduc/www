@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plate illustration</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.pl-svg .pd{stroke-dasharray:1;stroke-dashoffset:0}
+.card:hover .pl-svg .pd,.card:focus-within .pl-svg .pd,.pl-play .pd{animation:pl-draw 900ms cubic-bezier(.2,.7,.2,1) both}
+.card:hover .pl-svg .pl-pop,.card:focus-within .pl-svg .pl-pop{animation:pl-pop 500ms 300ms cubic-bezier(.2,.7,.2,1) both}
+@keyframes pl-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes pl-pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.pl-svg .pd,.pl-svg .pl-pop{animation:none!important}}
+</style>
+</helmet>
+<div class="{{playCls}}" style="width:100%;aspect-ratio:{{ratio}};overflow:hidden;border-radius:{{radius}};background-color:var(--sunken,#ECECE7);background-image:radial-gradient(color-mix(in srgb, var(--line-strong,#8A8D93) 60%, transparent) 1px,transparent 1.1px);background-size:{{dotSize}} {{dotSize}};background-position:center;position:relative">
+<svg class="pl-svg" viewBox="0 0 320 180" preserveAspectRatio="{{par}}" width="100%" height="100%" aria-hidden="true" style="display:block;font-family:'IBM Plex Mono',ui-monospace,monospace">
+  <defs>
+    <pattern id="{{dotsId}}" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.8" fill="var(--line-strong,#8A8D93)" opacity=".35"></circle></pattern>
+  </defs>
+  <sc-if value="{{innerDots}}" hint-placeholder-val="{{ true }}"><rect width="320" height="180" fill="url(#{{dotsId}})"></rect></sc-if>
+
+  <sc-if value="{{isTiktok}}" hint-placeholder-val="{{ true }}">
+    <g>
+      <path d="M18 92 C30 80 42 104 54 92 S78 80 86 90" fill="none" stroke="var(--line-strong,#8A8D93)" stroke-width="1.6" stroke-linecap="round"></path>
+      <path d="M100 92 C108 82 116 102 126 92" fill="none" stroke="var(--line-strong,#8A8D93)" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="3 4"></path>
+      <text x="18" y="118" font-size="8.5" fill="var(--muted,#50555E)">flaky network</text>
+      <rect x="148" y="30" width="136" height="28" rx="14" fill="var(--ink,#121417)"></rect>
+      <rect x="160" y="41" width="70" height="6" rx="3" fill="var(--bg,#F6F6F3)" opacity=".7"></rect>
+      <text x="270" y="72" text-anchor="end" font-size="8.5" fill="var(--muted,#50555E)">seen ✓✓</text>
+      <rect x="168" y="80" width="116" height="28" rx="14" fill="none" stroke="var(--line-strong,#8A8D93)" stroke-width="1.5" stroke-dasharray="4 3"></rect>
+      <rect x="180" y="91" width="54" height="6" rx="3" fill="var(--line-strong,#8A8D93)" opacity=".6"></rect>
+      <text x="160" y="98" text-anchor="end" font-size="8.5" fill="var(--muted,#50555E)">no ack</text>
+      <path class="pd" pathLength="1" d="M288 94 C304 94 306 140 286 140" fill="none" stroke="var(--accent,#A04A00)" stroke-width="2" stroke-linecap="round"></path>
+      <path d="M290 135 l-5 5 6 3" fill="none" stroke="var(--accent,#A04A00)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      <rect x="148" y="126" width="136" height="28" rx="14" fill="var(--accent,#A04A00)"></rect>
+      <rect x="160" y="137" width="80" height="6" rx="3" fill="var(--on-accent,#FFFFFF)" opacity=".8"></rect>
+      <text class="pl-pop" x="140" y="144" text-anchor="end" font-size="8.5" fill="var(--accent,#A04A00)">resend · same id</text>
+      <text x="18" y="164" font-size="8.5" fill="var(--subtle,#63686F)">retry · backoff · dedupe</text>
+    </g>
+  </sc-if>
+
+  <sc-if value="{{isKovalee}}" hint-placeholder-val="{{ false }}">
+    <g>
+      <text x="22" y="34" font-size="8.5" fill="var(--muted,#50555E)">ship cadence · Aug → Jan</text>
+      <sc-for list="{{months}}" as="mo" hint-placeholder-count="6">
+        <g>
+          <rect x="{{mo.x}}" y="58" width="26" height="26" rx="7" fill="var(--raised,#FFFFFF)" stroke="var(--line-strong,#8A8D93)" stroke-width="1.2"></rect>
+          <circle cx="{{mo.cx}}" cy="71" r="5" fill="{{mo.c1}}"></circle>
+          <rect x="{{mo.x}}" y="92" width="26" height="26" rx="7" fill="var(--raised,#FFFFFF)" stroke="var(--line-strong,#8A8D93)" stroke-width="1.2"></rect>
+          <rect x="{{mo.gx}}" y="100" width="10" height="10" rx="2.5" fill="{{mo.c2}}"></rect>
+          <text x="{{mo.cx}}" y="146" text-anchor="middle" font-size="9" fill="var(--muted,#50555E)">{{mo.m}}</text>
+        </g>
+      </sc-for>
+      <path d="M22 130 H298" stroke="var(--line-strong,#8A8D93)" stroke-width="1"></path>
+      <path class="pd" pathLength="1" d="M22 130 H298" stroke="var(--accent,#A04A00)" stroke-width="2.2" stroke-linecap="round"></path>
+      <text class="pl-pop" x="298" y="34" text-anchor="end" font-size="8.5" fill="var(--accent,#A04A00)">2 apps / month</text>
+      <text x="22" y="166" font-size="8.5" fill="var(--subtle,#63686F)">SwiftUI kits · Fastlane · shared SDKs</text>
+    </g>
+  </sc-if>
+
+  <sc-if value="{{isDconstruct}}" hint-placeholder-val="{{ false }}">
+    <g>
+      <path d="M0 150 L120 96 M80 180 L150 96 M180 180 L170 96 M290 180 L200 96 M320 140 L230 96 M0 120 H320" stroke="var(--line-strong,#8A8D93)" stroke-width=".7" opacity=".55" fill="none"></path>
+      <sc-for list="{{cloud}}" as="p" hint-placeholder-count="40">
+        <circle cx="{{p.x}}" cy="{{p.y}}" r="{{p.r}}" fill="{{p.c}}" opacity="{{p.o}}"></circle>
+      </sc-for>
+      <path class="pd" pathLength="1" d="M60 150 C80 140 96 128 112 118" fill="none" stroke="var(--accent,#A04A00)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="0"></path>
+      <rect x="104" y="58" width="34" height="66" rx="3" fill="none" stroke="var(--accent,#A04A00)" stroke-width="1.4" stroke-dasharray="4 3"></rect>
+      <text class="pl-pop" x="104" y="52" font-size="8.5" fill="var(--accent,#A04A00)">#07 person</text>
+      <rect x="204" y="70" width="28" height="54" rx="3" fill="none" stroke="var(--ink,#121417)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"></rect>
+      <text x="204" y="64" font-size="8.5" fill="var(--muted,#50555E)">#12</text>
+      <text x="22" y="34" font-size="8.5" fill="var(--muted,#50555E)">LiDAR frame · illustration</text>
+      <text x="22" y="166" font-size="8.5" fill="var(--subtle,#63686F)">detect · track · review</text>
+    </g>
+  </sc-if>
+
+  <sc-if value="{{isVebits}}" hint-placeholder-val="{{ false }}">
+    <g>
+      <path d="M0 40 H320 M0 84 H320 M0 128 H320 M52 0 V180 M118 0 V180 M190 0 V180 M262 0 V180" stroke="var(--line,#DCDCD5)" stroke-width="5" fill="none"></path>
+      <path d="M-4 150 C60 150 70 104 118 100 S196 58 236 62 S300 40 330 36" fill="none" stroke="var(--ink,#121417)" stroke-width="5" stroke-linecap="round" opacity=".85"></path>
+      <path class="pd" pathLength="1" d="M-4 150 C60 150 70 104 118 100 S196 58 236 62" fill="none" stroke="var(--accent,#A04A00)" stroke-width="5" stroke-linecap="round"></path>
+      <sc-for list="{{pins}}" as="q" hint-placeholder-count="4">
+        <g>
+          <path d="M{{q.x}} {{q.y}} c-6 -8 -9 -11 -9 -16 a9 9 0 0 1 18 0 c0 5 -3 8 -9 16z" fill="var(--accent,#A04A00)"></path>
+          <circle cx="{{q.x}}" cy="{{q.cy}}" r="3" fill="var(--bg,#F6F6F3)"></circle>
+        </g>
+      </sc-for>
+      <rect x="196" y="108" width="108" height="44" rx="6" fill="var(--raised,#FFFFFF)" stroke="var(--line-strong,#8A8D93)" stroke-width="1"></rect>
+      <text x="206" y="125" font-size="8.5" fill="var(--muted,#50555E)">geo query</text>
+      <text class="pl-pop" x="206" y="142" font-size="10" font-weight="600" fill="var(--ink,#121417)">300 → 200 ms</text>
+      <text x="22" y="34" font-size="8.5" fill="var(--muted,#50555E)">road inspection reports</text>
+    </g>
+  </sc-if>
+
+  <sc-if value="{{isNext}}" hint-placeholder-val="{{ false }}">
+    <g>
+      <rect x="22" y="64" width="72" height="44" rx="8" fill="var(--raised,#FFFFFF)" stroke="var(--line-strong,#8A8D93)" stroke-width="1.2"></rect>
+      <text x="58" y="90" text-anchor="middle" font-size="9" fill="var(--ink,#121417)">clients</text>
+      <rect x="124" y="64" width="72" height="44" rx="8" fill="none" stroke="var(--line-strong,#8A8D93)" stroke-width="1.2" stroke-dasharray="4 3"></rect>
+      <text x="160" y="90" text-anchor="middle" font-size="9" fill="var(--ink,#121417)">server</text>
+      <rect x="226" y="64" width="72" height="44" rx="8" fill="none" stroke="var(--line-strong,#8A8D93)" stroke-width="1.2" stroke-dasharray="4 3"></rect>
+      <text x="262" y="90" text-anchor="middle" font-size="9" fill="var(--ink,#121417)">store</text>
+      <path class="pd" pathLength="1" d="M96 80 H122 M198 80 H224" stroke="var(--accent,#A04A00)" stroke-width="2" stroke-linecap="round" fill="none"></path>
+      <path class="pd" pathLength="1" d="M224 94 H198 M122 94 H96" stroke="var(--line-strong,#8A8D93)" stroke-width="1.6" stroke-linecap="round" fill="none"></path>
+      <text x="160" y="132" text-anchor="middle" font-size="8.5" fill="var(--muted,#50555E)">messages in → stored → delivered</text>
+      <rect x="22" y="24" width="58" height="16" rx="3" fill="none" stroke="var(--mark-x,#F5B041)" stroke-width="1.2"></rect>
+      <text x="51" y="35" text-anchor="middle" font-size="8" font-weight="600" fill="var(--accent,#A04A00)" letter-spacing=".08em">PLANNED</text>
+      <text x="22" y="166" font-size="8.5" fill="var(--subtle,#63686F)">sketch, not a built system</text>
+    </g>
+  </sc-if>
+
+  <sc-if value="{{isGym}}" hint-placeholder-val="{{ false }}">
+    <g>
+      <rect x="96" y="82" width="128" height="16" rx="4" fill="var(--ink,#121417)"></rect>
+      <rect x="104" y="58" width="18" height="64" rx="5" fill="var(--ink,#121417)"></rect>
+      <rect x="198" y="58" width="18" height="64" rx="5" fill="var(--ink,#121417)"></rect>
+      <rect x="84" y="68" width="14" height="44" rx="4" fill="var(--accent,#A04A00)"></rect>
+      <rect x="222" y="68" width="14" height="44" rx="4" fill="var(--accent,#A04A00)"></rect>
+    </g>
+  </sc-if>
+
+  <sc-if value="{{isShop}}" hint-placeholder-val="{{ false }}">
+    <g>
+      <rect x="44" y="40" width="70" height="100" rx="8" fill="var(--raised,#FFFFFF)" stroke="var(--line-strong,#8A8D93)"></rect>
+      <rect x="125" y="40" width="70" height="100" rx="8" fill="var(--raised,#FFFFFF)" stroke="var(--line-strong,#8A8D93)"></rect>
+      <rect x="206" y="40" width="70" height="100" rx="8" fill="var(--raised,#FFFFFF)" stroke="var(--line-strong,#8A8D93)"></rect>
+      <rect x="52" y="48" width="54" height="46" rx="4" fill="var(--line,#DCDCD5)"></rect>
+      <rect x="133" y="48" width="54" height="46" rx="4" fill="var(--line,#DCDCD5)"></rect>
+      <rect x="214" y="48" width="54" height="46" rx="4" fill="var(--line,#DCDCD5)"></rect>
+      <path d="M150 104 h26 l8 8 -8 8 h-26z" fill="var(--accent,#A04A00)"></path>
+      <circle cx="157" cy="112" r="2.5" fill="var(--bg,#F6F6F3)"></circle>
+    </g>
+  </sc-if>
+
+  <sc-if value="{{isChat}}" hint-placeholder-val="{{ false }}">
+    <g>
+      <rect x="70" y="50" width="120" height="34" rx="17" fill="var(--raised,#FFFFFF)" stroke="var(--line-strong,#8A8D93)"></rect>
+      <rect x="84" y="63" width="70" height="7" rx="3.5" fill="var(--line-strong,#8A8D93)" opacity=".6"></rect>
+      <rect x="130" y="96" width="120" height="34" rx="17" fill="var(--accent,#A04A00)"></rect>
+      <rect x="144" y="109" width="80" height="7" rx="3.5" fill="var(--on-accent,#FFFFFF)" opacity=".8"></rect>
+    </g>
+  </sc-if>
+</svg>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":"enum","options":["tiktok","kovalee","dconstruct","vebits","next","gym","shop","chat"],"default":"tiktok"},"ratio":{"editor":"enum","options":["16/9","16/7","16/10"],"default":"16/9"},"radius":{"editor":"text","default":"10px"},"play":{"editor":"boolean","default":false},"fit":{"editor":"enum","options":["slice","meet"],"default":"slice"},"$preview":{"width":480,"height":270}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const k = this.props.kind ?? 'tiktok';
+    if (!this.cloudPts) {
+      let a = 41;
+      const rnd = () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+      const pts = [];
+      for (let i = 0; i < 150; i++) { const y = 100 + Math.pow(rnd(), 0.8) * 80; pts.push({ x: (rnd() * 340 - 10).toFixed(1), y: y.toFixed(1), r: (0.6 + (y - 100) / 80 * 1.2).toFixed(2), c: 'var(--muted,#50555E)', o: (0.25 + rnd() * 0.4).toFixed(2) }); }
+      const person = (cx, top, h, c) => { for (let i = 0; i < 46; i++) { const t = rnd(); const y = top + t * h; const w = t < 0.18 ? 5 : t < 0.55 ? 9 : 6; pts.push({ x: (cx + (rnd() - 0.5) * 2 * w).toFixed(1), y: y.toFixed(1), r: '1.3', c: c, o: '0.9' }); } };
+      person(121, 62, 60, 'var(--ink,#121417)');
+      person(218, 74, 48, 'var(--ink,#121417)');
+      this.cloudPts = pts;
+    }
+    const mons = ['A', 'S', 'O', 'N', 'D', 'J'];
+    const months = mons.map((m, i) => { const x = 30 + i * 46; return { m: m, x: x, cx: x + 13, gx: x + 8, c1: i === 5 ? 'var(--accent,#A04A00)' : 'var(--line-strong,#8A8D93)', c2: i === 5 ? 'var(--accent,#A04A00)' : 'var(--line-strong,#8A8D93)' }; });
+    const pins = [[40, 142], [96, 110], [160, 84], [222, 64]].map((p) => ({ x: p[0], y: p[1], cy: p[1] - 16 }));
+    return {
+      isTiktok: k === 'tiktok', isKovalee: k === 'kovalee', isDconstruct: k === 'dconstruct', isVebits: k === 'vebits',
+      isNext: k === 'next', isGym: k === 'gym', isShop: k === 'shop', isChat: k === 'chat',
+      ratio: this.props.ratio ?? '16/9', radius: this.props.radius ?? '10px',
+      playCls: this.props.play ? 'pl-play' : '',
+      par: this.props.fit === 'meet' ? 'xMidYMid meet' : 'xMidYMid slice',
+      dotSize: '12px', innerDots: false,
+      dotsId: 'pl-dots-' + k,
+      cloud: this.cloudPts, months, pins
+    };
+  }
+}
+</script>
+</body>
+</html>

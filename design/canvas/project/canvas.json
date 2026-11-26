@@ -37,7 +37,7 @@
       "x": 0,
       "y": 10900,
       "w": 1440,
-      "h": 3100,
+      "h": 4100,
       "title": "Home, light",
       "expand": "fill",
       "is_interactive": true
@@ -46,23 +46,23 @@
       "x": 1520,
       "y": 10900,
       "w": 1440,
-      "h": 3100,
+      "h": 4100,
       "title": "Home, dark",
       "expand": "fill",
       "is_interactive": true
     },
     "Work.dc.html": {
       "x": 0,
-      "y": 14400,
+      "y": 15600,
       "w": 1440,
-      "h": 3200,
-      "title": "Work index (three tiers)",
+      "h": 3100,
+      "title": "Work index: Experience, Building next, Built for fun",
       "expand": "fill",
       "is_interactive": true
     },
     "CaseStudy.dc.html": {
       "x": 1520,
-      "y": 14400,
+      "y": 15600,
       "w": 1440,
       "h": 3300,
       "title": "Experience case study: dConstruct",
@@ -71,24 +71,24 @@
     },
     "Project.dc.html": {
       "x": 3040,
-      "y": 14400,
+      "y": 15600,
       "w": 1440,
       "h": 4300,
-      "title": "Project depth page: matching engine (order-book demo inside)",
+      "title": "Matching-engine depth page (hidden for now: school projects are off the site)",
       "expand": "fill",
       "is_interactive": true
     },
     "OrderBook.dc.html": {
       "x": 4560,
-      "y": 14400,
+      "y": 15600,
       "w": 720,
       "h": 660,
-      "title": "Order-book demo (matching-engine page only)",
+      "title": "Order-book demo (hidden for now, with the matching-engine page)",
       "is_interactive": true
     },
     "Writing.dc.html": {
       "x": 0,
-      "y": 19200,
+      "y": 20500,
       "w": 1440,
       "h": 1700,
       "title": "Writing index",
@@ -97,7 +97,7 @@
     },
     "Post.dc.html": {
       "x": 1520,
-      "y": 19200,
+      "y": 20500,
       "w": 1440,
       "h": 2900,
       "title": "Post template",
@@ -106,16 +106,16 @@
     },
     "About.dc.html": {
       "x": 3040,
-      "y": 19200,
+      "y": 20500,
       "w": 1440,
-      "h": 2800,
-      "title": "About and résumé",
+      "h": 2700,
+      "title": "About: Now, two cities, Uses, résumé",
       "expand": "fill",
       "is_interactive": true
     },
     "Contact.dc.html": {
       "x": 4560,
-      "y": 19200,
+      "y": 20500,
       "w": 1440,
       "h": 1200,
       "title": "Contact",
@@ -124,7 +124,7 @@
     },
     "NotFound.dc.html": {
       "x": 6080,
-      "y": 19200,
+      "y": 20500,
       "w": 1440,
       "h": 1000,
       "title": "404",
@@ -133,9 +133,9 @@
     },
     "Mobile.dc.html": {
       "x": 0,
-      "y": 22600,
+      "y": 24100,
       "w": 3220,
-      "h": 4600,
+      "h": 6400,
       "title": "Mobile, 390 px",
       "is_interactive": true
     },
@@ -154,11 +154,45 @@
       "h": 7400,
       "title": "Hero demo: message types and states (light, dark, mobile, reduced motion)",
       "is_interactive": true
+    },
+    "Character.dc.html": {
+      "x": 3040,
+      "y": 0,
+      "w": 1440,
+      "h": 1950,
+      "title": "Rev 5 character kit: plates, type scale, texture, motion",
+      "is_interactive": true
+    },
+    "Plate.dc.html": {
+      "x": 4560,
+      "y": 0,
+      "w": 480,
+      "h": 270,
+      "title": "Plate (illustration component)"
+    },
+    "ExpCard.dc.html": {
+      "x": 4560,
+      "y": 350,
+      "w": 560,
+      "h": 620,
+      "title": "Experience card (component)",
+      "is_interactive": true
+    },
+    "NextCard.dc.html": {
+      "x": 4560,
+      "y": 1050,
+      "w": 1100,
+      "h": 420,
+      "title": "Building next card (component)"
     }
   },
   "order": [
     "Main.dc.html",
     "Components.dc.html",
+    "NextCard.dc.html",
+    "ExpCard.dc.html",
+    "Plate.dc.html",
+    "Character.dc.html",
     "DmDemo.dc.html",
     "DmStates.dc.html",
     "Palette.dc.html",
@@ -179,9 +213,9 @@
     "t1": {
       "x": 0,
       "y": -300,
-      "text": "1 · System: tokens and components",
+      "text": "1 · System: tokens, components and the rev 5 character kit",
       "kind": "title1",
-      "maxW": 4480
+      "maxW": 5660
     },
     "t2": {
       "x": 0,
@@ -193,27 +227,27 @@
     "t3": {
       "x": 0,
       "y": 10600,
-      "text": "3 · Home (theme toggle in header works)",
+      "text": "3 · Home (rev 5: ledger, illustrated experience cards, building next)",
       "kind": "title1",
       "maxW": 2960
     },
     "t4": {
       "x": 0,
-      "y": 14100,
-      "text": "4 · Work: index, case study, depth page",
+      "y": 15300,
+      "text": "4 · Work: index and case study (matching-engine page hidden for now)",
       "kind": "title1",
       "maxW": 5280
     },
     "t5": {
       "x": 0,
-      "y": 18900,
+      "y": 20200,
       "text": "5 · Writing, About, Contact, 404",
       "kind": "title1",
       "maxW": 7520
     },
     "t6": {
       "x": 0,
-      "y": 22300,
+      "y": 23800,
       "text": "6 · Mobile (same pages, container width 390)",
       "kind": "title1",
       "maxW": 3220

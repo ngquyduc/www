@@ -26,7 +26,19 @@ body{margin:0}
 .row-link{text-decoration:none}
 .row-link:hover .arrow{transform:translateX(3px);color:var(--accent)}
 .arrow{transition:transform .18s cubic-bezier(.2,.7,.2,1)}
-@container (max-width:760px){.wrap{padding:0 16px}.hdr-nav{order:3;flex-basis:100%;justify-content:flex-start!important}.hide-sm{display:none!important}.d1{font-size:38px!important}.t3{font-size:30px!important}.t2{font-size:24px!important}.col-sm{flex-direction:column!important;align-items:stretch!important}.side{display:none!important}.sec{padding-top:64px!important}}
+.dots{background-image:radial-gradient(var(--line-strong) .8px,transparent .9px);background-size:12px 12px}
+.hero-dots{position:absolute;inset:0 0 auto 0;height:420px;opacity:.55;-webkit-mask-image:radial-gradient(ellipse 60% 70% at 80% 30%,#000 20%,transparent 70%);mask-image:radial-gradient(ellipse 60% 70% at 80% 30%,#000 20%,transparent 70%);pointer-events:none}
+.shead{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;padding-bottom:14px;position:relative}
+.shead::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform-origin:left;animation:rule 600ms cubic-bezier(.2,.7,.2,1) both}
+@keyframes rule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.shead-n{font-size:14px;color:var(--accent)}
+.shead-t{margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.025em;font-weight:650}
+.shead-more{margin-left:auto;font-size:15px}
+.tile:hover h3{color:var(--accent)}
+.tile:hover .tile-arrow{color:var(--accent);transform:translate(2px,-2px)}
+.tile-arrow{display:inline-block;transition:transform .18s cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion: reduce){.shead::after{animation:none}}
+@container (max-width:760px){.grid2,.grid3{grid-template-columns:minmax(0, 1fr)!important}.shead-t{font-size:30px!important}.wrap{padding:0 16px}.hdr-nav{order:3;flex-basis:100%;justify-content:flex-start!important}.hide-sm{display:none!important}.d1{font-size:40px!important}.t3{font-size:30px!important}.t2{font-size:24px!important}.col-sm{flex-direction:column!important;align-items:stretch!important}.side{display:none!important}.sec{padding-top:64px!important}}
 </style>
 </helmet>
 <div class="pg {{th}}" style="min-height:100%">
@@ -50,121 +62,40 @@ body{margin:0}
   </header>
 
   <main>
-    <section class="wrap sec" style="padding-top:72px;display:flex;flex-direction:column;gap:20px">
-      <p class="mono" style="margin:0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Work</p>
-      <h1 class="t3" style="margin:0;font-size:44px;line-height:1.1;letter-spacing:-0.025em;max-width:46rem">Ordered by strength of evidence: shipped work first, then depth, then the foundations.</h1>
-      <nav aria-label="On this page" class="mono" style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px">
-        <a href="#exp" style="text-decoration:none;padding:6px 12px;border:1px solid var(--line-strong);border-radius:999px">A · Real-world experience <span style="color:var(--muted)">5</span></a>
-        <a href="#depth" style="text-decoration:none;padding:6px 12px;border:1px solid var(--line-strong);border-radius:999px">B · Depth projects <span style="color:var(--muted)">3</span></a>
-        <a href="#found" style="text-decoration:none;padding:6px 12px;border:1px solid var(--line-strong);border-radius:999px">C · Foundations and built for fun <span style="color:var(--muted)">7</span></a>
-      </nav>
-    </section>
-
-    <section id="exp" class="wrap sec" style="padding-top:80px" aria-labelledby="h-exp">
-      <div class="col-sm" style="display:flex;gap:40px;align-items:flex-start">
-        <div style="flex:0 0 220px;display:flex;flex-direction:column;gap:6px">
-          <span class="mono" style="font-size:13px;color:var(--accent)">A</span>
-          <h2 id="h-exp" class="t2" style="margin:0;font-size:28px;line-height:1.2;letter-spacing:-0.02em">Real-world experience</h2>
-          <p style="margin:0;font-size:14px;color:var(--muted)">Paid work, with a team, on production systems. Each one links to a case study once it is written.</p>
-        </div>
-        <div style="flex:1 1 600px;min-width:0;border-top:1px solid var(--ink)">
-          <sc-for list="{{exp}}" as="e" hint-placeholder-count="4">
-            <article style="display:flex;flex-wrap:wrap;gap:8px 32px;padding:28px 0;border-bottom:1px solid var(--line)">
-              <p class="mono" style="flex:0 0 150px;margin:0;font-size:13px;color:var(--muted)">{{e.when}}</p>
-              <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:10px">
-                <div style="display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline">
-                  <h3 style="margin:0;font-size:24px;letter-spacing:-0.01em">{{e.co}}</h3>
-                  <span style="font-size:15px;color:var(--muted)">{{e.role}}</span>
-                </div>
-                <p style="margin:0;color:var(--muted);max-width:40rem">{{e.summary}}</p>
-                <div style="display:flex;flex-wrap:wrap;gap:8px">
-                  <sc-for list="{{e.metrics}}" as="m" hint-placeholder-count="2">
-                    <span class="mono" style="font-size:13px;font-weight:500;padding:3px 8px;border:1px solid var(--line-strong);border-radius:4px">{{m}}</span>
-                  </sc-for>
-                </div>
-                <p class="mono" style="margin:0;font-size:12px;color:var(--subtle)">{{e.stack}}</p>
-              </div>
-              <div style="flex:0 0 160px;display:flex;align-items:flex-start;justify-content:flex-end">
-                <sc-if value="{{e.hasCase}}" hint-placeholder-val="{{ true }}">
-                  <a class="row-link" href="#" style="display:inline-flex;gap:6px;align-items:center;font-weight:500;font-size:15px;color:var(--ink)">Case study <span class="arrow" aria-hidden="true">→</span></a>
-                </sc-if>
-                <sc-if value="{{e.noCase}}" hint-placeholder-val="{{ false }}">
-                  <span class="mono" style="font-size:12px;color:var(--subtle)">{{e.caseNote}}</span>
-                </sc-if>
-              </div>
-            </article>
-          </sc-for>
-        </div>
+    <section class="wrap sec" style="position:relative;padding-top:72px">
+      <div class="dots hero-dots" aria-hidden="true"></div>
+      <div style="position:relative;max-width:46rem;display:flex;flex-direction:column;gap:16px">
+        <p class="mono" style="margin:0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Work</p>
+        <h1 class="d1" style="margin:0;font-size:60px;line-height:1.02;letter-spacing:-0.03em;font-weight:700">Shipped work first. <span style="color:var(--accent)">Side projects</span> after.</h1>
+        <p style="margin:0;font-size:19px;color:var(--muted)">Four jobs, each with a case study: what I built, the numbers as they appear on my résumé, and what I'd do differently. Then what I'm building now, and a few things I made for fun.</p>
       </div>
     </section>
 
-    <section id="depth" class="wrap sec" style="padding-top:96px" aria-labelledby="h-depth">
-      <div class="col-sm" style="display:flex;gap:40px;align-items:flex-start">
-        <div style="flex:0 0 220px;display:flex;flex-direction:column;gap:6px">
-          <span class="mono" style="font-size:13px;color:var(--accent)">B</span>
-          <h2 id="h-depth" class="t2" style="margin:0;font-size:28px;line-height:1.2;letter-spacing:-0.02em">Depth projects</h2>
-          <p style="margin:0;font-size:14px;color:var(--muted)">Systems work I chose to go deep on. Each gets a depth page: architecture, benchmarks with method, findings.</p>
-        </div>
-        <div style="flex:1 1 600px;min-width:0;display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:16px">
-          <sc-for list="{{depth}}" as="d" hint-placeholder-count="3">
-            <article style="display:flex;flex-direction:column;gap:12px;padding:20px;border:1px solid var(--line-strong);border-radius:8px;background:var(--raised)">
-              <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
-                <span class="mono" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--accent-soft)">Depth</span>
-                <span class="mono ph" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px">{{d.context}}</span>
-              </div>
-              <h3 style="margin:0;font-size:21px;line-height:1.25;letter-spacing:-0.01em">{{d.title}}</h3>
-              <p style="margin:0;font-size:15px;color:var(--muted)">{{d.desc}}</p>
-              <p class="mono" style="margin:0;font-size:12px;color:var(--subtle)">{{d.stack}}</p>
-              <div style="display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line);font-size:14px">
-                <sc-for list="{{d.links}}" as="l" hint-placeholder-count="2">
-                  <sc-if value="{{l.href}}" hint-placeholder-val="{{ true }}"><a href="#" style="font-weight:500">{{l.label}}</a></sc-if>
-                  <sc-if value="{{l.nohref}}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size:12px;color:var(--subtle)">{{l.label}}</span></sc-if>
-                </sc-for>
-              </div>
-            </article>
-          </sc-for>
-        </div>
+    <section id="experience" class="wrap sec" style="padding-top:88px" aria-labelledby="h-exp">
+      <div class="shead"><span class="mono shead-n">01</span><h2 id="h-exp" class="t2 shead-t">Experience</h2></div>
+      <div class="grid2" style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:24px;margin-top:28px">
+        <sc-for list="{{jobs}}" as="j" hint-placeholder-count="4">
+          <dc-import name="ExpCard" kind="{{j.kind}}" org="{{j.org}}" role="{{j.role}}" when="{{j.when}}" line="{{j.line}}" metric="{{j.metric}}" metric-label="{{j.metricLabel}}" stack="{{j.stack}}" hint-size="100%,620px"></dc-import>
+        </sc-for>
       </div>
     </section>
 
-    <section id="found" class="wrap sec" style="padding-top:96px" aria-labelledby="h-found">
-      <div class="col-sm" style="display:flex;gap:40px;align-items:flex-start">
-        <div style="flex:0 0 220px;display:flex;flex-direction:column;gap:6px">
-          <span class="mono" style="font-size:13px;color:var(--accent)">C</span>
-          <h2 id="h-found" class="t2" style="margin:0;font-size:28px;line-height:1.2;letter-spacing:-0.02em">Foundations and built for fun</h2>
-          <p style="margin:0;font-size:14px;color:var(--muted)">Coursework is labelled as coursework and credits the people I built it with. None of it is presented as production work.</p>
-        </div>
-        <div style="flex:1 1 600px;min-width:0;display:flex;flex-direction:column;gap:40px">
-          <div>
-            <h3 class="mono" style="margin:0 0 4px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Coursework</h3>
-            <div role="table" aria-label="Coursework" style="border-top:1px solid var(--ink)">
-              <div role="row" class="mono hide-sm" style="display:flex;gap:24px;padding:10px 0;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--subtle)">
-                <span role="columnheader" style="flex:1 1 260px">Project</span><span role="columnheader" style="flex:0 0 150px">Stack</span><span role="columnheader" style="flex:0 0 200px">Module · with</span><span role="columnheader" style="flex:0 0 70px;text-align:right">Code</span>
-              </div>
-              <sc-for list="{{course}}" as="c" hint-placeholder-count="3">
-                <div role="row" style="display:flex;flex-wrap:wrap;gap:4px 24px;padding:14px 0;border-bottom:1px solid var(--line);align-items:baseline">
-                  <span role="cell" style="flex:1 1 260px;min-width:0"><b style="font-weight:600">{{c.title}}</b><br><span style="font-size:14px;color:var(--muted)">{{c.desc}}</span></span>
-                  <span role="cell" class="mono" style="flex:0 0 150px;font-size:12px;color:var(--muted)">{{c.stack}}</span>
-                  <span role="cell" style="flex:0 0 200px;font-size:13px"><span class="mono" style="display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border:1px solid var(--line-strong);border-radius:4px;margin-right:6px">Coursework</span><span class="ph" style="padding:0 4px">{{c.credit}}</span></span>
-                  <span role="cell" style="flex:0 0 70px;text-align:right;font-size:14px"><a href="#">GitHub</a></span>
-                </div>
-              </sc-for>
-            </div>
-          </div>
-          <div>
-            <h3 class="mono" style="margin:0 0 12px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Built for fun</h3>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:4px 24px">
-              <sc-for list="{{fun}}" as="f" hint-placeholder-count="4">
-                <a class="row-link" href="#" style="display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);color:var(--ink)">
-                  <span aria-hidden="true" style="flex:0 0 48px;height:48px;border-radius:8px;background:var(--sunken);border:1px solid var(--line)"></span>
-                  <span style="flex:1 1 auto;min-width:0;display:flex;flex-direction:column"><b style="font-weight:600;font-size:16px">{{f.title}}</b><span class="mono" style="font-size:12px;color:var(--muted)">{{f.line}}</span></span>
-                  <span class="arrow" aria-hidden="true" style="color:var(--muted)">→</span>
-                </a>
-              </sc-for>
-            </div>
-            <p style="margin:16px 0 0;font-size:14px;color:var(--muted)">Older experiments (Messenger clone, Music Hub, Modifiles and others) stay on <a href="#">GitHub</a>.</p>
-          </div>
-        </div>
+    <section id="next" class="wrap sec" style="padding-top:112px" aria-labelledby="h-next">
+      <div class="shead"><span class="mono shead-n">02</span><h2 id="h-next" class="t2 shead-t">Building next</h2></div>
+      <div style="margin-top:28px"><dc-import name="NextCard" hint-size="100%,420px"></dc-import></div>
+    </section>
+
+    <section id="fun" class="wrap sec" style="padding-top:112px" aria-labelledby="h-fun">
+      <div class="shead"><span class="mono shead-n">03</span><h2 id="h-fun" class="t2 shead-t">Built for fun</h2><span class="shead-more mono" style="font-size:12px;color:var(--subtle)">Small, unpolished, on GitHub</span></div>
+      <div class="grid3" style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:24px;margin-top:28px">
+        <sc-for list="{{fun}}" as="f" hint-placeholder-count="3">
+          <a class="card tile" href="#" style="display:flex;flex-direction:column;gap:12px;color:var(--ink);text-decoration:none">
+            <div style="border:1px solid var(--line);border-radius:12px;overflow:hidden"><dc-import name="Plate" kind="{{f.kind}}" ratio="16/9" radius="0" hint-size="100%,200px"></dc-import></div>
+            <div style="display:flex;align-items:baseline;gap:10px"><h3 style="margin:0;font-size:20px;font-weight:600">{{f.title}}</h3><span aria-hidden="true" class="tile-arrow" style="margin-left:auto;color:var(--muted)">↗</span></div>
+            <p style="margin:0;font-size:15px;color:var(--muted)"><span class="{{f.phCls}}">{{f.line}}</span></p>
+            <p class="mono" style="margin:0;font-size:12px;color:var(--subtle)">{{f.stack}}</p>
+          </a>
+        </sc-for>
       </div>
     </section>
   </main>
@@ -178,39 +109,27 @@ body{margin:0}
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":3000}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":3100}}'>
 class Component extends DCLogic {
   renderVals() {
     const s = this.state || {};
     const t = s.t || this.props.theme || 'light';
-    const exp = [
-      { when: '[start] – now', co: 'TikTok', role: 'Mobile Software Engineer', summary: 'Instant-messaging SDK. TikTok is the main client; TikTok Shop and Lemon8 also build on it. Started on iOS; the team now works more and more cross-platform.', metrics: ['[impact metric]'], stack: 'iOS · [languages and cross-platform stack]', hasCase: true, noCase: false, caseNote: '' },
-      { when: 'Aug 2024 – [end]', co: 'Kovalee', role: 'iOS Developer Intern', summary: 'Shipped about two iOS apps a month with SwiftUI and Fastlane. Maintained the SDKs for analytics and in-app purchases that the apps share.', metrics: ['2 apps / month'], stack: 'Swift · SwiftUI · Fastlane', hasCase: true, noCase: false, caseNote: '' },
-      { when: 'Jan – Jun 2024', co: 'dConstruct Robotics', role: 'Software Engineer Intern', summary: 'Built the SolidJS UI and the C++17 and SQLite endpoints (sensor connections, live view, video playback) for a point-cloud surveillance system, and a C++ PDF report library.', metrics: ['−20% latency', '−50% training time'], stack: 'C++17 · SQLite · SolidJS · TailwindCSS', hasCase: true, noCase: false, caseNote: '' },
-      { when: 'May – Aug 2023', co: 'Vebits', role: 'Software Engineer Intern', summary: 'MongoDB query and distributed database work, an Angular 13 frontend redesign, and a React Native app that controls 360° cameras.', metrics: ['−50% runtime', '<100 ms camera control'], stack: 'MongoDB · Django · Angular 13 · React Native', hasCase: true, noCase: false, caseNote: '' },
-      { when: 'Aug 2022 – Dec 2023', co: 'NUS School of Computing', role: 'Teaching Assistant', summary: 'Led a group of 6 junior TAs and ran tutorials for over 100 students on computational thinking, algorithms and recursion.', metrics: ['6 junior TAs', '100+ students'], stack: 'Teaching', hasCase: false, noCase: true, caseNote: 'No case study' }
-    ];
-    const depth = [
-      { title: 'Exchange matching engine', context: 'Personal or coursework?', desc: 'Limit order book with price-time priority, written in C++ and ported to Go to compare the two. The flagship depth page.', stack: 'C++ · Go', links: [{ label: 'Depth page', href: true, nohref: false }, { label: 'Code (C++)', href: true, nohref: false }, { label: 'Go port: private repo', href: false, nohref: true }] },
-      { title: 'Async TCP server', context: 'Personal or coursework?', desc: '[One line: what the server does and what you measured.]', stack: 'Rust · Tokio', links: [{ label: 'Code', href: true, nohref: false }] },
-      { title: 'Distributed chat', context: 'Personal or coursework?', desc: 'Chat service split into an HTTP gateway and an RPC backend, with Redis for storage.', stack: 'Go · Kitex RPC · Redis', links: [{ label: 'Code', href: true, nohref: false }] }
-    ];
-    const course = [
-      { title: 'MPI task runner', desc: 'Distributed task execution across processes with MPI.', stack: 'C++ · MPI', credit: '[module] · [co-author]' },
-      { title: 'Virus signature detection', desc: 'Signature matching over large inputs on the GPU.', stack: 'CUDA', credit: '[module] · [co-author]' },
-      { title: 'PeerPrep', desc: 'Peer interview-practice web app.', stack: 'Web', credit: '[module] · [team]' }
+    const jobs = [
+      { kind: 'tiktok', org: 'TikTok', role: 'iOS Software Engineer', when: 'Jul 2025 – now', line: 'The instant-messaging SDK behind TikTok chat, also used by TikTok Shop and Lemon8. iOS first, more and more cross-platform.', metric: '−75%', metricLabel: 'failed message sends, after automatic resend on network errors', stack: 'Objective-C · Swift · SQLite · WebSocket' },
+      { kind: 'kovalee', org: 'Kovalee', role: 'iOS Developer Intern', when: 'Aug 2024 – Jan 2025', line: 'Shipped iOS apps in education and health on a monthly cadence, and kept up the SDKs about 20 apps share.', metric: '2 / mo', metricLabel: 'iOS apps shipped, with SwiftUI kits and Fastlane', stack: 'Swift · SwiftUI · Fastlane' },
+      { kind: 'dconstruct', org: 'dConstruct Robotics', role: 'Software Engineer Intern', when: 'Jan – Jun 2024', line: 'The operator web app for a LiDAR surveillance system, plus detecting and tracking people in the point clouds.', metric: '−50%', metricLabel: 'training time for new operators: 2 days to 1', stack: 'SolidJS · TailwindCSS · C++17 · SQLite' },
+      { kind: 'vebits', org: 'Vebits AI', role: 'Software Engineer Intern', when: 'May – Jul 2023', line: 'Faster geospatial queries for a road-inspection app, and MongoDB replication and sharding for 500,000 reports a day.', metric: '−33%', metricLabel: 'processing time, 300 ms to 200 ms', stack: 'Django · MongoDB' }
     ];
     const fun = [
-      { title: 'Gymaite', line: 'iOS · SwiftUI' },
-      { title: 'Caroubuy', line: 'Web' },
-      { title: 'Monkey', line: 'Mobile' },
-      { title: 'HobbyList', line: 'Desktop' }
+      { kind: 'gym', title: 'Gymaite', line: '[One line: what the app does]', phCls: 'ph', stack: 'iOS · SwiftUI' },
+      { kind: 'shop', title: 'Caroubuy', line: '[One line: what the web app does]', phCls: 'ph', stack: 'Web' },
+      { kind: 'chat', title: 'Messenger clone', line: 'Real-time messaging with Pusher, built on Next.js 13, MongoDB and Prisma.', phCls: '', stack: 'Next.js · MongoDB · Pusher' }
     ];
     return {
       th: t === 'dark' ? 'th-dark' : 'th-light', isDark: t === 'dark', isLight: t !== 'dark',
       toggleLabel: t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
       toggle: () => this.setState({ t: t === 'dark' ? 'light' : 'dark' }),
-      exp, depth, course, fun
+      jobs, fun
     };
   }
 }

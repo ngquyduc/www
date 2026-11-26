@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Character kit</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.th-light{--bg:#F6F6F3;--raised:#FFFFFF;--sunken:#ECECE7;--ink:#121417;--muted:#50555E;--subtle:#63686F;--line:#DCDCD5;--line-strong:#8A8D93;--accent:#A04A00;--mark-x:#F5B041;--accent-soft:#F5E6D3;--on-accent:#FFFFFF;--focus:#1D5BD6;color-scheme:light}
+.th-dark{--bg:#0E1013;--raised:#15181D;--sunken:#0A0B0D;--ink:#E8E8E3;--muted:#A3A8B1;--subtle:#8A9099;--line:#262A31;--line-strong:#646A74;--accent:#F0A848;--mark-x:#A04A00;--accent-soft:#2B2114;--on-accent:#1A1203;--focus:#8AB4FF;color-scheme:dark}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.k{margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.dots{background-image:radial-gradient(var(--line-strong) .8px,transparent .9px);background-size:12px 12px}
+</style>
+</helmet>
+<div class="th-light" style="width:1440px;box-sizing:border-box;padding:56px;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;font-size:16px;line-height:1.55;display:flex;flex-direction:column;gap:48px">
+  <div style="display:flex;flex-direction:column;gap:10px;max-width:900px">
+    <p class="k">Rev 5 · Character kit</p>
+    <h1 style="margin:0;font-size:44px;line-height:1.1;letter-spacing:-0.025em">More character, same honesty rules</h1>
+    <p style="margin:0;color:var(--muted)">With the school projects hidden, the ledger needs more than rules and text. Five additions: illustration plates, a bigger display scale, a dot-grid texture, the accent used as ink for emphasis, and three small motions. No logos or brand assets: every plate is an abstract diagram of the work, drawn in site tokens.</p>
+  </div>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <p class="k">1 · Plates (light) · hover a card to draw the accent stroke</p>
+    <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:24px">
+      <sc-for list="{{kinds}}" as="p" hint-placeholder-count="8">
+        <figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px">
+          <dc-import name="Plate" kind="{{p.kind}}" hint-size="100%,180px"></dc-import>
+          <figcaption class="mono" style="font-size:12px;color:var(--muted)"><b style="color:var(--ink);font-weight:600">{{p.kind}}</b> · {{p.note}}</figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </section>
+
+  <section class="th-dark" style="display:flex;flex-direction:column;gap:16px;padding:32px;border-radius:16px;background:var(--bg);color:var(--ink)">
+    <p class="k">1b · Plates (dark) · same art, tokens swap</p>
+    <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:24px">
+      <sc-for list="{{kinds}}" as="p" hint-placeholder-count="8">
+        <figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px">
+          <dc-import name="Plate" kind="{{p.kind}}" hint-size="100%,180px"></dc-import>
+          <figcaption class="mono" style="font-size:12px;color:var(--muted)">{{p.kind}}</figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:40px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <p class="k">2 · Type scale (rev 5)</p>
+      <p style="margin:0;font-size:76px;line-height:1;letter-spacing:-0.035em;font-weight:700">Display 76</p>
+      <p style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.025em;font-weight:650">Section 40 <span class="mono" style="font-size:14px;font-weight:500;color:var(--accent);letter-spacing:0">01</span></p>
+      <p class="mono" style="margin:0;font-size:44px;line-height:1;font-weight:600;letter-spacing:-0.02em">−75%<span style="font-size:14px;font-weight:400;color:var(--muted);letter-spacing:0"> metric 44 mono</span></p>
+      <p class="mono" style="margin:0;font-size:12px;color:var(--muted)">Display 76/1.0 −0.035em (was 60) · Section heads 40/1.1 (was 32) · Metric figures 44 mono 600 with tabular figures · body unchanged. Phone: display 44, section 30, metric 34.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <p class="k">3 · Texture and accent</p>
+      <div class="dots" style="height:120px;border-radius:12px;border:1px solid var(--line);-webkit-mask-image:radial-gradient(ellipse at 30% 40%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 30% 40%,#000 30%,transparent 75%)"></div>
+      <p class="mono" style="margin:0;font-size:12px;color:var(--muted)">Dot grid: 0.8 px dots of <code>line-strong</code> on a 12 px grid. Used on plates, behind the hero (masked to fade out), and in the In progress card. Never behind body text.</p>
+      <p style="margin:0;font-size:22px;font-weight:600">The accent as ink: <span style="color:var(--accent)">one word</span> per heading, the <span style="box-shadow:inset 0 -0.38em 0 var(--accent-soft)">marker</span> under key phrases, plate strokes.</p>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <p class="k">4 · Motion added in rev 5 (all off under reduced motion; content is never hidden)</p>
+    <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:24px">
+      <div style="padding:18px;border:1px solid var(--line-strong);border-radius:10px;background:var(--raised)"><p style="margin:0 0 6px;font-weight:600">Plate draw</p><p style="margin:0;font-size:14px;color:var(--muted)">On card hover or focus, the plate's accent path draws in (900 ms, <code>pathLength=1</code> dash offset) and its accent label rises 4 px. CSS only.</p></div>
+      <div style="padding:18px;border:1px solid var(--line-strong);border-radius:10px;background:var(--raised)"><p style="margin:0 0 6px;font-weight:600">Section rule</p><p style="margin:0;font-size:14px;color:var(--muted)">Each section head's ink rule grows from the left (scaleX 0 → 1, 600 ms) the first time it enters the viewport. One shared IntersectionObserver, under 0.4 KB.</p></div>
+      <div style="padding:18px;border:1px solid var(--line-strong);border-radius:10px;background:var(--raised)"><p style="margin:0 0 6px;font-weight:600">Rolling figures</p><p style="margin:0;font-size:14px;color:var(--muted)">The ledger strip and card metrics roll their digits once on first view (the §7.5 roller, 320 ms, staggered 60 ms). The real value is in the HTML from the start.</p></div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      kinds: [
+        { kind: 'tiktok', note: 'resend on network errors' },
+        { kind: 'kovalee', note: 'two apps a month, Aug–Jan' },
+        { kind: 'dconstruct', note: 'people in a LiDAR frame' },
+        { kind: 'vebits', note: 'geo queries on a road map' },
+        { kind: 'next', note: 'planned, not built' },
+        { kind: 'gym', note: 'Gymaite glyph' },
+        { kind: 'shop', note: 'Caroubuy glyph' },
+        { kind: 'chat', note: 'Messenger clone glyph' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
