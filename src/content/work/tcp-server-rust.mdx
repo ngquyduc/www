@@ -2,6 +2,7 @@
 title: Async TCP server
 tier: depth
 order: 2
+hidden: true
 start: "2024"
 summary: A TCP server on Tokio that handles every connection asynchronously and caps CPU-heavy work at 40 tasks with a counting semaphore, so slow requests can't starve the rest.
 stack: [Rust, Tokio]

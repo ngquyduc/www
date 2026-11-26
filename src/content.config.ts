@@ -22,6 +22,8 @@ const work = defineCollection({
         title: z.string(),
         tier: z.enum(["experience", "depth", "coursework", "fun"]),
         order: z.number().int(),
+        // Kept in the repo but left out of every page, list and route.
+        hidden: z.boolean().default(false),
         org: z.string().optional(),
         role: z.string().optional(),
         start: z.string(),

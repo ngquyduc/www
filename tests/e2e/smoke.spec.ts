@@ -8,7 +8,6 @@ const pages = [
   "/work/kovalee",
   "/work/dconstruct",
   "/work/vebits",
-  "/work/matching-engine",
   "/writing",
   "/about",
   "/contact",
@@ -67,11 +66,20 @@ test("honesty: simulations are labelled, the Go port is unlinked", async ({ page
   await expect(page.getByText("Not production code, not real data, and not any company's implementation.")).toHaveCount(
     1,
   );
-  await page.goto("/work/matching-engine");
-  await expect(page.locator(".ob-sim")).toHaveText("SIMULATED");
-  await expect(page.getByText("Not market data, and not a benchmark of the engine.")).toBeVisible();
-  await expect(page.locator('a[href*="matching-engine-go"]')).toHaveCount(0);
   await page.goto("/work");
-  await expect(page.getByText("Go version: private repo")).toBeVisible();
   await expect(page.locator('a[href*="matching-engine-go"]')).toHaveCount(0);
+});
+
+test("hidden school projects have no page and are not listed", async ({ page }) => {
+  for (const slug of ["matching-engine", "tcp-server-rust", "distributed-chat", "peerprep", "hobbylist"]) {
+    const res = await page.goto(`/work/${slug}`);
+    expect(res?.status()).toBe(404);
+  }
+  for (const path of ["/", "/work", "/about"]) {
+    await page.goto(path);
+    await expect(
+      page.locator('a[href^="/work/matching-engine"], a[href*="peerprep"], a[href*="hobbylist"]'),
+    ).toHaveCount(0);
+    await expect(page.getByText(/CS3211|CS3210|CS3219|CS2103T/)).toHaveCount(0);
+  }
 });

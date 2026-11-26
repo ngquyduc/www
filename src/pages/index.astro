@@ -7,7 +7,7 @@ import Base from "../layouts/Base.astro";
 import { getPosts, getWork, isoDate, readingMinutes } from "../lib/content";
 import { site } from "../site";
 
-// Real jobs only, newest first (content order), then projects: the matching engine first (§9).
+// Real jobs only, newest first (content order), then visible depth projects, if any (§9).
 const experience = await getWork("experience");
 const projects = await getWork("depth");
 const posts = (await getPosts()).slice(0, 3);
@@ -54,15 +54,19 @@ const posts = (await getPosts()).slice(0, 3);
     {experience.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
   </section>
 
-  <section class="wrap below-fold pt-16 md:pt-24" aria-labelledby="proj">
-    <SectionHead n="02" id="proj" title="Projects" more={{ href: "/work#depth", label: "All projects" }} />
-    {projects.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
-  </section>
+  {
+    projects.length > 0 && (
+      <section class="wrap below-fold pt-16 md:pt-24" aria-labelledby="proj">
+        <SectionHead n="02" id="proj" title="Projects" more={{ href: "/work#depth", label: "All projects" }} />
+        {projects.map((item, i) => <FeaturedRow item={item} n={i + 1} />)}
+      </section>
+    )
+  }
 
   {
     posts.length > 0 && (
       <section class="wrap below-fold pt-16 md:pt-24" aria-labelledby="wr">
-        <SectionHead n="03" id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
+        <SectionHead n={projects.length > 0 ? "03" : "02"} id="wr" title="Latest writing" more={{ href: "/writing", label: "All posts" }} />
         {posts.map((p) => (
           <a class="row-link flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-line py-[18px]" href={`/writing/${p.id}`}>
             <time class="w-[110px] shrink-0 text-[13px] text-muted" datetime={isoDate(p.data.date)}>{isoDate(p.data.date)}</time>

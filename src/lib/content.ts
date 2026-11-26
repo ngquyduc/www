@@ -4,7 +4,7 @@ export type Work = CollectionEntry<"work">;
 export type Post = CollectionEntry<"writing">;
 
 export async function getWork(tier?: Work["data"]["tier"]): Promise<Work[]> {
-  const all = await getCollection("work", (e) => !tier || e.data.tier === tier);
+  const all = await getCollection("work", (e) => !e.data.hidden && (!tier || e.data.tier === tier));
   return all.sort((a, b) => a.data.order - b.data.order);
 }
 

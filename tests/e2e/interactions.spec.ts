@@ -54,7 +54,8 @@ test("command palette: ⌘K opens, filter, Enter toggles theme", async ({ page, 
   await expect(page.locator("#toast")).toHaveText(/^Theme: (dark|light)$/);
 });
 
-test("order book: a market buy reports its fill", async ({ page }) => {
+// The order book lives on the matching-engine page, which is hidden for now.
+test.skip("order book: a market buy reports its fill", async ({ page }) => {
   await page.goto("/work/matching-engine#try");
   await page.locator("[data-ob]").scrollIntoViewIfNeeded();
   await page.getByRole("button", { name: /^Buy 10/ }).click();
@@ -63,10 +64,7 @@ test("order book: a market buy reports its fill", async ({ page }) => {
 
 test.describe("reduced motion", () => {
   test.use({ reducedMotion: "reduce" });
-  test("the order book starts paused and the hero does not autoplay", async ({ page }) => {
-    await page.goto("/work/matching-engine");
-    await page.locator("[data-ob]").scrollIntoViewIfNeeded();
-    await expect(page.locator("[data-o=state]")).toHaveText("PAUSED · REDUCED MOTION");
+  test("the hero does not autoplay", async ({ page }) => {
     await page.goto("/");
     await page.locator("[data-hero]").scrollIntoViewIfNeeded();
     await page.waitForTimeout(2500);
